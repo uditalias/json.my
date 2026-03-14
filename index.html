@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>json.my — Query &amp; Explore JSON</title>
+<title>json.express — Query &amp; Explore JSON</title>
 <style>
 /* ===== CSS Custom Properties ===== */
 :root {
@@ -33,31 +33,61 @@
   --highlight-bg: rgba(88,166,255,0.15);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f6f8fa;
-    --panel-bg: #ffffff;
-    --border: #d0d7de;
-    --text: #1f2328;
-    --text-muted: #656d76;
-    --accent: #0969da;
-    --error: #cf222e;
-    --success: #1a7f37;
-    --query-bg: #f6f8fa;
-    --focus-ring: #0969da;
-    --key-color: #8250df;
-    --string-color: #0a3069;
-    --number-color: #0550ae;
-    --bool-color: #cf222e;
-    --null-color: #656d76;
-    --bracket-color: #656d76;
-    --scrollbar-thumb: #d0d7de;
-    --btn-bg: #f3f4f6;
-    --btn-hover: #d0d7de;
-    --autocomplete-bg: #ffffff;
-    --autocomplete-hover: #f3f4f6;
-    --tree-guide: #d0d7de;
-    --highlight-bg: rgba(9,105,218,0.1);
+/* Light theme — applied explicitly or via system preference */
+html.light,
+html:not(.dark):not(.light) {
+  --bg: #f6f8fa;
+  --panel-bg: #ffffff;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-muted: #656d76;
+  --accent: #0969da;
+  --error: #cf222e;
+  --success: #1a7f37;
+  --query-bg: #f6f8fa;
+  --focus-ring: #0969da;
+  --key-color: #8250df;
+  --string-color: #0a3069;
+  --number-color: #0550ae;
+  --bool-color: #cf222e;
+  --null-color: #656d76;
+  --bracket-color: #656d76;
+  --scrollbar-thumb: #d0d7de;
+  --btn-bg: #f3f4f6;
+  --btn-hover: #d0d7de;
+  --autocomplete-bg: #ffffff;
+  --autocomplete-hover: #f3f4f6;
+  --tree-guide: #d0d7de;
+  --highlight-bg: rgba(9,105,218,0.1);
+}
+
+/* System preference: if user picked "system" (no class) and OS is dark, revert to dark */
+@media (prefers-color-scheme: dark) {
+  html:not(.dark):not(.light) {
+    --bg: #0d1117;
+    --panel-bg: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --error: #f85149;
+    --success: #3fb950;
+    --query-bg: #1c2128;
+    --focus-ring: #58a6ff;
+    --key-color: #d2a8ff;
+    --string-color: #a5d6ff;
+    --number-color: #79c0ff;
+    --bool-color: #ff7b72;
+    --null-color: #8b949e;
+    --bracket-color: #8b949e;
+    --scrollbar-thumb: #30363d;
+    --scrollbar-track: transparent;
+    --btn-bg: #21262d;
+    --btn-hover: #30363d;
+    --autocomplete-bg: #1c2128;
+    --autocomplete-hover: #30363d;
+    --tree-guide: #30363d;
+    --highlight-bg: rgba(88,166,255,0.15);
   }
 }
 
@@ -465,6 +495,7 @@ html, body {
     <button class="toolbar-btn" id="btn-ts" title="TypeScript Types">TS</button>
     <button class="toolbar-btn" id="btn-copy" title="Copy result (Ctrl+Shift+C)">Copy</button>
     <button class="toolbar-btn" id="btn-format" title="Format JSON (Ctrl+Enter)">Format</button>
+    <button class="toolbar-btn" id="btn-theme" title="Toggle theme">System</button>
   </div>
 
   <!-- Panels -->
@@ -536,6 +567,7 @@ html, body {
     btnTs: document.getElementById('btn-ts'),
     btnCopy: document.getElementById('btn-copy'),
     btnFormat: document.getElementById('btn-format'),
+    btnTheme: document.getElementById('btn-theme'),
     statusValidity: document.getElementById('status-validity'),
     statusSize: document.getElementById('status-size'),
     statusDepth: document.getElementById('status-depth'),
@@ -1630,6 +1662,28 @@ html, body {
   dom.btnFormat.addEventListener('click', function() {
     formatInput();
   });
+
+  // Theme toggle: system → light → dark → system
+  const themeLabels = { system: 'System', light: 'Light', dark: 'Dark' };
+  const themeCycle = ['system', 'light', 'dark'];
+
+  function applyTheme(theme) {
+    document.documentElement.classList.remove('light', 'dark');
+    if (theme === 'light' || theme === 'dark') {
+      document.documentElement.classList.add(theme);
+    }
+    dom.btnTheme.textContent = themeLabels[theme];
+    localStorage.setItem('theme', theme);
+  }
+
+  dom.btnTheme.addEventListener('click', function() {
+    const current = localStorage.getItem('theme') || 'system';
+    const nextIdx = (themeCycle.indexOf(current) + 1) % themeCycle.length;
+    applyTheme(themeCycle[nextIdx]);
+  });
+
+  // Initialize theme from localStorage
+  applyTheme(localStorage.getItem('theme') || 'system');
 
   // Keyboard shortcuts
   document.addEventListener('keydown', function(e) {
