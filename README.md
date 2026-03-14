@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="icon-app.png" alt="json.express" width="128" />
+
 # { json.express }
 
 **Query and explore JSON, right in your browser.**
