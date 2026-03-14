@@ -563,10 +563,42 @@ html, body {
    * Lenient JSON parse: strips comments and trailing commas.
    */
   function lenientParse(text) {
-    // Remove single-line comments
-    let cleaned = text.replace(/\/\/.*$/gm, '');
-    // Remove multi-line comments
-    cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
+    // Strip comments while preserving string contents
+    let cleaned = '';
+    let i = 0;
+    const len = text.length;
+    while (i < len) {
+      // String literal — copy verbatim
+      if (text[i] === '"') {
+        cleaned += '"';
+        i++;
+        while (i < len && text[i] !== '"') {
+          if (text[i] === '\\' && i + 1 < len) {
+            cleaned += text[i] + text[i + 1];
+            i += 2;
+          } else {
+            cleaned += text[i];
+            i++;
+          }
+        }
+        if (i < len) { cleaned += '"'; i++; }
+      }
+      // Single-line comment
+      else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
+        i += 2;
+        while (i < len && text[i] !== '\n') i++;
+      }
+      // Multi-line comment
+      else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
+        i += 2;
+        while (i < len && !(text[i] === '*' && i + 1 < len && text[i + 1] === '/')) i++;
+        if (i < len) i += 2;
+      }
+      else {
+        cleaned += text[i];
+        i++;
+      }
+    }
     // Remove trailing commas before } or ]
     cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
     return JSON.parse(cleaned);
