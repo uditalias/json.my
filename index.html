@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>json.my — Query &amp; Explore JSON</title>
+<style>
+/* ===== CSS Custom Properties ===== */
+:root {
+  --bg: #0d1117;
+  --panel-bg: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #58a6ff;
+  --error: #f85149;
+  --success: #3fb950;
+  --query-bg: #1c2128;
+  --focus-ring: #58a6ff;
+  --key-color: #d2a8ff;
+  --string-color: #a5d6ff;
+  --number-color: #79c0ff;
+  --bool-color: #ff7b72;
+  --null-color: #8b949e;
+  --bracket-color: #8b949e;
+  --scrollbar-thumb: #30363d;
+  --scrollbar-track: transparent;
+  --btn-bg: #21262d;
+  --btn-hover: #30363d;
+  --autocomplete-bg: #1c2128;
+  --autocomplete-hover: #30363d;
+  --tree-guide: #30363d;
+  --highlight-bg: rgba(88,166,255,0.15);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f8fa;
+    --panel-bg: #ffffff;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text-muted: #656d76;
+    --accent: #0969da;
+    --error: #cf222e;
+    --success: #1a7f37;
+    --query-bg: #f6f8fa;
+    --focus-ring: #0969da;
+    --key-color: #8250df;
+    --string-color: #0a3069;
+    --number-color: #0550ae;
+    --bool-color: #cf222e;
+    --null-color: #656d76;
+    --bracket-color: #656d76;
+    --scrollbar-thumb: #d0d7de;
+    --btn-bg: #f3f4f6;
+    --btn-hover: #d0d7de;
+    --autocomplete-bg: #ffffff;
+    --autocomplete-hover: #f3f4f6;
+    --tree-guide: #d0d7de;
+    --highlight-bg: rgba(9,105,218,0.1);
+  }
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ===== App Layout ===== */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ===== Query Bar ===== */
+#query-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+#query-bar label {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+#query-input-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+#query-input {
+  width: 100%;
+  padding: 6px 10px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 14px;
+  background: var(--query-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+#query-input:focus {
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 2px rgba(88,166,255,0.3);
+}
+
+#query-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Autocomplete dropdown */
+#autocomplete {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--autocomplete-bg);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+#autocomplete.visible { display: block; }
+
+.ac-item {
+  padding: 6px 10px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ac-item:hover, .ac-item.active {
+  background: var(--autocomplete-hover);
+}
+
+.ac-item .ac-key { color: var(--text); }
+.ac-item .ac-type { color: var(--text-muted); font-size: 11px; }
+
+/* Toolbar buttons */
+.toolbar-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--btn-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.toolbar-btn:hover { background: var(--btn-hover); color: var(--text); }
+.toolbar-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+#result-count {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ===== Panels ===== */
+#panels {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.panel:first-child { border-right: 1px solid var(--border); }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.panel-header-title {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Input panel */
+#json-input {
+  flex: 1;
+  width: 100%;
+  padding: 12px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--panel-bg);
+  color: var(--text);
+  border: none;
+  outline: none;
+  resize: none;
+  tab-size: 2;
+}
+
+#json-input.has-error {
+  border-left: 3px solid var(--error);
+}
+
+#parse-error {
+  display: none;
+  padding: 6px 12px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--error);
+  background: rgba(248,81,73,0.1);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+#parse-error.visible { display: block; }
+
+/* Result panel */
+#result-panel {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--panel-bg);
+}
+
+#result-output {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#result-output .json-key { color: var(--key-color); }
+#result-output .json-string { color: var(--string-color); }
+#result-output .json-number { color: var(--number-color); }
+#result-output .json-boolean { color: var(--bool-color); }
+#result-output .json-null { color: var(--null-color); }
+#result-output .json-bracket { color: var(--bracket-color); }
+
+/* Primitive result displayed large */
+#result-output.primitive {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#no-match {
+  display: none;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 20px;
+  text-align: center;
+}
+
+#no-match.visible { display: block; }
+
+/* Tree view */
+#tree-panel {
+  display: none;
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  background: var(--panel-bg);
+}
+
+#tree-panel.visible { display: block; }
+
+.tree-node { padding-left: 20px; position: relative; }
+.tree-node::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--tree-guide);
+}
+
+.tree-toggle {
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tree-toggle:hover { color: var(--accent); }
+
+.tree-arrow {
+  display: inline-block;
+  width: 12px;
+  transition: transform 0.1s;
+  color: var(--text-muted);
+}
+
+.tree-arrow.collapsed { transform: rotate(-90deg); }
+
+.tree-key { color: var(--key-color); }
+.tree-preview { color: var(--text-muted); }
+.tree-value-string { color: var(--string-color); }
+.tree-value-number { color: var(--number-color); }
+.tree-value-boolean { color: var(--bool-color); }
+.tree-value-null { color: var(--null-color); }
+.tree-highlight { background: var(--highlight-bg); border-radius: 3px; }
+.tree-children { }
+.tree-children.collapsed { display: none; }
+
+/* TS type panel */
+#ts-panel {
+  display: none;
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--panel-bg);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+#ts-panel.visible { display: block; }
+
+.ts-keyword { color: var(--bool-color); }
+.ts-type { color: var(--number-color); }
+.ts-interface-name { color: var(--key-color); }
+.ts-property { color: var(--text); }
+.ts-punctuation { color: var(--bracket-color); }
+
+/* ===== Status Bar ===== */
+#status-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--panel-bg);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+#status-bar .status-valid { color: var(--success); }
+#status-bar .status-invalid { color: var(--error); }
+
+.status-separator {
+  width: 1px;
+  height: 12px;
+  background: var(--border);
+}
+
+#shortcuts-hint {
+  margin-left: auto;
+  font-size: 11px;
+}
+
+/* ===== Scrollbars ===== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ===== Toast notification ===== */
+#toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 200;
+}
+
+#toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 768px) {
+  #panels {
+    flex-direction: column;
+  }
+  .panel:first-child {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex: 0 0 40%;
+  }
+  .panel:last-child {
+    flex: 1;
+  }
+  #query-bar {
+    flex-wrap: wrap;
+  }
+  #query-input-wrapper {
+    order: 10;
+    flex-basis: 100%;
+  }
+  #shortcuts-hint { display: none; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Query Bar -->
+  <div id="query-bar">
+    <label for="query-input">$</label>
+    <div id="query-input-wrapper">
+      <input id="query-input" type="text" placeholder="data.users[0].name  |  data.users[*].email  |  data..id" autocomplete="off" spellcheck="false">
+      <div id="autocomplete"></div>
+    </div>
+    <span id="result-count"></span>
+    <button class="toolbar-btn" id="btn-tree" title="Tree View">Tree</button>
+    <button class="toolbar-btn" id="btn-ts" title="TypeScript Types">TS</button>
+    <button class="toolbar-btn" id="btn-copy" title="Copy result (Ctrl+Shift+C)">Copy</button>
+    <button class="toolbar-btn" id="btn-format" title="Format JSON (Ctrl+Enter)">Format</button>
+  </div>
+
+  <!-- Panels -->
+  <div id="panels">
+    <!-- Input Panel -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-header-title">Input</span>
+        <span id="input-size"></span>
+      </div>
+      <textarea id="json-input" spellcheck="false" placeholder="Paste your JSON here..."></textarea>
+      <div id="parse-error"></div>
+    </div>
+
+    <!-- Result Panel -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-header-title" id="result-header-title">Result</span>
+        <span id="result-size"></span>
+      </div>
+      <div id="result-panel">
+        <div id="result-output"></div>
+        <div id="no-match">No match</div>
+      </div>
+      <div id="tree-panel"></div>
+      <div id="ts-panel"></div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div id="status-bar">
+    <span id="status-validity"></span>
+    <span class="status-separator"></span>
+    <span id="status-size"></span>
+    <span class="status-separator"></span>
+    <span id="status-depth"></span>
+    <span class="status-separator"></span>
+    <span id="status-keys"></span>
+    <span id="shortcuts-hint">Ctrl+L focus query &middot; Ctrl+Shift+C copy &middot; Ctrl+Enter format</span>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ============================================================
+// json.my — Main Application Script
+// ============================================================
+
+(function() {
+  'use strict';
+
+  // ===== DOM References =====
+  const dom = {
+    queryInput: document.getElementById('query-input'),
+    queryWrapper: document.getElementById('query-input-wrapper'),
+    autocomplete: document.getElementById('autocomplete'),
+    jsonInput: document.getElementById('json-input'),
+    parseError: document.getElementById('parse-error'),
+    resultPanel: document.getElementById('result-panel'),
+    resultOutput: document.getElementById('result-output'),
+    noMatch: document.getElementById('no-match'),
+    treePanel: document.getElementById('tree-panel'),
+    tsPanel: document.getElementById('ts-panel'),
+    resultCount: document.getElementById('result-count'),
+    resultHeaderTitle: document.getElementById('result-header-title'),
+    btnTree: document.getElementById('btn-tree'),
+    btnTs: document.getElementById('btn-ts'),
+    btnCopy: document.getElementById('btn-copy'),
+    btnFormat: document.getElementById('btn-format'),
+    statusValidity: document.getElementById('status-validity'),
+    statusSize: document.getElementById('status-size'),
+    statusDepth: document.getElementById('status-depth'),
+    statusKeys: document.getElementById('status-keys'),
+    inputSize: document.getElementById('input-size'),
+    resultSize: document.getElementById('result-size'),
+    toast: document.getElementById('toast'),
+  };
+
+  // ===== State =====
+  let parsedJSON = undefined;
+  let parseOk = false;
+  let currentResult = undefined;
+  let hasResult = false;
+  let viewMode = 'result'; // 'result' | 'tree' | 'ts'
+  let acItems = [];
+  let acIndex = -1;
+  let suppressHashUpdate = false;
+
+  // ============================================================
+  // Phase 1: JSON Parsing (lenient)
+  // ============================================================
+
+  /**
+   * Lenient JSON parse: strips comments and trailing commas.
+   */
+  function lenientParse(text) {
+    // Remove single-line comments
+    let cleaned = text.replace(/\/\/.*$/gm, '');
+    // Remove multi-line comments
+    cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
+    // Remove trailing commas before } or ]
+    cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+    return JSON.parse(cleaned);
+  }
+
+  function tryParseJSON(text) {
+    if (!text.trim()) {
+      return { ok: false, value: undefined, error: null };
+    }
+    try {
+      const value = lenientParse(text);
+      return { ok: true, value, error: null };
+    } catch (e) {
+      return { ok: false, value: undefined, error: e.message };
+    }
+  }
+
+  // ============================================================
+  // Phase 2: Path Query Engine
+  // ============================================================
+
+  /**
+   * Tokenize a path expression into segments.
+   *   data.users[0].name      -> key, key, index, key
+   *   data.users[*].name      -> key, key, wildcard, key
+   *   data.users[0:3]         -> key, key, slice
+   *   data..name              -> key, recursive, key
+   *   data["key with spaces"] -> key, key
+   */
+  function tokenizePath(path) {
+    const segments = [];
+    let i = 0;
+    const len = path.length;
+
+    while (i < len) {
+      // Skip leading dots
+      if (path[i] === '.') {
+        // Check for recursive descent (..)
+        if (i + 1 < len && path[i + 1] === '.') {
+          segments.push({ type: 'recursive' });
+          i += 2;
+          continue;
+        }
+        i++;
+        continue;
+      }
+
+      // Bracket notation
+      if (path[i] === '[') {
+        i++; // skip [
+        // Wildcard [*]
+        if (path[i] === '*') {
+          segments.push({ type: 'wildcard' });
+          i++; // skip *
+          if (path[i] === ']') i++; // skip ]
+          continue;
+        }
+        // Quoted key ["key"] or ['key']
+        if (path[i] === '"' || path[i] === "'") {
+          const quote = path[i];
+          i++;
+          let key = '';
+          while (i < len && path[i] !== quote) {
+            if (path[i] === '\\' && i + 1 < len) { key += path[++i]; }
+            else { key += path[i]; }
+            i++;
+          }
+          if (path[i] === quote) i++;
+          if (path[i] === ']') i++;
+          segments.push({ type: 'key', value: key });
+          continue;
+        }
+        // Number — could be index or slice
+        let numStr = '';
+        let hasColon = false;
+        let sliceEnd = '';
+        while (i < len && path[i] !== ']') {
+          if (path[i] === ':') {
+            hasColon = true;
+            i++;
+            while (i < len && path[i] !== ']') {
+              sliceEnd += path[i];
+              i++;
+            }
+            break;
+          }
+          numStr += path[i];
+          i++;
+        }
+        if (path[i] === ']') i++;
+        if (hasColon) {
+          segments.push({
+            type: 'slice',
+            start: numStr === '' ? 0 : parseInt(numStr, 10),
+            end: sliceEnd === '' ? undefined : parseInt(sliceEnd, 10)
+          });
+        } else {
+          segments.push({ type: 'index', value: parseInt(numStr, 10) });
+        }
+        continue;
+      }
+
+      // Bare key
+      let key = '';
+      while (i < len && path[i] !== '.' && path[i] !== '[') {
+        key += path[i];
+        i++;
+      }
+      if (key) {
+        segments.push({ type: 'key', value: key });
+      }
+    }
+
+    return segments;
+  }
+
+  /**
+   * Evaluate a parsed path against a JSON value.
+   * Returns { found: boolean, value: any }
+   */
+  function evaluatePath(segments, data) {
+    if (segments.length === 0) {
+      return { found: true, value: data };
+    }
+
+    let current = [data];
+
+    for (let si = 0; si < segments.length; si++) {
+      const seg = segments[si];
+      const next = [];
+
+      if (seg.type === 'recursive') {
+        // Recursive descent: collect current + all descendants, then apply next segment
+        const nextSeg = segments[si + 1];
+        if (!nextSeg) {
+          // .. at end — return all descendants
+          for (const item of current) {
+            collectAllValues(item, next);
+          }
+        } else {
+          // Apply next segment to current and all descendants
+          si++; // consume next segment
+          for (const item of current) {
+            const descendants = [];
+            collectAllNodes(item, descendants);
+            for (const desc of descendants) {
+              applySegment(desc, nextSeg, next);
+            }
+          }
+        }
+      } else {
+        for (const item of current) {
+          applySegment(item, seg, next);
+        }
+      }
+
+      if (next.length === 0) {
+        return { found: false, value: undefined };
+      }
+      current = next;
+    }
+
+    // If we have exactly one result, unwrap. If multiple, return as array.
+    if (current.length === 1) {
+      return { found: true, value: current[0] };
+    }
+    return { found: true, value: current };
+  }
+
+  function applySegment(data, seg, results) {
+    if (data === null || data === undefined) return;
+
+    switch (seg.type) {
+      case 'key':
+        if (typeof data === 'object' && !Array.isArray(data) && data !== null && seg.value in data) {
+          results.push(data[seg.value]);
+        } else if (Array.isArray(data)) {
+          // Try numeric index from key
+          const idx = parseInt(seg.value, 10);
+          if (!isNaN(idx) && idx >= 0 && idx < data.length) {
+            results.push(data[idx]);
+          }
+        }
+        break;
+      case 'index':
+        if (Array.isArray(data)) {
+          const idx = seg.value < 0 ? data.length + seg.value : seg.value;
+          if (idx >= 0 && idx < data.length) {
+            results.push(data[idx]);
+          }
+        }
+        break;
+      case 'wildcard':
+        if (Array.isArray(data)) {
+          for (const item of data) results.push(item);
+        } else if (typeof data === 'object' && data !== null) {
+          for (const key of Object.keys(data)) results.push(data[key]);
+        }
+        break;
+      case 'slice':
+        if (Array.isArray(data)) {
+          const start = seg.start < 0 ? Math.max(0, data.length + seg.start) : seg.start;
+          const end = seg.end === undefined ? data.length : (seg.end < 0 ? data.length + seg.end : seg.end);
+          for (let i = start; i < Math.min(end, data.length); i++) {
+            results.push(data[i]);
+          }
+        }
+        break;
+    }
+  }
+
+  function collectAllNodes(data, results) {
+    results.push(data);
+    if (Array.isArray(data)) {
+      for (const item of data) collectAllNodes(item, results);
+    } else if (typeof data === 'object' && data !== null) {
+      for (const key of Object.keys(data)) collectAllNodes(data[key], results);
+    }
+  }
+
+  function collectAllValues(data, results) {
+    if (Array.isArray(data)) {
+      for (const item of data) {
+        results.push(item);
+        collectAllValues(item, results);
+      }
+    } else if (typeof data === 'object' && data !== null) {
+      for (const key of Object.keys(data)) {
+        results.push(data[key]);
+        collectAllValues(data[key], results);
+      }
+    }
+  }
+
+  // ============================================================
+  // Syntax Highlighting
+  // ============================================================
+
+  function highlightJSON(value, indent) {
+    indent = indent || 0;
+    const spaces = '  '.repeat(indent);
+
+    if (value === null) {
+      return '<span class="json-null">null</span>';
+    }
+    if (typeof value === 'boolean') {
+      return '<span class="json-boolean">' + value + '</span>';
+    }
+    if (typeof value === 'number') {
+      return '<span class="json-number">' + value + '</span>';
+    }
+    if (typeof value === 'string') {
+      return '<span class="json-string">"' + escapeHtml(value) + '"</span>';
+    }
+    if (Array.isArray(value)) {
+      if (value.length === 0) return '<span class="json-bracket">[]</span>';
+      const items = value.map(function(item) {
+        return spaces + '  ' + highlightJSON(item, indent + 1);
+      });
+      return '<span class="json-bracket">[</span>\n' +
+        items.join(',\n') + '\n' +
+        spaces + '<span class="json-bracket">]</span>';
+    }
+    if (typeof value === 'object') {
+      const keys = Object.keys(value);
+      if (keys.length === 0) return '<span class="json-bracket">{}</span>';
+      const entries = keys.map(function(key) {
+        return spaces + '  <span class="json-key">"' + escapeHtml(key) + '"</span>: ' +
+          highlightJSON(value[key], indent + 1);
+      });
+      return '<span class="json-bracket">{</span>\n' +
+        entries.join(',\n') + '\n' +
+        spaces + '<span class="json-bracket">}</span>';
+    }
+    return escapeHtml(String(value));
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function isPrimitive(value) {
+    return value === null || typeof value !== 'object';
+  }
+
+  // ============================================================
+  // Phase 4: Stats
+  // ============================================================
+
+  function byteSize(str) {
+    return new Blob([str]).size;
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function jsonDepth(value, d) {
+    d = d || 0;
+    if (value === null || typeof value !== 'object') return d;
+    let max = d;
+    if (Array.isArray(value)) {
+      for (const item of value) { max = Math.max(max, jsonDepth(item, d + 1)); }
+    } else {
+      for (const key of Object.keys(value)) { max = Math.max(max, jsonDepth(value[key], d + 1)); }
+    }
+    return max;
+  }
+
+  function countKeys(value) {
+    if (value === null || typeof value !== 'object') return 0;
+    let count = 0;
+    if (Array.isArray(value)) {
+      for (const item of value) count += countKeys(item);
+    } else {
+      const keys = Object.keys(value);
+      count += keys.length;
+      for (const key of keys) count += countKeys(value[key]);
+    }
+    return count;
+  }
+
+  // ============================================================
+  // Phase 5: TypeScript Type Inference
+  // ============================================================
+
+  function inferTSType(value, name, interfaces) {
+    interfaces = interfaces || [];
+    name = name || 'Root';
+
+    if (value === null) return { type: 'null', interfaces };
+    if (typeof value === 'string') return { type: 'string', interfaces };
+    if (typeof value === 'number') return { type: 'number', interfaces };
+    if (typeof value === 'boolean') return { type: 'boolean', interfaces };
+
+    if (Array.isArray(value)) {
+      if (value.length === 0) return { type: 'unknown[]', interfaces };
+      // Infer type of items by merging
+      const itemTypes = value.map(function(item, i) {
+        return inferTSType(item, name + 'Item', []);
+      });
+      // Merge all item types
+      const uniqueTypes = [];
+      const seenTypes = new Set();
+      const objectInterfaces = [];
+      for (const it of itemTypes) {
+        interfaces = interfaces.concat(it.interfaces);
+        if (it.type.startsWith('interface ')) {
+          objectInterfaces.push(it);
+        } else if (!seenTypes.has(it.type)) {
+          seenTypes.add(it.type);
+          uniqueTypes.push(it.type);
+        }
+      }
+      // Merge object interfaces
+      if (objectInterfaces.length > 0) {
+        const merged = mergeObjectInterfaces(objectInterfaces, name + 'Item');
+        interfaces = interfaces.concat(merged.interfaces);
+        // Remove individual object interfaces, add merged
+        if (!seenTypes.has(merged.name)) {
+          uniqueTypes.push(merged.name);
+          seenTypes.add(merged.name);
+        }
+      }
+      const itemType = uniqueTypes.length === 1 ? uniqueTypes[0] : '(' + uniqueTypes.join(' | ') + ')';
+      return { type: itemType + '[]', interfaces };
+    }
+
+    if (typeof value === 'object') {
+      const props = [];
+      for (const key of Object.keys(value)) {
+        const propResult = inferTSType(value[key], capitalize(key), []);
+        interfaces = interfaces.concat(propResult.interfaces);
+        props.push({ key, type: propResult.type, optional: false });
+      }
+      const iface = { name, props };
+      interfaces.push(iface);
+      return { type: 'interface ' + name, interfaces };
+    }
+
+    return { type: 'unknown', interfaces };
+  }
+
+  function mergeObjectInterfaces(objectTypes, name) {
+    // Collect all keys across all objects
+    const allKeys = new Map(); // key -> { types: Set, count: number }
+    const total = objectTypes.length;
+
+    for (const ot of objectTypes) {
+      const ifaceName = ot.type.replace('interface ', '');
+      const iface = ot.interfaces.find(function(i) { return i.name === ifaceName; });
+      if (!iface) continue;
+      for (const prop of iface.props) {
+        if (!allKeys.has(prop.key)) {
+          allKeys.set(prop.key, { types: new Set(), count: 0 });
+        }
+        const entry = allKeys.get(prop.key);
+        entry.types.add(prop.type);
+        entry.count++;
+      }
+    }
+
+    const props = [];
+    for (const [key, entry] of allKeys) {
+      const typeStr = Array.from(entry.types).join(' | ');
+      props.push({
+        key,
+        type: entry.types.size > 1 ? '(' + typeStr + ')' : typeStr,
+        optional: entry.count < total
+      });
+    }
+
+    // Remove old individual interfaces for this name
+    const interfaces = [];
+    interfaces.push({ name, props });
+    return { name, interfaces };
+  }
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function renderTSInterfaces(value, queryPath) {
+    const name = queryPath
+      ? queryPath.split('.').map(function(s) { return capitalize(s.replace(/\[.*\]/g, '')); }).join('') || 'Root'
+      : 'Root';
+    const result = inferTSType(value, name, []);
+
+    const rendered = [];
+    const seen = new Set();
+
+    // Render interfaces
+    for (const iface of result.interfaces) {
+      if (seen.has(iface.name)) continue;
+      seen.add(iface.name);
+      let lines = [];
+      lines.push(
+        '<span class="ts-keyword">interface</span> <span class="ts-interface-name">' +
+        escapeHtml(iface.name) + '</span> <span class="ts-punctuation">{</span>'
+      );
+      for (const prop of iface.props) {
+        const safeKey = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(prop.key) ? prop.key : '"' + escapeHtml(prop.key) + '"';
+        const typeDisplay = prop.type.startsWith('interface ')
+          ? prop.type.replace('interface ', '')
+          : prop.type;
+        lines.push(
+          '  <span class="ts-property">' + escapeHtml(safeKey) + (prop.optional ? '?' : '') +
+          '</span><span class="ts-punctuation">:</span> <span class="ts-type">' +
+          escapeHtml(typeDisplay) + '</span><span class="ts-punctuation">;</span>'
+        );
+      }
+      lines.push('<span class="ts-punctuation">}</span>');
+      rendered.push(lines.join('\n'));
+    }
+
+    // If top-level is not an interface, show type alias
+    if (!result.type.startsWith('interface ')) {
+      rendered.push(
+        '<span class="ts-keyword">type</span> <span class="ts-interface-name">' +
+        escapeHtml(name) + '</span> <span class="ts-punctuation">=</span> <span class="ts-type">' +
+        escapeHtml(result.type) + '</span><span class="ts-punctuation">;</span>'
+      );
+    }
+
+    return rendered.join('\n\n');
+  }
+
+  // ============================================================
+  // Phase 5: Tree View
+  // ============================================================
+
+  function buildTree(value, key, path, matchedPaths) {
+    const isRoot = path === '';
+    const currentPath = path;
+    const isHighlighted = matchedPaths && matchedPaths.has(currentPath);
+    const highlightClass = isHighlighted ? ' tree-highlight' : '';
+
+    if (value === null) {
+      return '<div class="' + highlightClass + '">' +
+        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
+        '<span class="tree-value-null">null</span></div>';
+    }
+    if (typeof value === 'string') {
+      const display = value.length > 80 ? value.slice(0, 80) + '...' : value;
+      return '<div class="' + highlightClass + '">' +
+        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
+        '<span class="tree-value-string">"' + escapeHtml(display) + '"</span></div>';
+    }
+    if (typeof value === 'number') {
+      return '<div class="' + highlightClass + '">' +
+        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
+        '<span class="tree-value-number">' + value + '</span></div>';
+    }
+    if (typeof value === 'boolean') {
+      return '<div class="' + highlightClass + '">' +
+        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
+        '<span class="tree-value-boolean">' + value + '</span></div>';
+    }
+
+    const isArray = Array.isArray(value);
+    const entries = isArray ? value : Object.keys(value);
+    const count = isArray ? value.length : Object.keys(value).length;
+    const preview = isArray ? 'Array(' + count + ')' : 'Object{' + count + '}';
+    const id = 'tree-' + Math.random().toString(36).slice(2, 10);
+
+    let html = '<div class="' + highlightClass + '">';
+    html += '<span class="tree-toggle" onclick="window.__toggleTree(\'' + id + '\')">';
+    html += '<span class="tree-arrow" id="arrow-' + id + '">&#9660;</span> ';
+    if (key !== undefined) {
+      html += '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ';
+    }
+    html += '<span class="tree-preview">' + preview + '</span>';
+    html += '</span></div>';
+    html += '<div class="tree-children tree-node" id="' + id + '">';
+
+    if (isArray) {
+      for (let i = 0; i < value.length; i++) {
+        const childPath = currentPath ? currentPath + '[' + i + ']' : '[' + i + ']';
+        html += buildTree(value[i], i, childPath, matchedPaths);
+      }
+    } else {
+      for (const k of Object.keys(value)) {
+        const childPath = currentPath ? currentPath + '.' + k : k;
+        html += buildTree(value[k], k, childPath, matchedPaths);
+      }
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  window.__toggleTree = function(id) {
+    const el = document.getElementById(id);
+    const arrow = document.getElementById('arrow-' + id);
+    if (el) {
+      el.classList.toggle('collapsed');
+      if (arrow) arrow.classList.toggle('collapsed');
+    }
+  };
+
+  // ============================================================
+  // Phase 5: Path Autocomplete
+  // ============================================================
+
+  function getAutocompleteSuggestions(json, partialPath) {
+    if (!json || typeof json !== 'object') return [];
+
+    // Split path at last dot or bracket to find parent + partial key
+    const lastDotIdx = partialPath.lastIndexOf('.');
+    const lastBracketIdx = partialPath.lastIndexOf('[');
+    const splitIdx = Math.max(lastDotIdx, lastBracketIdx);
+
+    let parentPath, partial;
+    if (splitIdx === -1) {
+      parentPath = '';
+      partial = partialPath;
+    } else if (lastDotIdx > lastBracketIdx) {
+      parentPath = partialPath.slice(0, lastDotIdx);
+      partial = partialPath.slice(lastDotIdx + 1);
+    } else {
+      // Inside bracket — not completing here for simplicity
+      return [];
+    }
+
+    // Resolve parent
+    let target = json;
+    if (parentPath) {
+      const segments = tokenizePath(parentPath);
+      const result = evaluatePath(segments, json);
+      if (!result.found) return [];
+      target = result.value;
+    }
+
+    if (target === null || typeof target !== 'object') return [];
+
+    const suggestions = [];
+    if (Array.isArray(target)) {
+      // Suggest indices
+      for (let i = 0; i < Math.min(target.length, 20); i++) {
+        const label = '[' + i + ']';
+        if (label.startsWith(partial) || partial === '') {
+          suggestions.push({
+            key: parentPath ? parentPath + label : label,
+            display: label,
+            type: describeType(target[i])
+          });
+        }
+      }
+      if (target.length > 0) {
+        suggestions.push({
+          key: parentPath ? parentPath + '[*]' : '[*]',
+          display: '[*]',
+          type: 'wildcard'
+        });
+      }
+    } else {
+      const keys = Object.keys(target);
+      const lowerPartial = partial.toLowerCase();
+      for (const k of keys) {
+        if (k.toLowerCase().startsWith(lowerPartial)) {
+          const needsBracket = !/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k);
+          const fullKey = needsBracket
+            ? (parentPath ? parentPath + '["' + k + '"]' : '["' + k + '"]')
+            : (parentPath ? parentPath + '.' + k : k);
+          suggestions.push({
+            key: fullKey,
+            display: k,
+            type: describeType(target[k])
+          });
+        }
+      }
+    }
+
+    return suggestions.slice(0, 15);
+  }
+
+  function describeType(value) {
+    if (value === null) return 'null';
+    if (Array.isArray(value)) return 'array[' + value.length + ']';
+    if (typeof value === 'object') return 'object{' + Object.keys(value).length + '}';
+    return typeof value;
+  }
+
+  // ============================================================
+  // Phase 3: URL Hash State (CompressionStream API)
+  // ============================================================
+
+  async function compressState(state) {
+    const json = JSON.stringify(state);
+    const blob = new Blob([json]);
+    const cs = new CompressionStream('deflate');
+    const stream = blob.stream().pipeThrough(cs);
+    const compressedBlob = await new Response(stream).blob();
+    const buffer = await compressedBlob.arrayBuffer();
+    return base64UrlEncode(new Uint8Array(buffer));
+  }
+
+  async function decompressState(hash) {
+    const bytes = base64UrlDecode(hash);
+    const blob = new Blob([bytes]);
+    const ds = new DecompressionStream('deflate');
+    const stream = blob.stream().pipeThrough(ds);
+    const decompressedBlob = await new Response(stream).blob();
+    const text = await decompressedBlob.text();
+    return JSON.parse(text);
+  }
+
+  function base64UrlEncode(bytes) {
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function base64UrlDecode(str) {
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+    while (str.length % 4) str += '=';
+    const binary = atob(str);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  let hashSaveTimer = null;
+  function scheduleSaveHash() {
+    clearTimeout(hashSaveTimer);
+    hashSaveTimer = setTimeout(saveHash, 500);
+  }
+
+  async function saveHash() {
+    if (suppressHashUpdate) return;
+    const state = {
+      json: dom.jsonInput.value,
+      query: dom.queryInput.value
+    };
+    try {
+      const hash = await compressState(state);
+      suppressHashUpdate = true;
+      window.location.hash = hash;
+      // Allow hash changes again after a tick
+      setTimeout(function() { suppressHashUpdate = false; }, 50);
+    } catch (e) {
+      // Silently fail — URL might be too long
+    }
+  }
+
+  async function loadFromHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    try {
+      suppressHashUpdate = true;
+      const state = await decompressState(hash);
+      if (state.json !== undefined) dom.jsonInput.value = state.json;
+      if (state.query !== undefined) dom.queryInput.value = state.query;
+      suppressHashUpdate = false;
+      onInputChange();
+    } catch (e) {
+      suppressHashUpdate = false;
+      // Corrupted hash — ignore
+    }
+  }
+
+  // ============================================================
+  // Toast
+  // ============================================================
+
+  let toastTimer = null;
+  function showToast(message) {
+    dom.toast.textContent = message;
+    dom.toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() {
+      dom.toast.classList.remove('visible');
+    }, 2000);
+  }
+
+  // ============================================================
+  // UI Update Logic
+  // ============================================================
+
+  function onInputChange() {
+    const text = dom.jsonInput.value;
+    const result = tryParseJSON(text);
+
+    parseOk = result.ok;
+    parsedJSON = result.value;
+
+    // Update error display
+    if (result.error) {
+      dom.parseError.textContent = result.error;
+      dom.parseError.classList.add('visible');
+      dom.jsonInput.classList.add('has-error');
+    } else {
+      dom.parseError.classList.remove('visible');
+      dom.jsonInput.classList.remove('has-error');
+    }
+
+    // Update status bar
+    updateStatus(text);
+
+    // Run query
+    runQuery();
+
+    // Save to hash
+    scheduleSaveHash();
+  }
+
+  function updateStatus(inputText) {
+    if (!inputText || !inputText.trim()) {
+      dom.statusValidity.innerHTML = '';
+      dom.statusSize.textContent = '';
+      dom.statusDepth.textContent = '';
+      dom.statusKeys.textContent = '';
+      dom.inputSize.textContent = '';
+      return;
+    }
+
+    if (parseOk) {
+      dom.statusValidity.innerHTML = '<span class="status-valid">Valid JSON</span>';
+      dom.statusSize.textContent = formatSize(byteSize(inputText));
+      dom.statusDepth.textContent = 'Depth ' + jsonDepth(parsedJSON);
+      dom.statusKeys.textContent = countKeys(parsedJSON) + ' keys';
+      dom.inputSize.textContent = formatSize(byteSize(inputText));
+    } else {
+      dom.statusValidity.innerHTML = '<span class="status-invalid">Invalid JSON</span>';
+      dom.statusSize.textContent = formatSize(byteSize(inputText));
+      dom.statusDepth.textContent = '';
+      dom.statusKeys.textContent = '';
+      dom.inputSize.textContent = formatSize(byteSize(inputText));
+    }
+  }
+
+  let queryTimer = null;
+  function onQueryChange() {
+    clearTimeout(queryTimer);
+    queryTimer = setTimeout(function() {
+      runQuery();
+      scheduleSaveHash();
+      updateAutocomplete();
+    }, 100);
+  }
+
+  function runQuery() {
+    const query = dom.queryInput.value.trim();
+
+    if (!parseOk || parsedJSON === undefined) {
+      dom.resultOutput.innerHTML = '';
+      dom.resultOutput.classList.remove('primitive');
+      dom.noMatch.classList.remove('visible');
+      dom.resultCount.textContent = '';
+      dom.resultSize.textContent = '';
+      if (viewMode === 'tree') renderTreeView();
+      if (viewMode === 'ts') renderTSView();
+      return;
+    }
+
+    if (!query) {
+      // Show the full JSON
+      currentResult = parsedJSON;
+      hasResult = true;
+      displayResult(parsedJSON);
+      if (viewMode === 'tree') renderTreeView();
+      if (viewMode === 'ts') renderTSView();
+      return;
+    }
+
+    const segments = tokenizePath(query);
+    const result = evaluatePath(segments, parsedJSON);
+
+    hasResult = result.found;
+    currentResult = result.value;
+
+    if (!result.found) {
+      dom.resultOutput.innerHTML = '';
+      dom.resultOutput.classList.remove('primitive');
+      dom.noMatch.classList.add('visible');
+      dom.resultCount.textContent = '';
+      dom.resultSize.textContent = '';
+    } else {
+      displayResult(result.value);
+    }
+
+    if (viewMode === 'tree') renderTreeView();
+    if (viewMode === 'ts') renderTSView();
+  }
+
+  function displayResult(value) {
+    dom.noMatch.classList.remove('visible');
+
+    if (isPrimitive(value)) {
+      dom.resultOutput.classList.add('primitive');
+      dom.resultOutput.innerHTML = highlightJSON(value);
+      dom.resultCount.textContent = '';
+    } else {
+      dom.resultOutput.classList.remove('primitive');
+      dom.resultOutput.innerHTML = highlightJSON(value);
+      if (Array.isArray(value)) {
+        dom.resultCount.textContent = value.length + ' items';
+      } else {
+        dom.resultCount.textContent = Object.keys(value).length + ' keys';
+      }
+    }
+
+    const resultStr = JSON.stringify(value, null, 2) || '';
+    dom.resultSize.textContent = formatSize(byteSize(resultStr));
+  }
+
+  function renderTreeView() {
+    const data = hasResult ? currentResult : parsedJSON;
+    if (!data || !parseOk) {
+      dom.treePanel.innerHTML = '<div style="color:var(--text-muted);padding:20px;">No data to display</div>';
+      return;
+    }
+    dom.treePanel.innerHTML = buildTree(data, undefined, '', null);
+  }
+
+  function renderTSView() {
+    const data = hasResult ? currentResult : parsedJSON;
+    if (!data || !parseOk) {
+      dom.tsPanel.innerHTML = '<div style="color:var(--text-muted);padding:20px;">No data to display</div>';
+      return;
+    }
+    dom.tsPanel.innerHTML = renderTSInterfaces(data, dom.queryInput.value.trim());
+  }
+
+  // ============================================================
+  // View Mode Switching
+  // ============================================================
+
+  function setViewMode(mode) {
+    viewMode = mode;
+
+    dom.resultPanel.style.display = mode === 'result' ? '' : 'none';
+    dom.treePanel.classList.toggle('visible', mode === 'tree');
+    dom.tsPanel.classList.toggle('visible', mode === 'ts');
+    dom.resultPanel.style.display = mode === 'result' ? '' : 'none';
+
+    dom.btnTree.classList.toggle('active', mode === 'tree');
+    dom.btnTs.classList.toggle('active', mode === 'ts');
+
+    dom.resultHeaderTitle.textContent =
+      mode === 'tree' ? 'Tree View' : mode === 'ts' ? 'TypeScript Types' : 'Result';
+
+    if (mode === 'tree') renderTreeView();
+    if (mode === 'ts') renderTSView();
+  }
+
+  // ============================================================
+  // Autocomplete
+  // ============================================================
+
+  function updateAutocomplete() {
+    if (!parseOk || !parsedJSON) {
+      hideAutocomplete();
+      return;
+    }
+    const query = dom.queryInput.value;
+    if (!query) {
+      // Show top-level keys
+      acItems = getAutocompleteSuggestions(parsedJSON, '');
+    } else {
+      acItems = getAutocompleteSuggestions(parsedJSON, query);
+    }
+
+    if (acItems.length === 0) {
+      hideAutocomplete();
+      return;
+    }
+
+    acIndex = -1;
+    let html = '';
+    for (let i = 0; i < acItems.length; i++) {
+      html += '<div class="ac-item" data-index="' + i + '">' +
+        '<span class="ac-key">' + escapeHtml(acItems[i].display) + '</span>' +
+        '<span class="ac-type">' + escapeHtml(acItems[i].type) + '</span></div>';
+    }
+    dom.autocomplete.innerHTML = html;
+    dom.autocomplete.classList.add('visible');
+
+    // Add click handlers
+    const items = dom.autocomplete.querySelectorAll('.ac-item');
+    items.forEach(function(el) {
+      el.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        const idx = parseInt(el.dataset.index, 10);
+        selectAutocomplete(idx);
+      });
+    });
+  }
+
+  function hideAutocomplete() {
+    dom.autocomplete.classList.remove('visible');
+    acItems = [];
+    acIndex = -1;
+  }
+
+  function selectAutocomplete(index) {
+    if (index >= 0 && index < acItems.length) {
+      dom.queryInput.value = acItems[index].key;
+      hideAutocomplete();
+      runQuery();
+      scheduleSaveHash();
+      dom.queryInput.focus();
+    }
+  }
+
+  function navigateAutocomplete(direction) {
+    if (acItems.length === 0) return;
+    acIndex += direction;
+    if (acIndex < 0) acIndex = acItems.length - 1;
+    if (acIndex >= acItems.length) acIndex = 0;
+
+    const items = dom.autocomplete.querySelectorAll('.ac-item');
+    items.forEach(function(el, i) {
+      el.classList.toggle('active', i === acIndex);
+    });
+  }
+
+  // ============================================================
+  // Event Handlers
+  // ============================================================
+
+  // JSON input
+  dom.jsonInput.addEventListener('input', onInputChange);
+
+  // Auto-format on paste
+  dom.jsonInput.addEventListener('paste', function(e) {
+    setTimeout(function() {
+      const result = tryParseJSON(dom.jsonInput.value);
+      if (result.ok) {
+        dom.jsonInput.value = JSON.stringify(result.value, null, 2);
+        onInputChange();
+      }
+    }, 0);
+  });
+
+  // Query input
+  dom.queryInput.addEventListener('input', onQueryChange);
+
+  dom.queryInput.addEventListener('focus', function() {
+    updateAutocomplete();
+  });
+
+  dom.queryInput.addEventListener('blur', function() {
+    // Delay to allow click on autocomplete item
+    setTimeout(hideAutocomplete, 150);
+  });
+
+  dom.queryInput.addEventListener('keydown', function(e) {
+    if (dom.autocomplete.classList.contains('visible')) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        navigateAutocomplete(1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        navigateAutocomplete(-1);
+      } else if (e.key === 'Enter' || e.key === 'Tab') {
+        if (acIndex >= 0) {
+          e.preventDefault();
+          selectAutocomplete(acIndex);
+        } else if (e.key === 'Tab' && acItems.length > 0) {
+          e.preventDefault();
+          selectAutocomplete(0);
+        }
+      } else if (e.key === 'Escape') {
+        hideAutocomplete();
+      }
+    }
+  });
+
+  // Toolbar buttons
+  dom.btnTree.addEventListener('click', function() {
+    setViewMode(viewMode === 'tree' ? 'result' : 'tree');
+  });
+
+  dom.btnTs.addEventListener('click', function() {
+    setViewMode(viewMode === 'ts' ? 'result' : 'ts');
+  });
+
+  dom.btnCopy.addEventListener('click', function() {
+    copyResult();
+  });
+
+  dom.btnFormat.addEventListener('click', function() {
+    formatInput();
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    // Cmd/Ctrl+L — Focus query bar
+    if ((e.metaKey || e.ctrlKey) && e.key === 'l') {
+      e.preventDefault();
+      dom.queryInput.focus();
+      dom.queryInput.select();
+    }
+
+    // Cmd/Ctrl+Shift+C — Copy result
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'C') {
+      e.preventDefault();
+      copyResult();
+    }
+
+    // Cmd/Ctrl+Enter — Format
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      e.preventDefault();
+      formatInput();
+    }
+  });
+
+  function copyResult() {
+    if (!hasResult || currentResult === undefined) {
+      showToast('Nothing to copy');
+      return;
+    }
+    const text = typeof currentResult === 'string'
+      ? currentResult
+      : JSON.stringify(currentResult, null, 2);
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('Copied to clipboard');
+    }).catch(function() {
+      showToast('Failed to copy');
+    });
+  }
+
+  function formatInput() {
+    const result = tryParseJSON(dom.jsonInput.value);
+    if (result.ok) {
+      dom.jsonInput.value = JSON.stringify(result.value, null, 2);
+      onInputChange();
+      showToast('Formatted');
+    } else {
+      showToast('Cannot format — invalid JSON');
+    }
+  }
+
+  // ============================================================
+  // Hash change listener
+  // ============================================================
+
+  window.addEventListener('hashchange', function() {
+    if (!suppressHashUpdate) {
+      loadFromHash();
+    }
+  });
+
+  // ============================================================
+  // Initialize
+  // ============================================================
+
+  loadFromHash().then(function() {
+    // If no hash state, trigger initial state
+    if (!dom.jsonInput.value) {
+      onInputChange();
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
