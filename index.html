@@ -4,9 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>json.express — Query &amp; Explore JSON</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cstyle%3E .b %7B fill: %230d1117; %7D .t %7B fill: %23e6edf3; %7D @media (prefers-color-scheme: light) %7B .b %7B fill: %23f6f8fa; %7D .t %7B fill: %231f2328; %7D %7D %3C/style%3E%3Crect class='b' width='64' height='64' rx='14'/%3E%3Ctext class='t' x='32' y='44' font-family='monospace' font-size='32' font-weight='bold' text-anchor='middle'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+<meta name="description" content="A fast, zero-dependency tool to query and explore JSON data in the browser. Supports dot notation, wildcards, recursive descent, and more.">
+<meta name="keywords" content="JSON, query, explorer, viewer, formatter, TypeScript, browser tool">
+<meta name="author" content="Udi Talias">
+<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="json.express — Query &amp; Explore JSON">
+<meta property="og:description" content="A fast, zero-dependency tool to query and explore JSON data in the browser.">
+<meta property="og:url" content="https://json.express">
+<meta property="og:site_name" content="json.express">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="json.express — Query &amp; Explore JSON">
+<meta name="twitter:description" content="A fast, zero-dependency tool to query and explore JSON data in the browser.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://json.express">
 <style>
-/* ===== CSS Custom Properties ===== */
 :root {
   --bg: #0d1117;
   --panel-bg: #161b22;
@@ -34,7 +49,6 @@
   --highlight-bg: rgba(88,166,255,0.15);
 }
 
-/* Light theme — explicit or system preference */
 html.light,
 html:not(.dark):not(.light) {
   --bg: #f6f8fa;
@@ -62,7 +76,6 @@ html:not(.dark):not(.light) {
   --highlight-bg: rgba(9,105,218,0.1);
 }
 
-/* System preference: restore dark vars when OS prefers dark */
 @media (prefers-color-scheme: dark) {
   html:not(.dark):not(.light) {
     --bg: #0d1117;
@@ -92,7 +105,6 @@ html:not(.dark):not(.light) {
   }
 }
 
-/* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
@@ -103,14 +115,12 @@ html, body {
   overflow: hidden;
 }
 
-/* ===== App Layout ===== */
 #app {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-/* ===== Query Bar ===== */
 #query-bar {
   display: flex;
   align-items: center;
@@ -156,7 +166,6 @@ html, body {
   color: var(--text-muted);
 }
 
-/* Autocomplete dropdown */
 #autocomplete {
   display: none;
   position: absolute;
@@ -192,7 +201,6 @@ html, body {
 .ac-item .ac-key { color: var(--text); }
 .ac-item .ac-type { color: var(--text-muted); font-size: 11px; }
 
-/* Toolbar buttons */
 .toolbar-btn {
   padding: 5px 10px;
   font-size: 12px;
@@ -210,6 +218,88 @@ html, body {
 .toolbar-btn:hover { background: var(--btn-hover); color: var(--text); }
 .toolbar-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
+.actions-menu-wrapper {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 150;
+}
+
+#btn-actions {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  letter-spacing: 1px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+#btn-actions:hover {
+  background: var(--accent);
+  opacity: 0.85;
+  color: #fff;
+}
+
+#actions-menu {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  z-index: 150;
+  padding: 4px 0;
+}
+
+#actions-menu.visible { display: block; }
+
+.actions-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.actions-menu-item:hover {
+  background: var(--btn-hover);
+}
+
+.actions-menu-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.actions-menu-separator {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
 #result-count {
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
   font-size: 12px;
@@ -217,7 +307,6 @@ html, body {
   flex-shrink: 0;
 }
 
-/* ===== Panels ===== */
 #panels {
   display: flex;
   flex: 1;
@@ -252,11 +341,52 @@ html, body {
   letter-spacing: 0.5px;
 }
 
-/* Input panel */
+.line-numbers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  padding: 12px 8px 12px 0;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: right;
+  color: var(--text-muted);
+  opacity: 0.5;
+  user-select: none;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.panel-scroll-content {
+  position: relative;
+  min-height: 100%;
+}
+
+.panel-scroll-content > .line-numbers {
+  position: absolute;
+  top: 0;
+  left: -48px;
+  overflow: visible;
+  padding: 0;
+}
+
+.line-numbers div {
+  height: 1.5em;
+}
+
+.input-wrapper {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  min-height: 0;
+}
+
 #json-input {
   flex: 1;
   width: 100%;
-  padding: 12px;
+  padding: 12px 12px 12px 48px;
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
   font-size: 13px;
   line-height: 1.5;
@@ -285,11 +415,11 @@ html, body {
 
 #parse-error.visible { display: block; }
 
-/* Result panel */
 #result-panel {
   flex: 1;
   overflow: auto;
-  padding: 12px;
+  padding: 12px 12px 12px 48px;
+  position: relative;
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
   font-size: 13px;
   line-height: 1.5;
@@ -308,7 +438,6 @@ html, body {
 #result-output .json-null { color: var(--null-color); }
 #result-output .json-bracket { color: var(--bracket-color); }
 
-/* Primitive result displayed large */
 #result-output.primitive {
   font-size: 24px;
   display: flex;
@@ -327,7 +456,6 @@ html, body {
 
 #no-match.visible { display: block; }
 
-/* Tree view */
 #tree-panel {
   display: none;
   flex: 1;
@@ -378,15 +506,14 @@ html, body {
 .tree-value-boolean { color: var(--bool-color); }
 .tree-value-null { color: var(--null-color); }
 .tree-highlight { background: var(--highlight-bg); border-radius: 3px; }
-.tree-children { }
 .tree-children.collapsed { display: none; }
 
-/* TS type panel */
 #ts-panel {
   display: none;
   flex: 1;
   overflow: auto;
-  padding: 12px;
+  padding: 12px 12px 12px 48px;
+  position: relative;
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
   font-size: 13px;
   line-height: 1.5;
@@ -403,7 +530,6 @@ html, body {
 .ts-property { color: var(--text); }
 .ts-punctuation { color: var(--bracket-color); }
 
-/* ===== Status Bar ===== */
 #status-bar {
   display: flex;
   align-items: center;
@@ -430,13 +556,11 @@ html, body {
   font-size: 11px;
 }
 
-/* ===== Scrollbars ===== */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
 ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ===== Toast notification ===== */
 #toast {
   position: fixed;
   bottom: 40px;
@@ -458,7 +582,6 @@ html, body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ===== Mobile ===== */
 @media (max-width: 768px) {
   #panels {
     flex-direction: column;
@@ -484,7 +607,6 @@ html, body {
 </head>
 <body>
 <div id="app">
-  <!-- Query Bar -->
   <div id="query-bar">
     <label for="query-input">$</label>
     <div id="query-input-wrapper">
@@ -499,34 +621,36 @@ html, body {
     <button class="toolbar-btn" id="btn-theme" title="Toggle theme">System</button>
   </div>
 
-  <!-- Panels -->
   <div id="panels">
-    <!-- Input Panel -->
     <div class="panel">
       <div class="panel-header">
         <span class="panel-header-title">Input</span>
         <span id="input-size"></span>
       </div>
-      <textarea id="json-input" spellcheck="false" placeholder="Paste your JSON here..."></textarea>
+      <div class="input-wrapper">
+        <div class="line-numbers" id="input-line-numbers"></div>
+        <textarea id="json-input" spellcheck="false" placeholder="Paste your JSON here..."></textarea>
+      </div>
       <div id="parse-error"></div>
     </div>
 
-    <!-- Result Panel -->
     <div class="panel">
       <div class="panel-header">
         <span class="panel-header-title" id="result-header-title">Result</span>
         <span id="result-size"></span>
       </div>
       <div id="result-panel">
-        <div id="result-output"></div>
-        <div id="no-match">No match</div>
+        <div class="panel-scroll-content">
+          <div class="line-numbers" id="result-line-numbers"></div>
+          <div id="result-output"></div>
+          <div id="no-match">No match</div>
+        </div>
       </div>
       <div id="tree-panel"></div>
-      <div id="ts-panel"></div>
+      <div id="ts-panel"><div class="panel-scroll-content"><div class="line-numbers" id="ts-line-numbers"></div><div id="ts-content"></div></div></div>
     </div>
   </div>
 
-  <!-- Status Bar -->
   <div id="status-bar">
     <span id="status-validity"></span>
     <span class="status-separator"></span>
@@ -539,19 +663,32 @@ html, body {
   </div>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
-<script>
-// ============================================================
-// json.my — Main Application Script
-// ============================================================
+<div class="actions-menu-wrapper">
+  <button class="toolbar-btn" id="btn-actions" title="Actions">&#8942;</button>
+  <div id="actions-menu">
+    <button class="actions-menu-item" id="action-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New JSON</button>
+    <button class="actions-menu-item" id="action-qr"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><path d="M21 14h-3v3h3v4h-4v-4h-3v4"/></svg>QR Code</button>
+    <button class="actions-menu-item" id="action-share"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share URL</button>
+    <button class="actions-menu-item" id="action-download-json"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download JSON</button>
+    <button class="actions-menu-item" id="action-download-ts"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download TS</button>
+    <div class="actions-menu-separator"></div>
+    <button class="actions-menu-item" id="action-about"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>About</button>
+    <button class="actions-menu-item" id="action-github"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>GitHub</button>
+  </div>
+</div>
 
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+</script>
+<script>
 (function() {
   'use strict';
 
-  // ===== DOM References =====
-  const dom = {
+  var dom = {
     queryInput: document.getElementById('query-input'),
     queryWrapper: document.getElementById('query-input-wrapper'),
     autocomplete: document.getElementById('autocomplete'),
@@ -576,32 +713,52 @@ html, body {
     inputSize: document.getElementById('input-size'),
     resultSize: document.getElementById('result-size'),
     toast: document.getElementById('toast'),
+    inputLineNumbers: document.getElementById('input-line-numbers'),
+    resultLineNumbers: document.getElementById('result-line-numbers'),
+    tsLineNumbers: document.getElementById('ts-line-numbers'),
+    tsContent: document.getElementById('ts-content'),
+    btnActions: document.getElementById('btn-actions'),
+    actionsMenu: document.getElementById('actions-menu'),
   };
 
-  // ===== State =====
-  let parsedJSON = undefined;
-  let parseOk = false;
-  let currentResult = undefined;
-  let hasResult = false;
-  let viewMode = 'result'; // 'result' | 'tree' | 'ts'
-  let acItems = [];
-  let acIndex = -1;
-  let suppressHashUpdate = false;
+  var parsedJSON = undefined;
+  var parseOk = false;
+  var currentResult = undefined;
+  var hasResult = false;
+  var viewMode = 'result';
+  var acItems = [];
+  var acIndex = -1;
+  var suppressHashUpdate = false;
 
-  // ============================================================
-  // Phase 1: JSON Parsing (lenient)
-  // ============================================================
+  function generateLineNumbers(count) {
+    var html = '';
+    for (var i = 1; i <= count; i++) html += '<div>' + i + '</div>';
+    return html;
+  }
 
-  /**
-   * Lenient JSON parse: strips comments and trailing commas.
-   */
+  function updateInputLineNumbers() {
+    var lines = (dom.jsonInput.value || '').split('\n').length;
+    dom.inputLineNumbers.innerHTML = generateLineNumbers(lines);
+    dom.inputLineNumbers.style.top = -dom.jsonInput.scrollTop + 'px';
+  }
+
+  function updatePanelLineNumbers(el, text) {
+    if (!text || !text.trim()) {
+      el.innerHTML = '';
+      return;
+    }
+    el.innerHTML = generateLineNumbers(text.split('\n').length);
+  }
+
+  dom.jsonInput.addEventListener('scroll', function() {
+    dom.inputLineNumbers.style.top = -dom.jsonInput.scrollTop + 'px';
+  });
+
   function lenientParse(text) {
-    // Strip comments while preserving string contents
-    let cleaned = '';
-    let i = 0;
-    const len = text.length;
+    var cleaned = '';
+    var i = 0;
+    var len = text.length;
     while (i < len) {
-      // String literal — copy verbatim
       if (text[i] === '"') {
         cleaned += '"';
         i++;
@@ -615,24 +772,18 @@ html, body {
           }
         }
         if (i < len) { cleaned += '"'; i++; }
-      }
-      // Single-line comment
-      else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
+      } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
         i += 2;
         while (i < len && text[i] !== '\n') i++;
-      }
-      // Multi-line comment
-      else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
+      } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
         i += 2;
         while (i < len && !(text[i] === '*' && i + 1 < len && text[i + 1] === '/')) i++;
         if (i < len) i += 2;
-      }
-      else {
+      } else {
         cleaned += text[i];
         i++;
       }
     }
-    // Remove trailing commas before } or ]
     cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
     return JSON.parse(cleaned);
   }
@@ -642,34 +793,20 @@ html, body {
       return { ok: false, value: undefined, error: null };
     }
     try {
-      const value = lenientParse(text);
-      return { ok: true, value, error: null };
+      var value = lenientParse(text);
+      return { ok: true, value: value, error: null };
     } catch (e) {
       return { ok: false, value: undefined, error: e.message };
     }
   }
 
-  // ============================================================
-  // Phase 2: Path Query Engine
-  // ============================================================
-
-  /**
-   * Tokenize a path expression into segments.
-   *   data.users[0].name      -> key, key, index, key
-   *   data.users[*].name      -> key, key, wildcard, key
-   *   data.users[0:3]         -> key, key, slice
-   *   data..name              -> key, recursive, key
-   *   data["key with spaces"] -> key, key
-   */
   function tokenizePath(path) {
-    const segments = [];
-    let i = 0;
-    const len = path.length;
+    var segments = [];
+    var i = 0;
+    var len = path.length;
 
     while (i < len) {
-      // Skip leading dots
       if (path[i] === '.') {
-        // Check for recursive descent (..)
         if (i + 1 < len && path[i + 1] === '.') {
           segments.push({ type: 'recursive' });
           i += 2;
@@ -679,35 +816,31 @@ html, body {
         continue;
       }
 
-      // Bracket notation
       if (path[i] === '[') {
-        i++; // skip [
-        // Wildcard [*]
+        i++;
         if (path[i] === '*') {
           segments.push({ type: 'wildcard' });
-          i++; // skip *
-          if (path[i] === ']') i++; // skip ]
+          i++;
+          if (path[i] === ']') i++;
           continue;
         }
-        // Quoted key ["key"] or ['key']
         if (path[i] === '"' || path[i] === "'") {
-          const quote = path[i];
+          var quote = path[i];
           i++;
-          let key = '';
+          var qkey = '';
           while (i < len && path[i] !== quote) {
-            if (path[i] === '\\' && i + 1 < len) { key += path[++i]; }
-            else { key += path[i]; }
+            if (path[i] === '\\' && i + 1 < len) { qkey += path[++i]; }
+            else { qkey += path[i]; }
             i++;
           }
           if (path[i] === quote) i++;
           if (path[i] === ']') i++;
-          segments.push({ type: 'key', value: key });
+          segments.push({ type: 'key', value: qkey });
           continue;
         }
-        // Number — could be index or slice
-        let numStr = '';
-        let hasColon = false;
-        let sliceEnd = '';
+        var numStr = '';
+        var hasColon = false;
+        var sliceEnd = '';
         while (i < len && path[i] !== ']') {
           if (path[i] === ':') {
             hasColon = true;
@@ -734,8 +867,7 @@ html, body {
         continue;
       }
 
-      // Bare key
-      let key = '';
+      var key = '';
       while (i < len && path[i] !== '.' && path[i] !== '[') {
         key += path[i];
         i++;
@@ -748,43 +880,36 @@ html, body {
     return segments;
   }
 
-  /**
-   * Evaluate a parsed path against a JSON value.
-   * Returns { found: boolean, value: any }
-   */
   function evaluatePath(segments, data) {
     if (segments.length === 0) {
       return { found: true, value: data };
     }
 
-    let current = [data];
+    var current = [data];
 
-    for (let si = 0; si < segments.length; si++) {
-      const seg = segments[si];
-      const next = [];
+    for (var si = 0; si < segments.length; si++) {
+      var seg = segments[si];
+      var next = [];
 
       if (seg.type === 'recursive') {
-        // Recursive descent: collect current + all descendants, then apply next segment
-        const nextSeg = segments[si + 1];
+        var nextSeg = segments[si + 1];
         if (!nextSeg) {
-          // .. at end — return all descendants
-          for (const item of current) {
-            collectAllValues(item, next);
+          for (var ri = 0; ri < current.length; ri++) {
+            collectAllValues(current[ri], next);
           }
         } else {
-          // Apply next segment to current and all descendants
-          si++; // consume next segment
-          for (const item of current) {
-            const descendants = [];
-            collectAllNodes(item, descendants);
-            for (const desc of descendants) {
-              applySegment(desc, nextSeg, next);
+          si++;
+          for (var rj = 0; rj < current.length; rj++) {
+            var descendants = [];
+            collectAllNodes(current[rj], descendants);
+            for (var dk = 0; dk < descendants.length; dk++) {
+              applySegment(descendants[dk], nextSeg, next);
             }
           }
         }
       } else {
-        for (const item of current) {
-          applySegment(item, seg, next);
+        for (var ci = 0; ci < current.length; ci++) {
+          applySegment(current[ci], seg, next);
         }
       }
 
@@ -794,7 +919,6 @@ html, body {
       current = next;
     }
 
-    // If we have exactly one result, unwrap. If multiple, return as array.
     if (current.length === 1) {
       return { found: true, value: current[0] };
     }
@@ -809,8 +933,7 @@ html, body {
         if (typeof data === 'object' && !Array.isArray(data) && data !== null && seg.value in data) {
           results.push(data[seg.value]);
         } else if (Array.isArray(data)) {
-          // Try numeric index from key
-          const idx = parseInt(seg.value, 10);
+          var idx = parseInt(seg.value, 10);
           if (!isNaN(idx) && idx >= 0 && idx < data.length) {
             results.push(data[idx]);
           }
@@ -818,25 +941,26 @@ html, body {
         break;
       case 'index':
         if (Array.isArray(data)) {
-          const idx = seg.value < 0 ? data.length + seg.value : seg.value;
-          if (idx >= 0 && idx < data.length) {
-            results.push(data[idx]);
+          var idxVal = seg.value < 0 ? data.length + seg.value : seg.value;
+          if (idxVal >= 0 && idxVal < data.length) {
+            results.push(data[idxVal]);
           }
         }
         break;
       case 'wildcard':
         if (Array.isArray(data)) {
-          for (const item of data) results.push(item);
+          for (var wi = 0; wi < data.length; wi++) results.push(data[wi]);
         } else if (typeof data === 'object' && data !== null) {
-          for (const key of Object.keys(data)) results.push(data[key]);
+          var wkeys = Object.keys(data);
+          for (var wk = 0; wk < wkeys.length; wk++) results.push(data[wkeys[wk]]);
         }
         break;
       case 'slice':
         if (Array.isArray(data)) {
-          const start = seg.start < 0 ? Math.max(0, data.length + seg.start) : seg.start;
-          const end = seg.end === undefined ? data.length : (seg.end < 0 ? data.length + seg.end : seg.end);
-          for (let i = start; i < Math.min(end, data.length); i++) {
-            results.push(data[i]);
+          var start = seg.start < 0 ? Math.max(0, data.length + seg.start) : seg.start;
+          var end = seg.end === undefined ? data.length : (seg.end < 0 ? data.length + seg.end : seg.end);
+          for (var si = start; si < Math.min(end, data.length); si++) {
+            results.push(data[si]);
           }
         }
         break;
@@ -846,59 +970,51 @@ html, body {
   function collectAllNodes(data, results) {
     results.push(data);
     if (Array.isArray(data)) {
-      for (const item of data) collectAllNodes(item, results);
+      for (var i = 0; i < data.length; i++) collectAllNodes(data[i], results);
     } else if (typeof data === 'object' && data !== null) {
-      for (const key of Object.keys(data)) collectAllNodes(data[key], results);
+      var keys = Object.keys(data);
+      for (var k = 0; k < keys.length; k++) collectAllNodes(data[keys[k]], results);
     }
   }
 
   function collectAllValues(data, results) {
     if (Array.isArray(data)) {
-      for (const item of data) {
-        results.push(item);
-        collectAllValues(item, results);
+      for (var i = 0; i < data.length; i++) {
+        results.push(data[i]);
+        collectAllValues(data[i], results);
       }
     } else if (typeof data === 'object' && data !== null) {
-      for (const key of Object.keys(data)) {
-        results.push(data[key]);
-        collectAllValues(data[key], results);
+      var keys = Object.keys(data);
+      for (var k = 0; k < keys.length; k++) {
+        results.push(data[keys[k]]);
+        collectAllValues(data[keys[k]], results);
       }
     }
   }
 
-  // ============================================================
-  // Syntax Highlighting
-  // ============================================================
-
   function highlightJSON(value, indent) {
     indent = indent || 0;
-    const spaces = '  '.repeat(indent);
+    var spaces = '  '.repeat(indent);
 
-    if (value === null) {
-      return '<span class="json-null">null</span>';
-    }
-    if (typeof value === 'boolean') {
-      return '<span class="json-boolean">' + value + '</span>';
-    }
-    if (typeof value === 'number') {
-      return '<span class="json-number">' + value + '</span>';
-    }
-    if (typeof value === 'string') {
-      return '<span class="json-string">"' + escapeHtml(value) + '"</span>';
-    }
+    if (value === null) return '<span class="json-null">null</span>';
+    if (typeof value === 'boolean') return '<span class="json-boolean">' + value + '</span>';
+    if (typeof value === 'number') return '<span class="json-number">' + value + '</span>';
+    if (typeof value === 'string') return '<span class="json-string">"' + escapeHtml(value) + '"</span>';
+
     if (Array.isArray(value)) {
       if (value.length === 0) return '<span class="json-bracket">[]</span>';
-      const items = value.map(function(item) {
+      var items = value.map(function(item) {
         return spaces + '  ' + highlightJSON(item, indent + 1);
       });
       return '<span class="json-bracket">[</span>\n' +
         items.join(',\n') + '\n' +
         spaces + '<span class="json-bracket">]</span>';
     }
+
     if (typeof value === 'object') {
-      const keys = Object.keys(value);
+      var keys = Object.keys(value);
       if (keys.length === 0) return '<span class="json-bracket">{}</span>';
-      const entries = keys.map(function(key) {
+      var entries = keys.map(function(key) {
         return spaces + '  <span class="json-key">"' + escapeHtml(key) + '"</span>: ' +
           highlightJSON(value[key], indent + 1);
       });
@@ -906,6 +1022,7 @@ html, body {
         entries.join(',\n') + '\n' +
         spaces + '<span class="json-bracket">}</span>';
     }
+
     return escapeHtml(String(value));
   }
 
@@ -916,10 +1033,6 @@ html, body {
   function isPrimitive(value) {
     return value === null || typeof value !== 'object';
   }
-
-  // ============================================================
-  // Phase 4: Stats
-  // ============================================================
 
   function byteSize(str) {
     return new Blob([str]).size;
@@ -934,149 +1047,148 @@ html, body {
   function jsonDepth(value, d) {
     d = d || 0;
     if (value === null || typeof value !== 'object') return d;
-    let max = d;
+    var max = d;
     if (Array.isArray(value)) {
-      for (const item of value) { max = Math.max(max, jsonDepth(item, d + 1)); }
+      for (var i = 0; i < value.length; i++) max = Math.max(max, jsonDepth(value[i], d + 1));
     } else {
-      for (const key of Object.keys(value)) { max = Math.max(max, jsonDepth(value[key], d + 1)); }
+      var keys = Object.keys(value);
+      for (var k = 0; k < keys.length; k++) max = Math.max(max, jsonDepth(value[keys[k]], d + 1));
     }
     return max;
   }
 
   function countKeys(value) {
     if (value === null || typeof value !== 'object') return 0;
-    let count = 0;
+    var count = 0;
     if (Array.isArray(value)) {
-      for (const item of value) count += countKeys(item);
+      for (var i = 0; i < value.length; i++) count += countKeys(value[i]);
     } else {
-      const keys = Object.keys(value);
+      var keys = Object.keys(value);
       count += keys.length;
-      for (const key of keys) count += countKeys(value[key]);
+      for (var k = 0; k < keys.length; k++) count += countKeys(value[keys[k]]);
     }
     return count;
-  }
-
-  // ============================================================
-  // Phase 5: TypeScript Type Inference
-  // ============================================================
-
-  function inferTSType(value, name, interfaces) {
-    interfaces = interfaces || [];
-    name = name || 'Root';
-
-    if (value === null) return { type: 'null', interfaces };
-    if (typeof value === 'string') return { type: 'string', interfaces };
-    if (typeof value === 'number') return { type: 'number', interfaces };
-    if (typeof value === 'boolean') return { type: 'boolean', interfaces };
-
-    if (Array.isArray(value)) {
-      if (value.length === 0) return { type: 'unknown[]', interfaces };
-      // Infer type of items by merging
-      const itemTypes = value.map(function(item, i) {
-        return inferTSType(item, name + 'Item', []);
-      });
-      // Merge all item types
-      const uniqueTypes = [];
-      const seenTypes = new Set();
-      const objectInterfaces = [];
-      for (const it of itemTypes) {
-        interfaces = interfaces.concat(it.interfaces);
-        if (it.type.startsWith('interface ')) {
-          objectInterfaces.push(it);
-        } else if (!seenTypes.has(it.type)) {
-          seenTypes.add(it.type);
-          uniqueTypes.push(it.type);
-        }
-      }
-      // Merge object interfaces
-      if (objectInterfaces.length > 0) {
-        const merged = mergeObjectInterfaces(objectInterfaces, name + 'Item');
-        interfaces = interfaces.concat(merged.interfaces);
-        // Remove individual object interfaces, add merged
-        if (!seenTypes.has(merged.name)) {
-          uniqueTypes.push(merged.name);
-          seenTypes.add(merged.name);
-        }
-      }
-      const itemType = uniqueTypes.length === 1 ? uniqueTypes[0] : '(' + uniqueTypes.join(' | ') + ')';
-      return { type: itemType + '[]', interfaces };
-    }
-
-    if (typeof value === 'object') {
-      const props = [];
-      for (const key of Object.keys(value)) {
-        const propResult = inferTSType(value[key], capitalize(key), []);
-        interfaces = interfaces.concat(propResult.interfaces);
-        props.push({ key, type: propResult.type, optional: false });
-      }
-      const iface = { name, props };
-      interfaces.push(iface);
-      return { type: 'interface ' + name, interfaces };
-    }
-
-    return { type: 'unknown', interfaces };
-  }
-
-  function mergeObjectInterfaces(objectTypes, name) {
-    // Collect all keys across all objects
-    const allKeys = new Map(); // key -> { types: Set, count: number }
-    const total = objectTypes.length;
-
-    for (const ot of objectTypes) {
-      const ifaceName = ot.type.replace('interface ', '');
-      const iface = ot.interfaces.find(function(i) { return i.name === ifaceName; });
-      if (!iface) continue;
-      for (const prop of iface.props) {
-        if (!allKeys.has(prop.key)) {
-          allKeys.set(prop.key, { types: new Set(), count: 0 });
-        }
-        const entry = allKeys.get(prop.key);
-        entry.types.add(prop.type);
-        entry.count++;
-      }
-    }
-
-    const props = [];
-    for (const [key, entry] of allKeys) {
-      const typeStr = Array.from(entry.types).join(' | ');
-      props.push({
-        key,
-        type: entry.types.size > 1 ? '(' + typeStr + ')' : typeStr,
-        optional: entry.count < total
-      });
-    }
-
-    // Remove old individual interfaces for this name
-    const interfaces = [];
-    interfaces.push({ name, props });
-    return { name, interfaces };
   }
 
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
+  function interfaceName(name) {
+    return name.charAt(0) === 'I' && name.length > 1 && name.charAt(1) === name.charAt(1).toUpperCase()
+      ? name
+      : 'I' + name;
+  }
+
+  function inferTSType(value, name, interfaces) {
+    interfaces = interfaces || [];
+    name = name || 'Root';
+
+    if (value === null) return { type: 'null', interfaces: interfaces };
+    if (typeof value === 'string') return { type: 'string', interfaces: interfaces };
+    if (typeof value === 'number') return { type: 'number', interfaces: interfaces };
+    if (typeof value === 'boolean') return { type: 'boolean', interfaces: interfaces };
+
+    if (Array.isArray(value)) {
+      if (value.length === 0) return { type: 'unknown[]', interfaces: interfaces };
+      var itemTypes = value.map(function(item) {
+        return inferTSType(item, name + 'Item', []);
+      });
+      var uniqueTypes = [];
+      var seenTypes = new Set();
+      var objectInterfaces = [];
+      for (var i = 0; i < itemTypes.length; i++) {
+        interfaces = interfaces.concat(itemTypes[i].interfaces);
+        if (itemTypes[i].type.startsWith('interface ')) {
+          objectInterfaces.push(itemTypes[i]);
+        } else if (!seenTypes.has(itemTypes[i].type)) {
+          seenTypes.add(itemTypes[i].type);
+          uniqueTypes.push(itemTypes[i].type);
+        }
+      }
+      if (objectInterfaces.length > 0) {
+        var merged = mergeObjectInterfaces(objectInterfaces, name + 'Item');
+        interfaces = interfaces.concat(merged.interfaces);
+        if (!seenTypes.has(merged.name)) {
+          uniqueTypes.push(merged.name);
+          seenTypes.add(merged.name);
+        }
+      }
+      var itemType = uniqueTypes.length === 1 ? uniqueTypes[0] : '(' + uniqueTypes.join(' | ') + ')';
+      return { type: itemType + '[]', interfaces: interfaces };
+    }
+
+    if (typeof value === 'object') {
+      var iName = interfaceName(name);
+      var props = [];
+      var okeys = Object.keys(value);
+      for (var j = 0; j < okeys.length; j++) {
+        var propResult = inferTSType(value[okeys[j]], capitalize(okeys[j]), []);
+        interfaces = interfaces.concat(propResult.interfaces);
+        props.push({ key: okeys[j], type: propResult.type, optional: false });
+      }
+      interfaces.push({ name: iName, props: props });
+      return { type: 'interface ' + iName, interfaces: interfaces };
+    }
+
+    return { type: 'unknown', interfaces: interfaces };
+  }
+
+  function mergeObjectInterfaces(objectTypes, name) {
+    var iName = interfaceName(name);
+    var allKeys = new Map();
+    var total = objectTypes.length;
+
+    for (var i = 0; i < objectTypes.length; i++) {
+      var ifaceName = objectTypes[i].type.replace('interface ', '');
+      var iface = objectTypes[i].interfaces.find(function(inf) { return inf.name === ifaceName; });
+      if (!iface) continue;
+      for (var j = 0; j < iface.props.length; j++) {
+        var prop = iface.props[j];
+        if (!allKeys.has(prop.key)) {
+          allKeys.set(prop.key, { types: new Set(), count: 0 });
+        }
+        var entry = allKeys.get(prop.key);
+        entry.types.add(prop.type);
+        entry.count++;
+      }
+    }
+
+    var props = [];
+    allKeys.forEach(function(entry, key) {
+      var typeStr = Array.from(entry.types).join(' | ');
+      props.push({
+        key: key,
+        type: entry.types.size > 1 ? '(' + typeStr + ')' : typeStr,
+        optional: entry.count < total
+      });
+    });
+
+    return { name: iName, interfaces: [{ name: iName, props: props }] };
+  }
+
   function renderTSInterfaces(value, queryPath) {
-    const name = queryPath
+    var name = interfaceName(queryPath
       ? queryPath.split('.').map(function(s) { return capitalize(s.replace(/\[.*\]/g, '')); }).join('') || 'Root'
-      : 'Root';
-    const result = inferTSType(value, name, []);
+      : 'Root');
+    var result = inferTSType(value, name, []);
 
-    const rendered = [];
-    const seen = new Set();
+    var rendered = [];
+    var seen = new Set();
 
-    // Render interfaces
-    for (const iface of result.interfaces) {
+    for (var i = 0; i < result.interfaces.length; i++) {
+      var iface = result.interfaces[i];
       if (seen.has(iface.name)) continue;
       seen.add(iface.name);
-      let lines = [];
+      var lines = [];
       lines.push(
         '<span class="ts-keyword">interface</span> <span class="ts-interface-name">' +
         escapeHtml(iface.name) + '</span> <span class="ts-punctuation">{</span>'
       );
-      for (const prop of iface.props) {
-        const safeKey = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(prop.key) ? prop.key : '"' + escapeHtml(prop.key) + '"';
-        const typeDisplay = prop.type.startsWith('interface ')
+      for (var j = 0; j < iface.props.length; j++) {
+        var prop = iface.props[j];
+        var safeKey = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(prop.key) ? prop.key : '"' + escapeHtml(prop.key) + '"';
+        var typeDisplay = prop.type.startsWith('interface ')
           ? prop.type.replace('interface ', '')
           : prop.type;
         lines.push(
@@ -1089,7 +1201,6 @@ html, body {
       rendered.push(lines.join('\n'));
     }
 
-    // If top-level is not an interface, show type alias
     if (!result.type.startsWith('interface ')) {
       rendered.push(
         '<span class="ts-keyword">type</span> <span class="ts-interface-name">' +
@@ -1101,63 +1212,47 @@ html, body {
     return rendered.join('\n\n');
   }
 
-  // ============================================================
-  // Phase 5: Tree View
-  // ============================================================
+  function treeLeaf(key, valueHtml, highlightClass) {
+    var html = '<div class="' + highlightClass + '">';
+    if (key !== undefined) html += '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ';
+    html += valueHtml + '</div>';
+    return html;
+  }
 
   function buildTree(value, key, path, matchedPaths) {
-    const isRoot = path === '';
-    const currentPath = path;
-    const isHighlighted = matchedPaths && matchedPaths.has(currentPath);
-    const highlightClass = isHighlighted ? ' tree-highlight' : '';
+    var currentPath = path;
+    var isHighlighted = matchedPaths && matchedPaths.has(currentPath);
+    var highlightClass = isHighlighted ? ' tree-highlight' : '';
 
-    if (value === null) {
-      return '<div class="' + highlightClass + '">' +
-        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
-        '<span class="tree-value-null">null</span></div>';
-    }
+    if (value === null) return treeLeaf(key, '<span class="tree-value-null">null</span>', highlightClass);
     if (typeof value === 'string') {
-      const display = value.length > 80 ? value.slice(0, 80) + '...' : value;
-      return '<div class="' + highlightClass + '">' +
-        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
-        '<span class="tree-value-string">"' + escapeHtml(display) + '"</span></div>';
+      var display = value.length > 80 ? value.slice(0, 80) + '...' : value;
+      return treeLeaf(key, '<span class="tree-value-string">"' + escapeHtml(display) + '"</span>', highlightClass);
     }
-    if (typeof value === 'number') {
-      return '<div class="' + highlightClass + '">' +
-        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
-        '<span class="tree-value-number">' + value + '</span></div>';
-    }
-    if (typeof value === 'boolean') {
-      return '<div class="' + highlightClass + '">' +
-        (key !== undefined ? '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ' : '') +
-        '<span class="tree-value-boolean">' + value + '</span></div>';
-    }
+    if (typeof value === 'number') return treeLeaf(key, '<span class="tree-value-number">' + value + '</span>', highlightClass);
+    if (typeof value === 'boolean') return treeLeaf(key, '<span class="tree-value-boolean">' + value + '</span>', highlightClass);
 
-    const isArray = Array.isArray(value);
-    const entries = isArray ? value : Object.keys(value);
-    const count = isArray ? value.length : Object.keys(value).length;
-    const preview = isArray ? 'Array(' + count + ')' : 'Object{' + count + '}';
-    const id = 'tree-' + Math.random().toString(36).slice(2, 10);
+    var isArray = Array.isArray(value);
+    var count = isArray ? value.length : Object.keys(value).length;
+    var preview = isArray ? 'Array(' + count + ')' : 'Object{' + count + '}';
+    var id = 'tree-' + Math.random().toString(36).slice(2, 10);
 
-    let html = '<div class="' + highlightClass + '">';
+    var html = '<div class="' + highlightClass + '">';
     html += '<span class="tree-toggle" onclick="window.__toggleTree(\'' + id + '\')">';
     html += '<span class="tree-arrow" id="arrow-' + id + '">&#9660;</span> ';
-    if (key !== undefined) {
-      html += '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ';
-    }
+    if (key !== undefined) html += '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ';
     html += '<span class="tree-preview">' + preview + '</span>';
     html += '</span></div>';
     html += '<div class="tree-children tree-node" id="' + id + '">';
 
     if (isArray) {
-      for (let i = 0; i < value.length; i++) {
-        const childPath = currentPath ? currentPath + '[' + i + ']' : '[' + i + ']';
-        html += buildTree(value[i], i, childPath, matchedPaths);
+      for (var i = 0; i < value.length; i++) {
+        html += buildTree(value[i], i, currentPath ? currentPath + '[' + i + ']' : '[' + i + ']', matchedPaths);
       }
     } else {
-      for (const k of Object.keys(value)) {
-        const childPath = currentPath ? currentPath + '.' + k : k;
-        html += buildTree(value[k], k, childPath, matchedPaths);
+      var keys = Object.keys(value);
+      for (var k = 0; k < keys.length; k++) {
+        html += buildTree(value[keys[k]], keys[k], currentPath ? currentPath + '.' + keys[k] : keys[k], matchedPaths);
       }
     }
 
@@ -1166,27 +1261,22 @@ html, body {
   }
 
   window.__toggleTree = function(id) {
-    const el = document.getElementById(id);
-    const arrow = document.getElementById('arrow-' + id);
+    var el = document.getElementById(id);
+    var arrow = document.getElementById('arrow-' + id);
     if (el) {
       el.classList.toggle('collapsed');
       if (arrow) arrow.classList.toggle('collapsed');
     }
   };
 
-  // ============================================================
-  // Phase 5: Path Autocomplete
-  // ============================================================
-
   function getAutocompleteSuggestions(json, partialPath) {
     if (!json || typeof json !== 'object') return [];
 
-    // Split path at last dot or bracket to find parent + partial key
-    const lastDotIdx = partialPath.lastIndexOf('.');
-    const lastBracketIdx = partialPath.lastIndexOf('[');
-    const splitIdx = Math.max(lastDotIdx, lastBracketIdx);
+    var lastDotIdx = partialPath.lastIndexOf('.');
+    var lastBracketIdx = partialPath.lastIndexOf('[');
+    var splitIdx = Math.max(lastDotIdx, lastBracketIdx);
 
-    let parentPath, partial;
+    var parentPath, partial;
     if (splitIdx === -1) {
       parentPath = '';
       partial = partialPath;
@@ -1194,26 +1284,23 @@ html, body {
       parentPath = partialPath.slice(0, lastDotIdx);
       partial = partialPath.slice(lastDotIdx + 1);
     } else {
-      // Inside bracket — not completing here for simplicity
       return [];
     }
 
-    // Resolve parent
-    let target = json;
+    var target = json;
     if (parentPath) {
-      const segments = tokenizePath(parentPath);
-      const result = evaluatePath(segments, json);
+      var segments = tokenizePath(parentPath);
+      var result = evaluatePath(segments, json);
       if (!result.found) return [];
       target = result.value;
     }
 
     if (target === null || typeof target !== 'object') return [];
 
-    const suggestions = [];
+    var suggestions = [];
     if (Array.isArray(target)) {
-      // Suggest indices
-      for (let i = 0; i < Math.min(target.length, 20); i++) {
-        const label = '[' + i + ']';
+      for (var i = 0; i < Math.min(target.length, 20); i++) {
+        var label = '[' + i + ']';
         if (label.startsWith(partial) || partial === '') {
           suggestions.push({
             key: parentPath ? parentPath + label : label,
@@ -1230,18 +1317,18 @@ html, body {
         });
       }
     } else {
-      const keys = Object.keys(target);
-      const lowerPartial = partial.toLowerCase();
-      for (const k of keys) {
-        if (k.toLowerCase().startsWith(lowerPartial)) {
-          const needsBracket = !/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k);
-          const fullKey = needsBracket
-            ? (parentPath ? parentPath + '["' + k + '"]' : '["' + k + '"]')
-            : (parentPath ? parentPath + '.' + k : k);
+      var keys = Object.keys(target);
+      var lowerPartial = partial.toLowerCase();
+      for (var k = 0; k < keys.length; k++) {
+        if (keys[k].toLowerCase().startsWith(lowerPartial)) {
+          var needsBracket = !/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(keys[k]);
+          var fullKey = needsBracket
+            ? (parentPath ? parentPath + '["' + keys[k] + '"]' : '["' + keys[k] + '"]')
+            : (parentPath ? parentPath + '.' + keys[k] : keys[k]);
           suggestions.push({
             key: fullKey,
-            display: k,
-            type: describeType(target[k])
+            display: keys[k],
+            type: describeType(target[keys[k]])
           });
         }
       }
@@ -1257,33 +1344,29 @@ html, body {
     return typeof value;
   }
 
-  // ============================================================
-  // Phase 3: URL Hash State (CompressionStream API)
-  // ============================================================
-
   async function compressState(state) {
-    const json = JSON.stringify(state);
-    const blob = new Blob([json]);
-    const cs = new CompressionStream('deflate');
-    const stream = blob.stream().pipeThrough(cs);
-    const compressedBlob = await new Response(stream).blob();
-    const buffer = await compressedBlob.arrayBuffer();
+    var json = JSON.stringify(state);
+    var blob = new Blob([json]);
+    var cs = new CompressionStream('deflate');
+    var stream = blob.stream().pipeThrough(cs);
+    var compressedBlob = await new Response(stream).blob();
+    var buffer = await compressedBlob.arrayBuffer();
     return base64UrlEncode(new Uint8Array(buffer));
   }
 
   async function decompressState(hash) {
-    const bytes = base64UrlDecode(hash);
-    const blob = new Blob([bytes]);
-    const ds = new DecompressionStream('deflate');
-    const stream = blob.stream().pipeThrough(ds);
-    const decompressedBlob = await new Response(stream).blob();
-    const text = await decompressedBlob.text();
+    var bytes = base64UrlDecode(hash);
+    var blob = new Blob([bytes]);
+    var ds = new DecompressionStream('deflate');
+    var stream = blob.stream().pipeThrough(ds);
+    var decompressedBlob = await new Response(stream).blob();
+    var text = await decompressedBlob.text();
     return JSON.parse(text);
   }
 
   function base64UrlEncode(bytes) {
-    let binary = '';
-    for (let i = 0; i < bytes.length; i++) {
+    var binary = '';
+    for (var i = 0; i < bytes.length; i++) {
       binary += String.fromCharCode(bytes[i]);
     }
     return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -1292,15 +1375,15 @@ html, body {
   function base64UrlDecode(str) {
     str = str.replace(/-/g, '+').replace(/_/g, '/');
     while (str.length % 4) str += '=';
-    const binary = atob(str);
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) {
+    var binary = atob(str);
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) {
       bytes[i] = binary.charCodeAt(i);
     }
     return bytes;
   }
 
-  let hashSaveTimer = null;
+  var hashSaveTimer = null;
   function scheduleSaveHash() {
     clearTimeout(hashSaveTimer);
     hashSaveTimer = setTimeout(saveHash, 500);
@@ -1308,42 +1391,34 @@ html, body {
 
   async function saveHash() {
     if (suppressHashUpdate) return;
-    const state = {
+    var state = {
       json: dom.jsonInput.value,
       query: dom.queryInput.value
     };
     try {
-      const hash = await compressState(state);
+      var hash = await compressState(state);
       suppressHashUpdate = true;
       window.location.hash = hash;
-      // Allow hash changes again after a tick
       setTimeout(function() { suppressHashUpdate = false; }, 50);
-    } catch (e) {
-      // Silently fail — URL might be too long
-    }
+    } catch (e) {}
   }
 
   async function loadFromHash() {
-    const hash = window.location.hash.slice(1);
+    var hash = window.location.hash.slice(1);
     if (!hash) return;
     try {
       suppressHashUpdate = true;
-      const state = await decompressState(hash);
+      var state = await decompressState(hash);
       if (state.json !== undefined) dom.jsonInput.value = state.json;
       if (state.query !== undefined) dom.queryInput.value = state.query;
       suppressHashUpdate = false;
       onInputChange();
     } catch (e) {
       suppressHashUpdate = false;
-      // Corrupted hash — ignore
     }
   }
 
-  // ============================================================
-  // Toast
-  // ============================================================
-
-  let toastTimer = null;
+  var toastTimer = null;
   function showToast(message) {
     dom.toast.textContent = message;
     dom.toast.classList.add('visible');
@@ -1353,18 +1428,20 @@ html, body {
     }, 2000);
   }
 
-  // ============================================================
-  // UI Update Logic
-  // ============================================================
+  function getResultText() {
+    if (!hasResult || currentResult === undefined) return null;
+    return typeof currentResult === 'string'
+      ? currentResult
+      : JSON.stringify(currentResult, null, 2);
+  }
 
   function onInputChange() {
-    const text = dom.jsonInput.value;
-    const result = tryParseJSON(text);
+    var text = dom.jsonInput.value;
+    var result = tryParseJSON(text);
 
     parseOk = result.ok;
     parsedJSON = result.value;
 
-    // Update error display
     if (result.error) {
       dom.parseError.textContent = result.error;
       dom.parseError.classList.add('visible');
@@ -1374,13 +1451,9 @@ html, body {
       dom.jsonInput.classList.remove('has-error');
     }
 
-    // Update status bar
     updateStatus(text);
-
-    // Run query
     runQuery();
-
-    // Save to hash
+    updateInputLineNumbers();
     scheduleSaveHash();
   }
 
@@ -1394,22 +1467,22 @@ html, body {
       return;
     }
 
+    var size = formatSize(byteSize(inputText));
+    dom.statusSize.textContent = size;
+    dom.inputSize.textContent = size;
+
     if (parseOk) {
       dom.statusValidity.innerHTML = '<span class="status-valid">Valid JSON</span>';
-      dom.statusSize.textContent = formatSize(byteSize(inputText));
       dom.statusDepth.textContent = 'Depth ' + jsonDepth(parsedJSON);
       dom.statusKeys.textContent = countKeys(parsedJSON) + ' keys';
-      dom.inputSize.textContent = formatSize(byteSize(inputText));
     } else {
       dom.statusValidity.innerHTML = '<span class="status-invalid">Invalid JSON</span>';
-      dom.statusSize.textContent = formatSize(byteSize(inputText));
       dom.statusDepth.textContent = '';
       dom.statusKeys.textContent = '';
-      dom.inputSize.textContent = formatSize(byteSize(inputText));
     }
   }
 
-  let queryTimer = null;
+  var queryTimer = null;
   function onQueryChange() {
     clearTimeout(queryTimer);
     queryTimer = setTimeout(function() {
@@ -1420,7 +1493,7 @@ html, body {
   }
 
   function runQuery() {
-    const query = dom.queryInput.value.trim();
+    var query = dom.queryInput.value.trim();
 
     if (!parseOk || parsedJSON === undefined) {
       dom.resultOutput.innerHTML = '';
@@ -1428,13 +1501,13 @@ html, body {
       dom.noMatch.classList.remove('visible');
       dom.resultCount.textContent = '';
       dom.resultSize.textContent = '';
+      dom.resultLineNumbers.innerHTML = '';
       if (viewMode === 'tree') renderTreeView();
       if (viewMode === 'ts') renderTSView();
       return;
     }
 
     if (!query) {
-      // Show the full JSON
       currentResult = parsedJSON;
       hasResult = true;
       displayResult(parsedJSON);
@@ -1443,8 +1516,8 @@ html, body {
       return;
     }
 
-    const segments = tokenizePath(query);
-    const result = evaluatePath(segments, parsedJSON);
+    var segments = tokenizePath(query);
+    var result = evaluatePath(segments, parsedJSON);
 
     hasResult = result.found;
     currentResult = result.value;
@@ -1455,6 +1528,7 @@ html, body {
       dom.noMatch.classList.add('visible');
       dom.resultCount.textContent = '';
       dom.resultSize.textContent = '';
+      dom.resultLineNumbers.innerHTML = '';
     } else {
       displayResult(result.value);
     }
@@ -1480,12 +1554,13 @@ html, body {
       }
     }
 
-    const resultStr = JSON.stringify(value, null, 2) || '';
+    var resultStr = JSON.stringify(value, null, 2) || '';
     dom.resultSize.textContent = formatSize(byteSize(resultStr));
+    updatePanelLineNumbers(dom.resultLineNumbers, dom.resultOutput.textContent);
   }
 
   function renderTreeView() {
-    const data = hasResult ? currentResult : parsedJSON;
+    var data = hasResult ? currentResult : parsedJSON;
     if (!data || !parseOk) {
       dom.treePanel.innerHTML = '<div style="color:var(--text-muted);padding:20px;">No data to display</div>';
       return;
@@ -1494,17 +1569,15 @@ html, body {
   }
 
   function renderTSView() {
-    const data = hasResult ? currentResult : parsedJSON;
+    var data = hasResult ? currentResult : parsedJSON;
     if (!data || !parseOk) {
-      dom.tsPanel.innerHTML = '<div style="color:var(--text-muted);padding:20px;">No data to display</div>';
+      dom.tsContent.innerHTML = '<div style="color:var(--text-muted);padding:20px;">No data to display</div>';
+      dom.tsLineNumbers.innerHTML = '';
       return;
     }
-    dom.tsPanel.innerHTML = renderTSInterfaces(data, dom.queryInput.value.trim());
+    dom.tsContent.innerHTML = renderTSInterfaces(data, dom.queryInput.value.trim());
+    updatePanelLineNumbers(dom.tsLineNumbers, dom.tsContent.textContent);
   }
-
-  // ============================================================
-  // View Mode Switching
-  // ============================================================
 
   function setViewMode(mode) {
     viewMode = mode;
@@ -1512,7 +1585,6 @@ html, body {
     dom.resultPanel.style.display = mode === 'result' ? '' : 'none';
     dom.treePanel.classList.toggle('visible', mode === 'tree');
     dom.tsPanel.classList.toggle('visible', mode === 'ts');
-    dom.resultPanel.style.display = mode === 'result' ? '' : 'none';
 
     dom.btnTree.classList.toggle('active', mode === 'tree');
     dom.btnTs.classList.toggle('active', mode === 'ts');
@@ -1524,22 +1596,13 @@ html, body {
     if (mode === 'ts') renderTSView();
   }
 
-  // ============================================================
-  // Autocomplete
-  // ============================================================
-
   function updateAutocomplete() {
     if (!parseOk || !parsedJSON) {
       hideAutocomplete();
       return;
     }
-    const query = dom.queryInput.value;
-    if (!query) {
-      // Show top-level keys
-      acItems = getAutocompleteSuggestions(parsedJSON, '');
-    } else {
-      acItems = getAutocompleteSuggestions(parsedJSON, query);
-    }
+    var query = dom.queryInput.value;
+    acItems = getAutocompleteSuggestions(parsedJSON, query || '');
 
     if (acItems.length === 0) {
       hideAutocomplete();
@@ -1547,8 +1610,8 @@ html, body {
     }
 
     acIndex = -1;
-    let html = '';
-    for (let i = 0; i < acItems.length; i++) {
+    var html = '';
+    for (var i = 0; i < acItems.length; i++) {
       html += '<div class="ac-item" data-index="' + i + '">' +
         '<span class="ac-key">' + escapeHtml(acItems[i].display) + '</span>' +
         '<span class="ac-type">' + escapeHtml(acItems[i].type) + '</span></div>';
@@ -1556,13 +1619,11 @@ html, body {
     dom.autocomplete.innerHTML = html;
     dom.autocomplete.classList.add('visible');
 
-    // Add click handlers
-    const items = dom.autocomplete.querySelectorAll('.ac-item');
+    var items = dom.autocomplete.querySelectorAll('.ac-item');
     items.forEach(function(el) {
       el.addEventListener('mousedown', function(e) {
         e.preventDefault();
-        const idx = parseInt(el.dataset.index, 10);
-        selectAutocomplete(idx);
+        selectAutocomplete(parseInt(el.dataset.index, 10));
       });
     });
   }
@@ -1589,23 +1650,17 @@ html, body {
     if (acIndex < 0) acIndex = acItems.length - 1;
     if (acIndex >= acItems.length) acIndex = 0;
 
-    const items = dom.autocomplete.querySelectorAll('.ac-item');
+    var items = dom.autocomplete.querySelectorAll('.ac-item');
     items.forEach(function(el, i) {
       el.classList.toggle('active', i === acIndex);
     });
   }
 
-  // ============================================================
-  // Event Handlers
-  // ============================================================
-
-  // JSON input
   dom.jsonInput.addEventListener('input', onInputChange);
 
-  // Auto-format on paste
-  dom.jsonInput.addEventListener('paste', function(e) {
+  dom.jsonInput.addEventListener('paste', function() {
     setTimeout(function() {
-      const result = tryParseJSON(dom.jsonInput.value);
+      var result = tryParseJSON(dom.jsonInput.value);
       if (result.ok) {
         dom.jsonInput.value = JSON.stringify(result.value, null, 2);
         onInputChange();
@@ -1613,15 +1668,9 @@ html, body {
     }, 0);
   });
 
-  // Query input
   dom.queryInput.addEventListener('input', onQueryChange);
-
-  dom.queryInput.addEventListener('focus', function() {
-    updateAutocomplete();
-  });
-
+  dom.queryInput.addEventListener('focus', updateAutocomplete);
   dom.queryInput.addEventListener('blur', function() {
-    // Delay to allow click on autocomplete item
     setTimeout(hideAutocomplete, 150);
   });
 
@@ -1647,7 +1696,6 @@ html, body {
     }
   });
 
-  // Toolbar buttons
   dom.btnTree.addEventListener('click', function() {
     setViewMode(viewMode === 'tree' ? 'result' : 'tree');
   });
@@ -1656,15 +1704,9 @@ html, body {
     setViewMode(viewMode === 'ts' ? 'result' : 'ts');
   });
 
-  dom.btnCopy.addEventListener('click', function() {
-    copyResult();
-  });
+  dom.btnCopy.addEventListener('click', copyResult);
+  dom.btnFormat.addEventListener('click', formatInput);
 
-  dom.btnFormat.addEventListener('click', function() {
-    formatInput();
-  });
-
-  // Theme toggle: system → light → dark → system
   var themeCycle = ['system', 'light', 'dark'];
   var themeLabels = { system: 'System', light: 'Light', dark: 'Dark' };
 
@@ -1683,25 +1725,104 @@ html, body {
     applyTheme(themeCycle[nextIdx]);
   });
 
-  // Initialize theme from localStorage
   applyTheme(localStorage.getItem('theme') || 'system');
 
-  // Keyboard shortcuts
+  function closeActionsMenu() {
+    dom.actionsMenu.classList.remove('visible');
+  }
+
+  dom.btnActions.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dom.actionsMenu.classList.toggle('visible');
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!dom.actionsMenu.contains(e.target) && e.target !== dom.btnActions) {
+      closeActionsMenu();
+    }
+  });
+
+  document.getElementById('action-new').addEventListener('click', function() {
+    closeActionsMenu();
+    dom.jsonInput.value = '';
+    dom.queryInput.value = '';
+    history.replaceState(null, '', window.location.pathname);
+    onInputChange();
+    dom.jsonInput.focus();
+    showToast('Cleared');
+  });
+
+  document.getElementById('action-qr').addEventListener('click', function() {
+    closeActionsMenu();
+    window.location.href = '/qr' + window.location.hash;
+  });
+
+  document.getElementById('action-share').addEventListener('click', function() {
+    closeActionsMenu();
+    navigator.clipboard.writeText(window.location.href).then(function() {
+      showToast('URL copied to clipboard');
+    }).catch(function() {
+      showToast('Failed to copy URL');
+    });
+  });
+
+  function downloadFile(filename, content, mimeType) {
+    var blob = new Blob([content], { type: mimeType });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.getElementById('action-download-json').addEventListener('click', function() {
+    closeActionsMenu();
+    var text = getResultText();
+    if (!text) {
+      showToast('Nothing to download');
+      return;
+    }
+    downloadFile('data.json', text, 'application/json');
+    showToast('Downloaded data.json');
+  });
+
+  document.getElementById('action-download-ts').addEventListener('click', function() {
+    closeActionsMenu();
+    var text = dom.tsContent.textContent;
+    if (!text || !text.trim()) {
+      showToast('No TypeScript types to download');
+      return;
+    }
+    downloadFile('types.d.ts', text, 'text/plain');
+    showToast('Downloaded types.d.ts');
+  });
+
+  document.getElementById('action-about').addEventListener('click', function() {
+    closeActionsMenu();
+    window.location.href = '/about' + window.location.hash;
+  });
+
+  document.getElementById('action-github').addEventListener('click', function() {
+    closeActionsMenu();
+    window.open('https://github.com/uditalias/json.my', '_blank');
+  });
+
   document.addEventListener('keydown', function(e) {
-    // Cmd/Ctrl+L — Focus query bar
+    if (e.key === 'Escape') {
+      closeActionsMenu();
+    }
     if ((e.metaKey || e.ctrlKey) && e.key === 'l') {
       e.preventDefault();
       dom.queryInput.focus();
       dom.queryInput.select();
     }
-
-    // Cmd/Ctrl+Shift+C — Copy result
     if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'C') {
       e.preventDefault();
       copyResult();
     }
-
-    // Cmd/Ctrl+Enter — Format
     if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
       e.preventDefault();
       formatInput();
@@ -1709,13 +1830,11 @@ html, body {
   });
 
   function copyResult() {
-    if (!hasResult || currentResult === undefined) {
+    var text = getResultText();
+    if (!text) {
       showToast('Nothing to copy');
       return;
     }
-    const text = typeof currentResult === 'string'
-      ? currentResult
-      : JSON.stringify(currentResult, null, 2);
     navigator.clipboard.writeText(text).then(function() {
       showToast('Copied to clipboard');
     }).catch(function() {
@@ -1724,7 +1843,7 @@ html, body {
   }
 
   function formatInput() {
-    const result = tryParseJSON(dom.jsonInput.value);
+    var result = tryParseJSON(dom.jsonInput.value);
     if (result.ok) {
       dom.jsonInput.value = JSON.stringify(result.value, null, 2);
       onInputChange();
@@ -1734,22 +1853,13 @@ html, body {
     }
   }
 
-  // ============================================================
-  // Hash change listener
-  // ============================================================
-
   window.addEventListener('hashchange', function() {
     if (!suppressHashUpdate) {
       loadFromHash();
     }
   });
 
-  // ============================================================
-  // Initialize
-  // ============================================================
-
   loadFromHash().then(function() {
-    // If no hash state, trigger initial state
     if (!dom.jsonInput.value) {
       onInputChange();
     }

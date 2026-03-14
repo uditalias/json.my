@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>json.express — About</title>
+<meta name="description" content="About json.express — a fast, zero-dependency JSON query and explorer tool built by Udi Talias.">
+<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html {
+    color-scheme: light dark;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: light-dark(#1f2328, #e6edf3);
+    background: light-dark(#f6f8fa, #0d1117);
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* ===== Back link ===== */
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: light-dark(#656d76, #8b949e);
+    text-decoration: none;
+    margin-bottom: 48px;
+    transition: color 0.15s;
+  }
+  .back:hover { color: light-dark(#1f2328, #e6edf3); }
+  .back svg { width: 16px; height: 16px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    margin-bottom: 64px;
+  }
+  .hero-logo {
+    font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+  .hero-logo .brace {
+    color: light-dark(#0969da, #58a6ff);
+  }
+  .hero-tagline {
+    font-size: 20px;
+    color: light-dark(#656d76, #8b949e);
+    font-weight: 400;
+  }
+
+  /* ===== Sections ===== */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: light-dark(#656d76, #8b949e);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid light-dark(#d0d7de, #30363d);
+  }
+  .section p {
+    margin-bottom: 12px;
+  }
+
+  /* ===== Ideas grid ===== */
+  .ideas {
+    display: grid;
+    gap: 12px;
+  }
+  .idea {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    background: light-dark(#ffffff, #161b22);
+    border: 1px solid light-dark(#d0d7de, #30363d);
+    border-radius: 10px;
+    transition: border-color 0.15s;
+  }
+  .idea:hover {
+    border-color: light-dark(#0969da, #58a6ff);
+  }
+  .idea-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: light-dark(#f3f4f6, #21262d);
+    border-radius: 8px;
+  }
+  .idea-content {
+    min-width: 0;
+  }
+  .idea-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+  .idea-desc {
+    font-size: 14px;
+    color: light-dark(#656d76, #8b949e);
+    line-height: 1.5;
+  }
+
+  /* ===== Query examples ===== */
+  code {
+    font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+    font-size: 13px;
+    padding: 2px 6px;
+    background: light-dark(#f3f4f6, #21262d);
+    border-radius: 4px;
+  }
+
+  /* ===== Author ===== */
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: light-dark(#ffffff, #161b22);
+    border: 1px solid light-dark(#d0d7de, #30363d);
+    border-radius: 12px;
+  }
+  .author-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid light-dark(#d0d7de, #30363d);
+  }
+  .author-info {
+    min-width: 0;
+  }
+  .author-name {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .author-bio {
+    font-size: 14px;
+    color: light-dark(#656d76, #8b949e);
+    margin-bottom: 8px;
+  }
+  .author-links {
+    display: flex;
+    gap: 16px;
+  }
+  .author-links a {
+    font-size: 13px;
+    color: light-dark(#0969da, #58a6ff);
+    text-decoration: none;
+  }
+  .author-links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ===== Footer ===== */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid light-dark(#d0d7de, #30363d);
+    font-size: 13px;
+    color: light-dark(#656d76, #8b949e);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer a {
+    color: light-dark(#0969da, #58a6ff);
+    text-decoration: none;
+  }
+  .footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .footer-dot {
+    margin: 0 8px;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a class="back" id="back" href="/">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to editor
+  </a>
+
+  <div class="hero">
+    <div class="hero-logo"><span class="brace">{</span> json.express <span class="brace">}</span></div>
+    <div class="hero-tagline">Query and explore JSON, right in your browser.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What is this</div>
+    <p>
+      <strong>json.express</strong> is a single-file, zero-dependency web app for working with JSON.
+      Paste any JSON, write a query, and instantly see the result &mdash; syntax-highlighted,
+      as a collapsible tree, or as auto-generated TypeScript interfaces.
+    </p>
+    <p>
+      No data ever leaves your browser. Everything runs client-side &mdash;
+      parsing, querying, formatting, and type inference. Your JSON stays yours.
+    </p>
+    <p>
+      The entire app is compressed into the URL hash, so you can bookmark or share
+      any state with a single link.
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Query syntax</div>
+    <p>
+      The query bar supports a rich path expression language:
+    </p>
+    <p>
+      <code>users[0].name</code> &mdash; dot notation and array indexing<br>
+      <code>users[*].email</code> &mdash; wildcard to collect from all items<br>
+      <code>users[0:3]</code> &mdash; array slicing<br>
+      <code>..id</code> &mdash; recursive descent to find all <code>id</code> fields<br>
+      <code>["special-key"]</code> &mdash; bracket notation for special characters
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Ideas &amp; use cases</div>
+    <div class="ideas">
+      <div class="idea">
+        <div class="idea-icon">&#128270;</div>
+        <div class="idea-content">
+          <div class="idea-title">Debug API responses</div>
+          <div class="idea-desc">Paste a raw API response and drill down to the exact nested field you need. Great for exploring unfamiliar endpoints.</div>
+        </div>
+      </div>
+      <div class="idea">
+        <div class="idea-icon">&#9997;&#65039;</div>
+        <div class="idea-content">
+          <div class="idea-title">Generate TypeScript types</div>
+          <div class="idea-desc">Switch to the TS view and get instant interfaces from any JSON. Copy them straight into your codebase.</div>
+        </div>
+      </div>
+      <div class="idea">
+        <div class="idea-icon">&#128279;</div>
+        <div class="idea-content">
+          <div class="idea-title">Share JSON snippets</div>
+          <div class="idea-desc">The URL encodes your data and query. Share a link with a teammate instead of pasting blocks of JSON in Slack.</div>
+        </div>
+      </div>
+      <div class="idea">
+        <div class="idea-icon">&#128466;</div>
+        <div class="idea-content">
+          <div class="idea-title">Format messy JSON</div>
+          <div class="idea-desc">Paste minified or poorly formatted JSON and hit Format. Handles trailing commas and comments too.</div>
+        </div>
+      </div>
+      <div class="idea">
+        <div class="idea-icon">&#127795;</div>
+        <div class="idea-content">
+          <div class="idea-title">Explore nested structures</div>
+          <div class="idea-desc">Use the Tree view to expand and collapse deeply nested objects. Navigate large configs or data dumps without getting lost.</div>
+        </div>
+      </div>
+      <div class="idea">
+        <div class="idea-icon">&#128246;</div>
+        <div class="idea-content">
+          <div class="idea-title">Works offline</div>
+          <div class="idea-desc">json.express is a PWA. Once loaded, it works without an internet connection &mdash; perfect for flights or flaky Wi-Fi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">About the author</div>
+    <div class="author">
+      <img
+        class="author-avatar"
+        src="https://www.gravatar.com/avatar/838347acc4c97bfc938a2dac4043bd2a?s=144"
+        alt="Udi Talias"
+        width="72"
+        height="72"
+      >
+      <div class="author-info">
+        <div class="author-name">Udi Talias</div>
+        <div class="author-bio">Web engineer who creates things that live inside your browser. In love with JavaScript and building small, focused tools that do one thing well.</div>
+        <div class="author-links">
+          <a href="https://github.com/uditalias" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Feedback &amp; suggestions</div>
+    <p>
+      Found a bug? Have an idea for a new feature? Want to suggest an improvement?
+      Open an issue on GitHub &mdash; all feedback is welcome.
+    </p>
+    <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+      <a href="https://github.com/uditalias/json.my/issues/new?template=bug_report.md" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: light-dark(#f3f4f6, #21262d); border: 1px solid light-dark(#d0d7de, #30363d); border-radius: 8px; font-size: 14px; text-decoration: none; color: inherit; transition: border-color 0.15s;">Report a bug</a>
+      <a href="https://github.com/uditalias/json.my/issues/new?template=feature_request.md" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: light-dark(#f3f4f6, #21262d); border: 1px solid light-dark(#d0d7de, #30363d); border-radius: 8px; font-size: 14px; text-decoration: none; color: inherit; transition: border-color 0.15s;">Request a feature</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>
+      <a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">Source on GitHub</a>
+      <span class="footer-dot">&middot;</span>
+      Zero dependencies. Single file. MIT.
+    </span>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  // Preserve hash for back navigation
+  var hash = location.hash || '';
+  var back = document.getElementById('back');
+  back.href = '/' + hash;
+})();
+</script>
+</body>
+</html>

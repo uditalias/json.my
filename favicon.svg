@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .b { fill: #0d1117; }
+    .t { fill: #e6edf3; }
+    @media (prefers-color-scheme: light) {
+      .b { fill: #f6f8fa; }
+      .t { fill: #1f2328; }
+    }
+  </style>
+  <rect class="b" width="64" height="64" rx="14"/>
+  <text class="t" x="32" y="44" font-family="monospace" font-size="32" font-weight="bold" text-anchor="middle">{}</text>
+</svg>
