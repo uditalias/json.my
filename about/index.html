@@ -51,10 +51,11 @@
   }
   .hero-logo {
     font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
-    font-size: 48px;
+    font-size: clamp(32px, 8vw, 48px);
     font-weight: 700;
     letter-spacing: -2px;
     margin-bottom: 8px;
+    white-space: nowrap;
   }
   .hero-logo .brace {
     color: light-dark(#0969da, #58a6ff);
