@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free Online JSON Validator & Linter — json.express</title>
+<meta name="description" content="Validate JSON instantly. Get clear error messages with line numbers. Handles comments and trailing commas with lenient mode. Free, private — runs entirely in your browser.">
+<meta name="keywords" content="json validator, json validator online, json lint, validate json, jsonlint, json checker, json syntax check">
+<meta property="og:title" content="Free Online JSON Validator & Linter — json.express">
+<meta property="og:description" content="Validate JSON instantly. Get clear error messages with line numbers. Handles comments and trailing commas with lenient mode. Free, private — runs entirely in your browser.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/validate/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Online JSON Validator & Linter — json.express">
+<meta name="twitter:description" content="Validate JSON instantly. Get clear error messages with line numbers. Handles comments and trailing commas with lenient mode. Free, private — runs entirely in your browser.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/validate/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online JSON Validator & Linter",
+  "description": "Validate JSON instantly. Get clear error messages with line numbers. Handles comments and trailing commas with lenient mode. Free, private — runs entirely in your browser.",
+  "url": "https://json.express/validate/",
+  "image": "https://json.express/og-card.png",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "json.express JSON Validator",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free Online JSON Validator & Linter</h1>
+  <p class="tagline">Validate JSON instantly. See clear error messages. Supports both strict JSON and lenient mode with comments and trailing commas.</p>
+
+  <div class="demo">
+    <div class="demo-label">Try It Now</div>
+    <textarea id="demo-input" placeholder="Paste your JSON here...">{"name":"Alice","age":30,"hobbies":["reading","coding",]}</textarea>
+
+    <div class="demo-toolbar">
+      <button id="btn-validate" class="demo-btn">Validate</button>
+    </div>
+
+    <div id="validation-results" style="display:none;">
+      <div class="demo-stats">
+        <div class="demo-status demo-status--valid">
+          <div class="demo-label">Strict JSON</div>
+          <div id="strict-status"></div>
+          <div id="strict-message"></div>
+        </div>
+        <div class="demo-status demo-status--valid">
+          <div class="demo-label">Lenient Mode</div>
+          <div id="lenient-status"></div>
+          <div id="lenient-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-toolbar">
+      <button id="btn-open-editor" class="demo-btn">Open in Full Editor</button>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <p>Need more features? The full editor has tree view, TypeScript generation, URL sharing, and more.</p>
+    <button class="cta" onclick="document.getElementById('btn-open-editor').click()">Open Full Editor</button>
+  </div>
+
+  <h2>What is JSON Validation?</h2>
+  <p>JSON validation is the process of checking whether a JSON string conforms to the JSON specification. A validator ensures your data is syntactically correct, making it safe to parse and use in your applications.</p>
+  <p>JSON comes in two flavors: <strong>strict</strong> (standard JSON specification) and <strong>lenient</strong> (allowing comments and trailing commas, common in configuration files). Understanding the difference helps you catch errors early and debug data issues faster.</p>
+
+  <h2>Common JSON Errors</h2>
+  <p>The most frequent JSON syntax errors include:</p>
+  <ul>
+    <li><strong>Trailing commas:</strong> <code>{"key": "value",}</code> — valid in lenient mode, invalid in strict JSON.</li>
+    <li><strong>Single quotes:</strong> <code>{'key': 'value'}</code> — JSON requires double quotes.</li>
+    <li><strong>Comments:</strong> <code>{"key": "value"} // comment</code> — valid in lenient mode, invalid in strict JSON.</li>
+    <li><strong>Unquoted keys:</strong> <code>{key: "value"}</code> — all keys must be quoted.</li>
+    <li><strong>Missing commas:</strong> <code>{"a": 1 "b": 2}</code> — elements must be separated by commas.</li>
+    <li><strong>Mismatched brackets:</strong> <code>{"key": [1, 2, 3}</code> — arrays and objects must close correctly.</li>
+  </ul>
+
+  <h2>Strict vs Lenient Validation</h2>
+  <p><strong>Strict JSON</strong> follows the official JSON specification exactly. It's the standard for APIs, web services, and data interchange. If your JSON fails strict validation, it cannot be parsed by standard JSON parsers.</p>
+  <p><strong>Lenient mode</strong> is more forgiving and supports JavaScript-like syntax, including:</p>
+  <ul>
+    <li>Trailing commas in objects and arrays</li>
+    <li>Single-line comments: <code>//</code></li>
+    <li>Multi-line comments: <code>/* */</code></li>
+  </ul>
+  <p>Lenient mode is perfect for configuration files (like <code>tsconfig.json</code> or <code>.babelrc</code>) where readability and comments matter. Use strict validation when working with APIs and data formats.</p>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">⚡</div>
+      <div class="feature-card-title">Instant Validation</div>
+      <div class="feature-card-desc">Validate JSON as you type. No waiting, no server uploads—everything runs instantly in your browser.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">💬</div>
+      <div class="feature-card-title">Clear Error Messages</div>
+      <div class="feature-card-desc">Get precise error messages that tell you exactly what went wrong and where.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">⚙️</div>
+      <div class="feature-card-title">Strict & Lenient Modes</div>
+      <div class="feature-card-desc">See how your JSON validates in both strict JSON and lenient mode side-by-side.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">✓</div>
+      <div class="feature-card-title">Comment & Trailing Comma Support</div>
+      <div class="feature-card-desc">Validate JSON with JavaScript-style comments and trailing commas in lenient mode.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">Privacy First</div>
+      <div class="feature-card-desc">Your data never leaves your browser. We don't store, log, or transmit any of your JSON.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">0️⃣</div>
+      <div class="feature-card-title">Zero Dependencies</div>
+      <div class="feature-card-desc">Lightweight and fast. No frameworks, no plugins, just pure JavaScript.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">JSON Formatter</a>
+      <a class="related-tool-link" href="/minify/">JSON Minifier</a>
+      <a class="related-tool-link" href="/viewer/">JSON Viewer</a>
+      <a class="related-tool-link" href="/query/">JSON Query</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+<script>
+  function lenientParse(text) {
+    var cleaned = '';
+    var i = 0;
+    var len = text.length;
+    while (i < len) {
+      if (text[i] === '"') {
+        cleaned += '"';
+        i++;
+        while (i < len && text[i] !== '"') {
+          if (text[i] === '\\' && i + 1 < len) { cleaned += text[i] + text[i + 1]; i += 2; }
+          else { cleaned += text[i]; i++; }
+        }
+        if (i < len) { cleaned += '"'; i++; }
+      } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
+        i += 2;
+        while (i < len && text[i] !== '\n') i++;
+      } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
+        i += 2;
+        while (i < len && !(text[i] === '*' && i + 1 < len && text[i + 1] === '/')) i++;
+        if (i < len) i += 2;
+      } else { cleaned += text[i]; i++; }
+    }
+    cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+    return JSON.parse(cleaned);
+  }
+
+  var demoInput = document.getElementById('demo-input');
+  var btnValidate = document.getElementById('btn-validate');
+  var validationResults = document.getElementById('validation-results');
+  var strictStatus = document.getElementById('strict-status');
+  var strictMessage = document.getElementById('strict-message');
+  var lenientStatus = document.getElementById('lenient-status');
+  var lenientMessage = document.getElementById('lenient-message');
+
+  btnValidate.addEventListener('click', function() {
+    var input = demoInput.value.trim();
+    if (!input) {
+      validationResults.style.display = 'none';
+      return;
+    }
+
+    var strictValid = false;
+    var strictError = '';
+    try {
+      JSON.parse(input);
+      strictValid = true;
+      strictError = 'Valid JSON';
+    } catch (e) {
+      strictError = e.message;
+    }
+
+    var lenientValid = false;
+    var lenientError = '';
+    try {
+      lenientParse(input);
+      lenientValid = true;
+      lenientError = 'Valid JSON (with lenient parsing)';
+    } catch (e) {
+      lenientError = e.message;
+    }
+
+    validationResults.style.display = 'grid';
+
+    strictStatus.className = 'demo-status ' + (strictValid ? 'demo-status--valid' : 'demo-status--invalid');
+    strictStatus.textContent = strictValid ? 'Valid' : 'Invalid';
+    strictMessage.textContent = strictError;
+
+    lenientStatus.className = 'demo-status ' + (lenientValid ? 'demo-status--valid' : 'demo-status--invalid');
+    lenientStatus.textContent = lenientValid ? 'Valid' : 'Invalid';
+    lenientMessage.textContent = lenientError;
+  });
+
+  var validateTimeout;
+  demoInput.addEventListener('input', function() {
+    clearTimeout(validateTimeout);
+    validateTimeout = setTimeout(function() {
+      btnValidate.click();
+    }, 500);
+  });
+
+  window.addEventListener('load', function() {
+    btnValidate.click();
+  });
+</script>
+
+  <script>
+    // Lenient JSON Parser
+    function lenientParse(text) {
+      var cleaned = '';
+      var i = 0;
+      var len = text.length;
+      while (i < len) {
+        if (text[i] === '"') {
+          cleaned += '"';
+          i++;
+          while (i < len && text[i] !== '"') {
+            if (text[i] === '\\' && i + 1 < len) { cleaned += text[i] + text[i + 1]; i += 2; }
+            else { cleaned += text[i]; i++; }
+          }
+          if (i < len) { cleaned += '"'; i++; }
+        } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
+          i += 2;
+          while (i < len && text[i] !== '\n') i++;
+        } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
+          i += 2;
+          while (i < len && !(text[i] === '*' && i + 1 < len && text[i + 1] === '/')) i++;
+          if (i < len) i += 2;
+        } else { cleaned += text[i]; i++; }
+      }
+      cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+      return JSON.parse(cleaned);
+    }
+
+    // DOM Elements
+    var demoInput = document.getElementById('demo-input');
+    var btnValidate = document.getElementById('btn-validate');
+    var validationResults = document.getElementById('validation-results');
+    var strictStatus = document.getElementById('strict-status');
+    var strictMessage = document.getElementById('strict-message');
+    var lenientStatus = document.getElementById('lenient-status');
+    var lenientMessage = document.getElementById('lenient-message');
+
+    // Validate Button Handler
+    btnValidate.addEventListener('click', function() {
+      var input = demoInput.value.trim();
+      if (!input) {
+        validationResults.style.display = 'none';
+        return;
+      }
+
+      // Try strict validation
+      var strictValid = false;
+      var strictError = '';
+      try {
+        JSON.parse(input);
+        strictValid = true;
+        strictError = 'Valid JSON';
+      } catch (e) {
+        strictError = e.message;
+      }
+
+      // Try lenient validation
+      var lenientValid = false;
+      var lenientError = '';
+      try {
+        lenientParse(input);
+        lenientValid = true;
+        lenientError = 'Valid JSON (with lenient parsing)';
+      } catch (e) {
+        lenientError = e.message;
+      }
+
+      // Update UI
+      validationResults.style.display = 'grid';
+
+      // Strict result
+      strictStatus.className = 'validation-result-status ' + (strictValid ? 'valid' : 'invalid');
+      strictStatus.textContent = strictValid ? 'Valid' : 'Invalid';
+      strictMessage.textContent = strictError;
+
+      // Lenient result
+      lenientStatus.className = 'validation-result-status ' + (lenientValid ? 'valid' : 'invalid');
+      lenientStatus.textContent = lenientValid ? 'Valid' : 'Invalid';
+      lenientMessage.textContent = lenientError;
+    });
+
+    // Auto-validate on input (with slight delay)
+    var validateTimeout;
+    demoInput.addEventListener('input', function() {
+      clearTimeout(validateTimeout);
+      validateTimeout = setTimeout(function() {
+        btnValidate.click();
+      }, 500);
+    });
+
+    // Validate on page load with default input
+    window.addEventListener('load', function() {
+      btnValidate.click();
+    });
+
+    async function openInEditor(json, query) {
+      var state = { json: json };
+      if (query) state.query = query;
+      var blob = new Blob([JSON.stringify(state)]);
+      var cs = new CompressionStream('deflate');
+      var stream = blob.stream().pipeThrough(cs);
+      var compressedBlob = await new Response(stream).blob();
+      var buffer = await compressedBlob.arrayBuffer();
+      var bytes = new Uint8Array(buffer);
+      var binary = '';
+      for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      window.open('/#' + hash, '_blank');
+    }
+
+    document.getElementById('btn-open-editor').addEventListener('click', function() {
+      openInEditor(demoInput.value);
+    });
+  </script>
+</body>
+</html>

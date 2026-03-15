@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Generate TypeScript Types from JSON in Seconds — json.express</title>
+<meta name="description" content="Learn how to automatically generate TypeScript interfaces from JSON data. Covers nested objects, arrays, union types, and optional properties.">
+<meta name="keywords" content="json to typescript, generate typescript interfaces, json to ts online, typescript from json, json type generator">
+<meta property="og:title" content="Generate TypeScript Types from JSON in Seconds — json.express">
+<meta property="og:description" content="Learn how to automatically generate TypeScript interfaces from JSON data. Covers nested objects, arrays, union types, and optional properties.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/generate-typescript-from-json/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Generate TypeScript Types from JSON in Seconds — json.express">
+<meta name="twitter:description" content="Learn how to automatically generate TypeScript interfaces from JSON data. Covers nested objects, arrays, union types, and optional properties.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/generate-typescript-from-json/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Generate TypeScript Types from JSON in Seconds",
+  "description": "Learn how to automatically generate TypeScript interfaces from JSON data. Covers nested objects, arrays, union types, and optional properties.",
+  "url": "https://json.express/blog/generate-typescript-from-json/",
+  "datePublished": "2026-03-03",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; Generate TypeScript Types from JSON in Seconds
+  </div>
+
+  <article class="article">
+    <h1>Generate TypeScript Types from JSON in Seconds</h1>
+    <p class="article-meta">2026-03-03 &middot; By Udi Talias</p>
+
+    <p>If you&#39;ve ever received a JSON API response and spent thirty minutes writing TypeScript interfaces by hand, you know the pain. Every nested object means another <code>interface</code>. Every optional field requires <code>?</code>. Every array of objects requires type inference and merging. It&#39;s tedious, error-prone, and exactly the kind of work that computers should handle.</p>
+<p>This is where JSON-to-TypeScript generation comes in—and it&#39;s a game-changer for type-safe development.</p>
+<h2>Why Type Safety Matters with JSON APIs</h2>
+<p>JSON APIs return untyped data. When you fetch from an endpoint, you get a plain JavaScript object with no shape guarantees. Without types, you&#39;re vulnerable to:</p>
+<ul>
+<li><strong>Runtime errors</strong>: Accessing a property that doesn&#39;t exist (<code>user.adress</code> instead of <code>user.address</code>) fails silently until runtime</li>
+<li><strong>IDE limitations</strong>: No autocomplete, no inline documentation, no error detection</li>
+<li><strong>Refactoring risks</strong>: Rename a field in the backend, and your frontend breaks without warning</li>
+<li><strong>Developer friction</strong>: Manual type definitions become outdated when APIs evolve</li>
+</ul>
+<p>TypeScript solves this, but only if you have accurate interfaces. Manual interface writing is the bottleneck.</p>
+<h2>The Manual Pain</h2>
+<p>Here&#39;s what manual TypeScript typing looks like. Suppose you fetch a user response:</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: 1,
+  &quot;name&quot;: &quot;Alice&quot;,
+  &quot;email&quot;: &quot;alice@example.com&quot;,
+  &quot;profile&quot;: {
+    &quot;avatar&quot;: &quot;https://example.com/avatar.jpg&quot;,
+    &quot;bio&quot;: &quot;Software engineer&quot;,
+    &quot;following&quot;: 42,
+    &quot;followers&quot;: null
+  },
+  &quot;posts&quot;: [
+    {
+      &quot;id&quot;: 101,
+      &quot;title&quot;: &quot;TypeScript Tips&quot;,
+      &quot;published&quot;: true,
+      &quot;tags&quot;: [&quot;typescript&quot;, &quot;web&quot;]
+    }
+  ],
+  &quot;metadata&quot;: {
+    &quot;createdAt&quot;: &quot;2025-01-15T10:30:00Z&quot;,
+    &quot;lastLogin&quot;: null
+  }
+}
+</code></pre>
+<p>Writing this by hand:</p>
+<pre><code class="language-typescript">interface Profile {
+  avatar: string;
+  bio: string;
+  following: number;
+  followers: null;  // or number | null?
+}
+
+interface Post {
+  id: number;
+  title: string;
+  published: boolean;
+  tags: string[];
+}
+
+interface Metadata {
+  createdAt: string;
+  lastLogin: null;  // or string | null?
+}
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  profile: Profile;
+  posts: Post[];
+  metadata: Metadata;
+}
+</code></pre>
+<p>You have to:</p>
+<ul>
+<li>Spot every nested object and create an interface for it</li>
+<li>Infer types from values (is <code>followers: null</code> actually <code>number | null</code>?)</li>
+<li>Decide whether fields are optional</li>
+<li>Keep everything in sync as the API evolves</li>
+</ul>
+<p>Multiply this by dozens of endpoints and you&#39;re spending hours on boilerplate.</p>
+<h2>How json.express Auto-Generates TypeScript</h2>
+<p>With json.express, the workflow is:</p>
+<ol>
+<li><strong>Paste your JSON</strong> into the input panel</li>
+<li><strong>Click the TypeScript view</strong> (or use the view toggle)</li>
+<li><strong>Copy the generated interfaces</strong></li>
+<li><strong>Paste into your codebase</strong></li>
+</ol>
+<p>That&#39;s it. No waiting, no manual work.</p>
+<h3>What Gets Generated</h3>
+<p>json.express analyzes your JSON and:</p>
+<p><strong>Nested objects</strong> → Creates separate interfaces with proper relationships:</p>
+<pre><code class="language-typescript">interface Profile {
+  avatar: string;
+  bio: string;
+  following: number;
+  followers: null;
+}
+
+interface User {
+  profile: Profile;
+  // ... other fields
+}
+</code></pre>
+<p><strong>Arrays of objects</strong> → Merges properties intelligently. If you have an array like:</p>
+<pre><code class="language-json">[
+  { &quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot;, &quot;role&quot;: &quot;admin&quot; },
+  { &quot;id&quot;: 2, &quot;name&quot;: &quot;Bob&quot; },
+  { &quot;id&quot;: 3, &quot;name&quot;: &quot;Charlie&quot;, &quot;role&quot;: &quot;user&quot; }
+]
+</code></pre>
+<p>It generates:</p>
+<pre><code class="language-typescript">interface Item {
+  id: number;
+  name: string;
+  role?: string;  // Optional because not all items have it
+}
+</code></pre>
+<p>Notice <code>role?</code> — the generator recognizes that not every object includes it, so it marks the field optional.</p>
+<p><strong>Union types</strong> → When a field can be different types:</p>
+<pre><code class="language-typescript">followers: number | null;
+tags: string[] | null;
+</code></pre>
+<p><strong>Optional properties</strong> → Fields missing from some objects get <code>?</code>:</p>
+<pre><code class="language-typescript">interface Post {
+  id: number;
+  title: string;
+  published?: boolean;  // Not in every post
+}
+</code></pre>
+<h2>Real-World Example: API Response</h2>
+<p>Let&#39;s say you&#39;re building a social feed and fetch:</p>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;data&quot;: {
+    &quot;posts&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;author&quot;: {
+          &quot;id&quot;: 101,
+          &quot;name&quot;: &quot;Alice&quot;,
+          &quot;avatar&quot;: &quot;https://...&quot;
+        },
+        &quot;content&quot;: &quot;Check this out&quot;,
+        &quot;likes&quot;: 234,
+        &quot;comments&quot;: [
+          {
+            &quot;id&quot;: 1001,
+            &quot;author&quot;: &quot;Bob&quot;,
+            &quot;text&quot;: &quot;Great!&quot;
+          }
+        ],
+        &quot;published&quot;: &quot;2026-03-10T14:22:00Z&quot;,
+        &quot;edited&quot;: null
+      }
+    ],
+    &quot;nextPage&quot;: &quot;page=2&quot;
+  }
+}
+</code></pre>
+<p>json.express generates:</p>
+<pre><code class="language-typescript">interface Comment {
+  id: number;
+  author: string;
+  text: string;
+}
+
+interface Author {
+  id: number;
+  name: string;
+  avatar: string;
+}
+
+interface Post {
+  id: number;
+  author: Author;
+  content: string;
+  likes: number;
+  comments: Comment[];
+  published: string;
+  edited: null;
+}
+
+interface Data {
+  posts: Post[];
+  nextPage: string;
+}
+
+interface Root {
+  success: boolean;
+  data: Data;
+}
+</code></pre>
+<p>Then in your React/Vue/Svelte code:</p>
+<pre><code class="language-typescript">const response = await fetch(&#39;/api/feed&#39;);
+const data: Root = await response.json();
+
+// Now fully typed:
+data.data.posts[0].author.name  // ✓ autocomplete, type-safe
+data.data.posts[0].likes        // ✓ knows it&#39;s a number
+</code></pre>
+<h2>Comparison with Other Tools</h2>
+<p><strong>quicktype.io</strong> — Generates code for many languages (C#, Go, Rust, etc.), offers more customization, but requires an account for some features. Better for multi-language projects.</p>
+<p><strong>json2ts.com</strong> — Similar to json.express, generates TypeScript interfaces. Slightly less aggressive about inferring optional fields.</p>
+<p><strong>json.express</strong> — Specialized for JSON querying and exploration. Generation is a built-in feature (not the whole product). No accounts, no friction—paste and go. Best for quick conversions and when you&#39;re already exploring JSON in the tool.</p>
+<h2>Limitations to Know</h2>
+<p>The generator makes educated guesses:</p>
+<ul>
+<li><strong>Null fields</strong>: <code>followers: null</code> becomes <code>null</code> (not <code>number | null</code>). If you need to handle the actual type, you may need manual adjustments.</li>
+<li><strong>String-like data</strong>: Dates and UUIDs are inferred as <code>string</code>, not <code>Date</code> or branded types.</li>
+<li><strong>Edge cases</strong>: Highly polymorphic data (where the same field holds wildly different types) may need refinement.</li>
+</ul>
+<p>For 80% of API responses, the output is production-ready. For the other 20%, it saves you 80% of the typing.</p>
+<h2>Workflow Tips</h2>
+<p><strong>1. Use it early in development</strong>
+When designing your API, paste example responses into json.express to generate types. Share these with your team before implementation.</p>
+<p><strong>2. Regenerate after API changes</strong>
+When your backend adds optional fields, regenerate and do a diff to catch breaking changes.</p>
+<p><strong>3. Combine with actual API documentation</strong>
+The generator is smart, but API docs tell you intent. A field might always be present in practice even if it&#39;s <code>null</code> sometimes—docs clarify this.</p>
+<p><strong>4. Extend for real-world needs</strong>
+Generated code is a starting point. Add readonly modifiers, stricter unions, branded types, and validation as needed:</p>
+<pre><code class="language-typescript">interface User extends Root {
+  readonly id: number;  // added readonly
+  followers: number;    // changed from null after reviewing docs
+}
+</code></pre>
+<h2>Get Started</h2>
+<p>Head to <a href="/typescript/">json.express</a> and try it:</p>
+<ol>
+<li>Paste a JSON response from your API</li>
+<li>Switch to the TypeScript view</li>
+<li>Copy the generated interfaces</li>
+<li>Import and use them in your codebase</li>
+</ol>
+<p>The TypeScript view is available alongside Result and Tree views, giving you instant access to type generation without leaving your browser.</p>
+<p>Stop writing boilerplate. Let the machine handle it.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "scripts": {
+    "build:blog": "node scripts/build-blog.mjs",
+    "build:sitemap": "node scripts/build-sitemap.mjs",
+    "build": "npm run build:blog && npm run build:sitemap"
+  },
+  "devDependencies": {
+    "marked": "^17.0.4"
+  }
+}

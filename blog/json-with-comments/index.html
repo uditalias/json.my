@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>How to Handle JSON with Comments — A Complete Guide — json.express</title>
+<meta name="description" content="Standard JSON doesn't allow comments, but many tools use JSONC. Learn how json.express handles comments and trailing commas in JSON.">
+<meta name="keywords" content="json with comments, jsonc, json comments parser, trailing comma json, json comment syntax">
+<meta property="og:title" content="How to Handle JSON with Comments — A Complete Guide — json.express">
+<meta property="og:description" content="Standard JSON doesn't allow comments, but many tools use JSONC. Learn how json.express handles comments and trailing commas in JSON.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/json-with-comments/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Handle JSON with Comments — A Complete Guide — json.express">
+<meta name="twitter:description" content="Standard JSON doesn't allow comments, but many tools use JSONC. Learn how json.express handles comments and trailing commas in JSON.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/json-with-comments/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Handle JSON with Comments — A Complete Guide",
+  "description": "Standard JSON doesn't allow comments, but many tools use JSONC. Learn how json.express handles comments and trailing commas in JSON.",
+  "url": "https://json.express/blog/json-with-comments/",
+  "datePublished": "2026-03-05",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; How to Handle JSON with Comments — A Complete Guide
+  </div>
+
+  <article class="article">
+    <h1>How to Handle JSON with Comments — A Complete Guide</h1>
+    <p class="article-meta">2026-03-05 &middot; By Udi Talias</p>
+
+    <p>JSON is everywhere in modern development—from API responses to configuration files to data storage. Yet there&#39;s a persistent friction point: <strong>the JSON specification explicitly forbids comments</strong>. This creates real problems when developers need to annotate configuration files or explain complex data structures.</p>
+<p>You&#39;ve probably encountered this frustration. You&#39;re editing a <code>tsconfig.json</code> or <code>.vscode/settings.json</code>, and you want to add a comment explaining why a specific setting exists. Standard JSON rejects it. You&#39;re forced to delete the comment, leaving your colleagues confused about your intent.</p>
+<p>This guide explains why JSON lacks comments, introduces JSONC (JSON with Comments) as a practical solution, and shows how modern tools like json.express handle the comment-parsing problem.</p>
+<h2>Why Doesn&#39;t JSON Allow Comments?</h2>
+<p>This question has a straightforward answer: <strong>intentional simplicity</strong>.</p>
+<p>When Douglas Crockford designed JSON in the early 2000s, he deliberately excluded comments. The rationale was philosophical: JSON was designed to be a minimal data interchange format that any programming language could parse with a simple, fast parser. Comments would add complexity and ambiguity.</p>
+<p>From a pure data-interchange perspective, this makes sense. If you&#39;re sending JSON over an API, comments serve no purpose—they&#39;d just waste bandwidth. The receiving system doesn&#39;t need them.</p>
+<p>However, <strong>configuration files and human-edited JSON are different beasts</strong>. Humans benefit enormously from annotations explaining why a setting exists, what values are acceptable, or what impact changing it has. Yet strict JSON doesn&#39;t allow this.</p>
+<p>This tension between the specification and real-world usage has driven creative solutions over the past two decades.</p>
+<h2>The Real-World Problem: Configuration File Comments</h2>
+<p>Consider this scenario: You&#39;re maintaining a large TypeScript project&#39;s <code>tsconfig.json</code>. The configuration is critical, but it&#39;s cryptic without documentation:</p>
+<pre><code class="language-json">{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: &quot;ES2020&quot;,
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;lib&quot;: [&quot;ES2020&quot;],
+    &quot;jsx&quot;: &quot;react-jsx&quot;,
+    &quot;strict&quot;: true,
+    &quot;esModuleInterop&quot;: true,
+    &quot;skipLibCheck&quot;: true,
+    &quot;forceConsistentCasingInFileNames&quot;: true,
+    &quot;moduleResolution&quot;: &quot;bundler&quot;,
+    &quot;resolveJsonModule&quot;: true,
+    &quot;isolatedModules&quot;: true
+  }
+}
+</code></pre>
+<p>What&#39;s not obvious from this configuration:</p>
+<ul>
+<li>Why is <code>skipLibCheck</code> set to true? (Performance trade-off)</li>
+<li>Why <code>bundler</code> for module resolution? (Because we&#39;re using a modern bundler)</li>
+<li>What does <code>esModuleInterop</code> actually do? (Helps with CommonJS interop)</li>
+</ul>
+<p><strong>Ideally, you&#39;d add comments:</strong></p>
+<pre><code class="language-json">{
+  &quot;compilerOptions&quot;: {
+    // ES2020 for modern browser support
+    &quot;target&quot;: &quot;ES2020&quot;,
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;lib&quot;: [&quot;ES2020&quot;],
+    &quot;jsx&quot;: &quot;react-jsx&quot;,
+    // Strict null checking catches common bugs early
+    &quot;strict&quot;: true,
+    // Required for CommonJS library compatibility
+    &quot;esModuleInterop&quot;: true,
+    // Skip type checking declaration files (faster builds)
+    &quot;skipLibCheck&quot;: true,
+    &quot;forceConsistentCasingInFileNames&quot;: true,
+    // Use &quot;bundler&quot; for modern tools like Vite
+    &quot;moduleResolution&quot;: &quot;bundler&quot;,
+    &quot;resolveJsonModule&quot;: true,
+    &quot;isolatedModules&quot;: true
+  }
+}
+</code></pre>
+<p>But strict JSON doesn&#39;t allow this. And while some tools (like TypeScript&#39;s config loader) <strong>do parse comments anyway</strong>, it&#39;s not technically valid JSON.</p>
+<h2>JSONC: JSON with Comments</h2>
+<p>To address this real-world need, <strong>JSONC</strong> emerged as a practical extension. JSONC is identical to JSON with two additions:</p>
+<ol>
+<li><strong>Single-line comments</strong> using <code>//</code></li>
+<li><strong>Multi-line comments</strong> using <code>/* */</code></li>
+<li><strong>Trailing commas</strong> (often grouped with comment support)</li>
+</ol>
+<p>JSONC is not an official standard, but it&#39;s widely adopted:</p>
+<ul>
+<li><strong>Visual Studio Code</strong> accepts JSONC in <code>.vscode/settings.json</code> and other config files</li>
+<li><strong>TypeScript</strong> accepts comments in <code>tsconfig.json</code> and <code>jsconfig.json</code></li>
+<li><strong>ESLint</strong> accepts comments in <code>.eslintrc.json</code></li>
+<li><strong>Prettier</strong> accepts comments in <code>.prettierrc.json</code></li>
+<li>Many modern build tools (Vite, esbuild, webpack) are lenient with comments</li>
+</ul>
+<p>Here&#39;s the same <code>tsconfig.json</code> as valid JSONC:</p>
+<pre><code class="language-json">{
+  &quot;compilerOptions&quot;: {
+    // Target modern browsers
+    &quot;target&quot;: &quot;ES2020&quot;,
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;lib&quot;: [&quot;ES2020&quot;],
+
+    // React with automatic JSX transform
+    &quot;jsx&quot;: &quot;react-jsx&quot;,
+
+    /* Enable strict type checking:
+       - null/undefined checking
+       - strict property initialization
+       - strict null checks
+    */
+    &quot;strict&quot;: true,
+
+    // For CommonJS interop
+    &quot;esModuleInterop&quot;: true,
+
+    /* Performance optimization:
+       Skip checking .d.ts files in node_modules
+    */
+    &quot;skipLibCheck&quot;: true,
+    &quot;forceConsistentCasingInFileNames&quot;: true,
+
+    // Modern module resolution for bundlers like Vite
+    &quot;moduleResolution&quot;: &quot;bundler&quot;,
+    &quot;resolveJsonModule&quot;: true,
+    &quot;isolatedModules&quot;: true,
+  }
+}
+</code></pre>
+<p>Notice the trailing commas after the last properties—JSONC allows these too, which is helpful when you&#39;re frequently adding and removing lines.</p>
+<h2>JSONC in Popular Configuration Files</h2>
+<h3><code>.vscode/settings.json</code></h3>
+<p>Visual Studio Code officially supports JSONC in workspace settings:</p>
+<pre><code class="language-json">{
+  // Editor settings
+  &quot;editor.formatOnSave&quot;: true,
+  &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
+
+  // File associations
+  &quot;[json]&quot;: {
+    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;
+  },
+
+  /* Extensions configuration
+     Customize behavior of installed extensions
+  */
+  &quot;javascript.updateImportsOnFileMove.enabled&quot;: &quot;always&quot;,
+
+  // Exclude node_modules from search
+  &quot;search.exclude&quot;: {
+    &quot;**/node_modules&quot;: true
+  }
+}
+</code></pre>
+<h3><code>tsconfig.json</code></h3>
+<p>TypeScript accepts comments and trailing commas in TypeScript configuration files:</p>
+<pre><code class="language-json">{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: &quot;ES2022&quot;,
+    &quot;lib&quot;: [&quot;ES2022&quot;],
+
+    // Emit source maps for debugging
+    &quot;sourceMap&quot;: true,
+
+    // Module output settings
+    &quot;module&quot;: &quot;ESNext&quot;,
+    &quot;moduleResolution&quot;: &quot;bundler&quot;,
+
+    // Strict mode catches errors early
+    &quot;strict&quot;: true,
+
+    &quot;resolveJsonModule&quot;: true,
+    &quot;declaration&quot;: true,
+    &quot;declarationMap&quot;: true,
+    &quot;outDir&quot;: &quot;./dist&quot;,
+  },
+
+  // Include source files
+  &quot;include&quot;: [&quot;src/**/*&quot;],
+
+  // Exclude build artifacts and node_modules
+  &quot;exclude&quot;: [&quot;node_modules&quot;, &quot;dist&quot;],
+}
+</code></pre>
+<h3><code>.eslintrc.json</code></h3>
+<p>ESLint config files often include comments explaining rules:</p>
+<pre><code class="language-json">{
+  &quot;env&quot;: {
+    &quot;browser&quot;: true,
+    &quot;es2021&quot;: true
+  },
+
+  // Extend popular shared configs
+  &quot;extends&quot;: [&quot;eslint:recommended&quot;],
+
+  &quot;parserOptions&quot;: {
+    &quot;ecmaVersion&quot;: &quot;latest&quot;,
+    &quot;sourceType&quot;: &quot;module&quot;
+  },
+
+  &quot;rules&quot;: {
+    // Disallow var, use const/let instead
+    &quot;no-var&quot;: &quot;error&quot;,
+
+    // Warn about unused variables
+    &quot;no-unused-vars&quot;: &quot;warn&quot;,
+
+    /* Require consistent spacing
+       Improves code readability
+    */
+    &quot;indent&quot;: [&quot;error&quot;, 2],
+    &quot;quotes&quot;: [&quot;error&quot;, &quot;single&quot;],
+    &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;],
+  }
+}
+</code></pre>
+<h2>How json.express Handles Comments and Trailing Commas</h2>
+<p>This is where json.express shines for developers working with JSONC and lenient JSON parsers.</p>
+<p>json.express includes a <strong>lenient JSON parser</strong> that automatically:</p>
+<ol>
+<li><strong>Strips single-line comments</strong> (<code>//</code> to end of line)</li>
+<li><strong>Strips multi-line comments</strong> (<code>/* ... */</code>)</li>
+<li><strong>Allows trailing commas</strong> after the last element in objects and arrays</li>
+<li><strong>Preserves strings</strong> containing comment-like syntax</li>
+</ol>
+<p>The parser is smart enough not to strip comment syntax that appears inside string values. So <code>&quot;url&quot;: &quot;https://example.com&quot;</code> won&#39;t be mangled, and <code>&quot;regex&quot;: &quot;//pattern&quot;</code> stays intact.</p>
+<p><strong>Example:</strong></p>
+<p>Paste this into <a href="/format/">json.express</a>:</p>
+<pre><code class="language-json">{
+  &quot;app&quot;: {
+    // Application name
+    &quot;name&quot;: &quot;MyApp&quot;,
+
+    &quot;version&quot;: &quot;1.0.0&quot;,
+
+    /* Configuration options:
+       - debug: enable debug logging
+       - verbose: detailed output
+    */
+    &quot;debug&quot;: true,
+    &quot;verbose&quot;: false,
+  },
+
+  // Server configuration
+  &quot;server&quot;: {
+    &quot;port&quot;: 3000,
+    &quot;host&quot;: &quot;localhost&quot;,
+  },
+}
+</code></pre>
+<p>json.express parses this correctly and strips the comments, presenting clean, valid JSON. This is invaluable when:</p>
+<ul>
+<li>You&#39;re <strong>copying configuration files</strong> from your project and need to understand them quickly</li>
+<li>You want to <strong>validate JSONC syntax</strong> before committing to your repository</li>
+<li>You need to <strong>extract specific values</strong> from configuration files with comments</li>
+<li>You&#39;re <strong>debugging</strong> why a tool is rejecting your config (comments might be the culprit)</li>
+</ul>
+<h2>Parsing Comments Yourself</h2>
+<p>If you need to handle JSONC in your own JavaScript code, several approaches exist:</p>
+<h3>Option 1: Use a JSONC Parser Library</h3>
+<p>The <code>jsonc-parser</code> npm package handles this professionally:</p>
+<pre><code class="language-javascript">import { parse } from &#39;jsonc-parser&#39;;
+
+const jsonWithComments = `{
+  // This is a comment
+  &quot;key&quot;: &quot;value&quot;,
+}`;
+
+const data = parse(jsonWithComments);
+console.log(data); // { key: &#39;value&#39; }
+</code></pre>
+<h3>Option 2: Strip Comments Before Parsing</h3>
+<p>A simple regex approach for basic cases:</p>
+<pre><code class="language-javascript">function stripComments(json) {
+  // Remove single-line comments
+  json = json.replace(/\/\/.*$/gm, &#39;&#39;);
+
+  // Remove multi-line comments
+  json = json.replace(/\/\*[\s\S]*?\*\//g, &#39;&#39;);
+
+  // Remove trailing commas
+  json = json.replace(/,(\s*[}\]])/g, &#39;$1&#39;);
+
+  return json;
+}
+
+const clean = stripComments(jsonWithComments);
+const data = JSON.parse(clean);
+</code></pre>
+<p>⚠️ <strong>Warning:</strong> This naive approach has edge cases. Strings containing comment-like syntax can be mangled. For production use, prefer a dedicated library.</p>
+<h3>Option 3: Node.js Built-in (for newer versions)</h3>
+<p>Recent Node.js versions include native support for JSONC parsing via <code>JSON.parse()</code> with additional options, though this varies by version. Check your Node.js documentation for availability.</p>
+<h2>Tools That Accept Comments (And Those That Don&#39;t)</h2>
+<h3>Tools That Natively Accept Comments</h3>
+<ul>
+<li><strong>TypeScript</strong> (<code>tsconfig.json</code>, <code>jsconfig.json</code>)</li>
+<li><strong>Visual Studio Code</strong> (most <code>.json</code> config files)</li>
+<li><strong>ESLint</strong> (<code>.eslintrc.json</code>, and related)</li>
+<li><strong>Prettier</strong> (<code>.prettierrc.json</code>)</li>
+<li><strong>Babel</strong> (<code>.babelrc</code>)</li>
+<li><strong>Webpack</strong> (some configs)</li>
+<li><strong>Vite</strong> (<code>vite.config.js</code> with comments in inline JSON)</li>
+</ul>
+<h3>Tools With Strict Validation</h3>
+<ul>
+<li><strong>Standard JSON Schema validators</strong> (require strict JSON)</li>
+<li><strong>Most REST APIs</strong> (expect valid JSON without comments)</li>
+<li><strong>AWS CloudFormation</strong> (requires strict JSON)</li>
+<li><strong>Database JSON fields</strong> (most store strict JSON)</li>
+<li><strong>Package managers</strong> checking <code>package.json</code> (though npm/yarn are lenient)</li>
+</ul>
+<h2>Best Practices for Handling JSON with Comments</h2>
+<ol>
+<li><p><strong>Be aware of tool limitations</strong>: If a tool requires strict JSON, comments will cause parsing errors. Check documentation first.</p>
+</li>
+<li><p><strong>Use comments for configuration, not data interchange</strong>: Comments belong in configuration files you edit manually, not in API responses or files exchanged between systems.</p>
+</li>
+<li><p><strong>Keep comments concise</strong>: A single-line comment is usually sufficient. If you need extensive documentation, consider a separate <code>.md</code> file explaining the configuration.</p>
+</li>
+<li><p><strong>Comment the &quot;why,&quot; not the &quot;what&quot;</strong>:</p>
+<pre><code class="language-json">// Good: explains intention
+&quot;skipLibCheck&quot;: true,  // Performance: skip TS lib type checking
+
+// Bad: restates the code
+&quot;skipLibCheck&quot;: true,  // Set skipLibCheck to true
+</code></pre>
+</li>
+<li><p><strong>Test your configuration</strong>: Always validate that your tools accept comments in their config files. Don&#39;t assume—verify.</p>
+</li>
+<li><p><strong>Maintain JSONC clarity</strong>: Just because you <em>can</em> add a comment doesn&#39;t mean it&#39;s needed. Over-commenting makes files harder to read.</p>
+</li>
+</ol>
+<h2>Validation and Testing</h2>
+<p>To validate your JSONC before deploying:</p>
+<ol>
+<li><strong>Use json.express</strong>: Paste your JSONC file into the <a href="/format/">format validator</a> to check syntax</li>
+<li><strong>Use your tool&#39;s validation</strong>: Most tools have a <code>--validate</code> or similar flag</li>
+<li><strong>Test locally</strong>: Try loading the config file with your tool before committing</li>
+</ol>
+<h2>Summary</h2>
+<p>JSON&#39;s lack of comment support is an intentional design choice that makes sense for data interchange but causes friction in configuration files. JSONC solves this by adding single-line and multi-line comments, plus trailing commas—a practical extension that many modern tools accept.</p>
+<p>When working with configuration files, check whether your tool supports comments. If it does, use them liberally to document why settings exist. If it doesn&#39;t, either find a tool that does or maintain separate documentation files.</p>
+<p>For quick validation and exploration of JSONC files, <strong>use <a href="/validate/">json.express</a></strong> to test syntax and parse comments before committing to your project. Understanding how comments fit into your development workflow makes JSON configuration files more maintainable and your team more effective.</p>
+<p>JSON with comments isn&#39;t a standard, but it&#39;s become a practical necessity in modern development. Embrace it where tools allow, understand its limitations where they don&#39;t, and your JSON documents—and your teammates—will be happier.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

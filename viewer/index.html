@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free Online JSON Viewer — Syntax Highlighted — json.express</title>
+<meta name="description" content="View JSON with syntax highlighting, line numbers, and structure analysis. See size, depth, and key count at a glance. Free, private, no installation.">
+<meta name="keywords" content="json viewer, json viewer online, view json, json reader, json syntax highlighting, json pretty viewer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Online JSON Viewer — Syntax Highlighted — json.express">
+<meta property="og:description" content="View JSON with syntax highlighting, line numbers, and structure analysis. See size, depth, and key count at a glance. Free, private, no installation.">
+<meta property="og:url" content="https://json.express/viewer/">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:image:alt" content="json.express JSON Viewer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Online JSON Viewer — Syntax Highlighted — json.express">
+<meta name="twitter:description" content="View JSON with syntax highlighting, line numbers, and structure analysis. See size, depth, and key count at a glance. Free, private, no installation.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/viewer/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online JSON Viewer",
+  "url": "https://json.express/viewer/",
+  "description": "View JSON with syntax highlighting, line numbers, and structure analysis. Free, private, no installation.",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  }
+}
+</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+</head>
+<body>
+
+<div class="page">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free Online JSON Viewer with Syntax Highlighting</h1>
+  <p class="tagline">Paste your JSON below to view it with syntax highlighting, structure analysis, and instant statistics.</p>
+
+  <div class="demo">
+    <div class="demo-label">JSON Input</div>
+    <textarea id="jsonInput" class="demo textarea" placeholder="Paste your JSON here..."></textarea>
+
+    <div class="demo-toolbar">
+      <button class="demo-btn" onclick="handleViewer()">View</button>
+      <button class="demo-btn demo-btn--secondary" onclick="loadSampleData()">Load Sample</button>
+      <button class="demo-btn demo-btn--secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="jsonStatus" class="demo-status demo-status--valid" style="display:none;"></div>
+
+    <div class="demo-label">Output</div>
+    <div id="jsonOutput" class="json-output demo-output"></div>
+
+    <div id="jsonStats" class="demo-stats"></div>
+  </div>
+
+  <h2>What is a JSON Viewer?</h2>
+  <p>
+    A JSON viewer is a tool that displays JSON data in a human-readable format with syntax highlighting and structure visualization.
+    It helps you understand the structure of JSON data, debug API responses, and analyze configuration files at a glance.
+  </p>
+  <p>
+    Whether you're debugging an API, inspecting configuration files, or analyzing log data, a JSON viewer makes it easy to see
+    what's actually in your data without manually parsing it.
+  </p>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">✨</div>
+      <div class="feature-card-title">Syntax Highlighting</div>
+      <div class="feature-card-desc">Color-coded JSON elements make structure instantly clear: keys, strings, numbers, booleans, and null values.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">📊</div>
+      <div class="feature-card-title">Structure Analysis</div>
+      <div class="feature-card-desc">See size, depth, and key count at a glance. Understand your data's complexity instantly.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🚀</div>
+      <div class="feature-card-title">Instant Processing</div>
+      <div class="feature-card-desc">No upload, no server-side processing. Everything happens in your browser in milliseconds.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">Completely Private</div>
+      <div class="feature-card-desc">Your JSON never leaves your computer. No data is sent to any server.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">💻</div>
+      <div class="feature-card-title">Zero Installation</div>
+      <div class="feature-card-desc">No downloads, no plugins, no dependencies. Just open in any modern browser.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">📱</div>
+      <div class="feature-card-title">Fully Responsive</div>
+      <div class="feature-card-desc">Works perfectly on desktop, tablet, and mobile devices.</div>
+    </div>
+  </div>
+
+  <h2>When to Use a JSON Viewer</h2>
+  <h3>API Debugging</h3>
+  <p>When you receive a JSON response from an API call, paste it into the viewer to inspect the structure and verify the data is correct.</p>
+
+  <h3>Configuration Inspection</h3>
+  <p>View JSON configuration files with clear syntax highlighting to quickly understand settings and nested structures.</p>
+
+  <h3>Log Analysis</h3>
+  <p>When working with JSON-formatted logs, use the viewer to understand what's in each log entry and spot issues faster.</p>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/">Full Editor</a>
+      <a class="related-tool-link" href="/tree/">Tree View</a>
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript Types</a>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <p>Need more features? Open the full editor for tree view, URL sharing, and advanced query capabilities.</p>
+    <button id="btn-open-editor" class="cta">Open Full Editor</button>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+<script>
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function highlightJSON(value, indent) {
+    indent = indent || 0;
+    var spaces = '  '.repeat(indent);
+
+    if (value === null) return '<span class="json-null">null</span>';
+    if (typeof value === 'boolean') return '<span class="json-boolean">' + value + '</span>';
+    if (typeof value === 'number') return '<span class="json-number">' + value + '</span>';
+    if (typeof value === 'string') return '<span class="json-string">"' + escapeHtml(value) + '"</span>';
+
+    if (Array.isArray(value)) {
+      if (value.length === 0) return '<span class="json-bracket">[]</span>';
+      var items = value.map(function(item) {
+        return spaces + '  ' + highlightJSON(item, indent + 1);
+      });
+      return '<span class="json-bracket">[</span>\n' +
+        items.join(',\n') + '\n' +
+        spaces + '<span class="json-bracket">]</span>';
+    }
+
+    if (typeof value === 'object') {
+      var keys = Object.keys(value);
+      if (keys.length === 0) return '<span class="json-bracket">{}</span>';
+      var entries = keys.map(function(key) {
+        return spaces + '  <span class="json-key">"' + escapeHtml(key) + '"</span>: ' +
+          highlightJSON(value[key], indent + 1);
+      });
+      return '<span class="json-bracket">{</span>\n' +
+        entries.join(',\n') + '\n' +
+        spaces + '<span class="json-bracket">}</span>';
+    }
+
+    return escapeHtml(String(value));
+  }
+
+  function lenientParse(text) {
+    var cleaned = '';
+    var i = 0;
+    var len = text.length;
+    while (i < len) {
+      if (text[i] === '"') {
+        cleaned += '"';
+        i++;
+        while (i < len && text[i] !== '"') {
+          if (text[i] === '\\' && i + 1 < len) {
+            cleaned += text[i] + text[i + 1];
+            i += 2;
+          } else {
+            cleaned += text[i];
+            i++;
+          }
+        }
+        if (i < len) { cleaned += '"'; i++; }
+      } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
+        i += 2;
+        while (i < len && text[i] !== '\n') i++;
+      } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
+        i += 2;
+        while (i < len && !(text[i] === '*' && i + 1 < len && text[i + 1] === '/')) i++;
+        if (i < len) i += 2;
+      } else {
+        cleaned += text[i];
+        i++;
+      }
+    }
+    cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+    return JSON.parse(cleaned);
+  }
+
+  function byteSize(str) {
+    return new Blob([str]).size;
+  }
+
+  function jsonDepth(value, d) {
+    d = d || 0;
+    if (value === null || typeof value !== 'object') return d;
+    var max = d;
+    if (Array.isArray(value)) {
+      for (var i = 0; i < value.length; i++) max = Math.max(max, jsonDepth(value[i], d + 1));
+    } else {
+      var keys = Object.keys(value);
+      for (var k = 0; k < keys.length; k++) max = Math.max(max, jsonDepth(value[keys[k]], d + 1));
+    }
+    return max;
+  }
+
+  function countKeys(value) {
+    if (value === null || typeof value !== 'object') return 0;
+    var count = 0;
+    if (Array.isArray(value)) {
+      for (var i = 0; i < value.length; i++) count += countKeys(value[i]);
+    } else {
+      var keys = Object.keys(value);
+      count += keys.length;
+      for (var k = 0; k < keys.length; k++) count += countKeys(value[keys[k]]);
+    }
+    return count;
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  function handleViewer() {
+    var input = document.getElementById('jsonInput');
+    var text = input.value.trim();
+
+    if (!text) {
+      document.getElementById('jsonOutput').innerHTML = '';
+      document.getElementById('jsonStats').innerHTML = '';
+      document.getElementById('jsonStatus').style.display = 'none';
+      return;
+    }
+
+    try {
+      var data = lenientParse(text);
+      var pretty = JSON.stringify(data, null, 2);
+      var size = byteSize(pretty);
+      var depth = jsonDepth(data);
+      var keys = countKeys(data);
+
+      document.getElementById('jsonOutput').innerHTML = highlightJSON(data);
+      document.getElementById('jsonStats').innerHTML =
+        '<strong>Size:</strong> ' + formatSize(size) + ' | ' +
+        '<strong>Depth:</strong> ' + depth + ' | ' +
+        '<strong>Keys:</strong> ' + keys;
+      document.getElementById('jsonStatus').textContent = 'Valid JSON';
+      document.getElementById('jsonStatus').className = 'demo-status demo-status--valid';
+      document.getElementById('jsonStatus').style.display = 'block';
+    } catch (e) {
+      document.getElementById('jsonOutput').innerHTML = '<span>Error: ' + escapeHtml(e.message) + '</span>';
+      document.getElementById('jsonStats').innerHTML = '';
+      document.getElementById('jsonStatus').textContent = 'Invalid JSON: ' + e.message;
+      document.getElementById('jsonStatus').className = 'demo-status demo-status--invalid';
+      document.getElementById('jsonStatus').style.display = 'block';
+    }
+  }
+
+  function loadSampleData() {
+    var sample = {
+      user: {
+        id: 12345,
+        name: "Jane Doe",
+        email: "jane@example.com",
+        address: {
+          street: "123 Main Street",
+          city: "San Francisco",
+          state: "CA",
+          zipcode: "94105"
+        }
+      },
+      hobbies: ["reading", "hiking", "photography"],
+      isActive: true,
+      joinedAt: "2024-01-15T10:30:00Z"
+    };
+    document.getElementById('jsonInput').value = JSON.stringify(sample, null, 2);
+    handleViewer();
+  }
+
+  function clearAll() {
+    document.getElementById('jsonInput').value = '';
+    document.getElementById('jsonOutput').innerHTML = '';
+    document.getElementById('jsonStats').innerHTML = '';
+    document.getElementById('jsonStatus').style.display = 'none';
+  }
+
+  window.addEventListener('load', function() {
+    loadSampleData();
+  });
+
+  document.getElementById('jsonInput').addEventListener('input', function() {
+    if (this.value.trim()) {
+      handleViewer();
+    }
+  });
+
+  async function openInEditor(json, query) {
+    var state = { json: json };
+    if (query) state.query = query;
+    var blob = new Blob([JSON.stringify(state)]);
+    var cs = new CompressionStream('deflate');
+    var stream = blob.stream().pipeThrough(cs);
+    var compressedBlob = await new Response(stream).blob();
+    var buffer = await compressedBlob.arrayBuffer();
+    var bytes = new Uint8Array(buffer);
+    var binary = '';
+    for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    window.open('/#' + hash, '_blank');
+  }
+
+  document.getElementById('btn-open-editor').addEventListener('click', function() {
+    openInEditor(document.getElementById('jsonInput').value);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free Online JSON Tree Viewer & Explorer — json.express</title>
+<meta name="description" content="Explore JSON as a collapsible tree. Expand and collapse nested objects and arrays interactively. Free, private, runs in your browser.">
+<meta name="keywords" content="json tree viewer, json tree, json explorer online, json collapse expand, json hierarchy, json tree view">
+<meta property="og:title" content="Free Online JSON Tree Viewer & Explorer — json.express">
+<meta property="og:description" content="Explore JSON as a collapsible tree. Expand and collapse nested objects and arrays interactively. Free, private, runs in your browser.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/tree/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Online JSON Tree Viewer & Explorer — json.express">
+<meta name="twitter:description" content="Explore JSON as a collapsible tree. Expand and collapse nested objects and arrays interactively. Free, private, runs in your browser.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/tree/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online JSON Tree Viewer & Explorer",
+  "description": "Explore JSON as a collapsible tree. Expand and collapse nested objects and arrays interactively. Free, private, runs in your browser.",
+  "url": "https://json.express/tree/",
+  "image": "https://json.express/og-card.png",
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free Online JSON Tree Viewer & Explorer</h1>
+  <p class="tagline">Explore nested data with an interactive collapsible tree view</p>
+
+  <div class="demo">
+    <div class="demo-label">Try It Now</div>
+    <p>Paste your JSON below to visualize it as an interactive tree. Click any object or array to expand or collapse it.</p>
+    <textarea id="jsonInput" placeholder="Enter JSON here...">{
+  "config": {
+    "database": {
+      "host": "localhost",
+      "port": 5432,
+      "name": "myapp",
+      "credentials": {
+        "user": "admin",
+        "ssl": true
+      }
+    },
+    "cache": {
+      "enabled": true,
+      "ttl": 3600,
+      "provider": "redis",
+      "options": {"maxSize": 1000, "eviction": "lru"}
+    },
+    "logging": {
+      "level": "info",
+      "outputs": ["stdout", "file"],
+      "file": {"path": "/var/log/app.log", "rotate": true}
+    },
+    "features": {
+      "darkMode": true,
+      "notifications": false,
+      "experimental": ["ai-search", "voice-input"]
+    }
+  }
+}</textarea>
+
+    <div class="demo-toolbar">
+      <button class="demo-btn" onclick="buildTreeDemo()">Build Tree</button>
+      <button class="demo-btn demo-btn--secondary" onclick="expandAll()">Expand All</button>
+      <button class="demo-btn demo-btn--secondary" onclick="collapseAll()">Collapse All</button>
+      <button id="btn-open-editor" class="demo-btn demo-btn--secondary">Open in Full Editor</button>
+    </div>
+
+    <div class="tree-container demo-output" id="treeOutput"></div>
+  </div>
+
+  <h2>What is a JSON Tree Viewer?</h2>
+  <p>A JSON Tree Viewer is a tool that transforms raw JSON data into a visual, hierarchical tree structure. Instead of scrolling through nested brackets and braces, you see a clear organization of your data with the ability to expand and collapse each level.</p>
+  <p>This format makes it much easier to:</p>
+  <ul>
+    <li><strong>Navigate complex JSON</strong> — Quickly find the data you're looking for</li>
+    <li><strong>Understand structure</strong> — See relationships between objects and arrays at a glance</li>
+    <li><strong>Debug and validate</strong> — Spot missing or malformed data</li>
+    <li><strong>Explore APIs</strong> — Understand the shape of responses from your services</li>
+  </ul>
+
+  <h2>When to Use Tree View</h2>
+  <p>Tree view is ideal for:</p>
+  <ul>
+    <li><strong>API Responses</strong> — Quickly understand the structure of data from REST APIs or webhooks</li>
+    <li><strong>Configuration Files</strong> — Review complex config objects with many nested levels</li>
+    <li><strong>Database Exports</strong> — Visualize document structures from NoSQL databases</li>
+    <li><strong>Large JSON Files</strong> — Collapse unnecessary sections to focus on what matters</li>
+    <li><strong>Data Exploration</strong> — Navigate unfamiliar JSON files easily</li>
+    <li><strong>Debugging</strong> — Verify data integrity and structure during development</li>
+  </ul>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">🌳</div>
+      <div class="feature-card-title">Collapsible Tree</div>
+      <div class="feature-card-desc">Click on any object or array to expand or collapse its contents. Navigate deeply nested structures with ease.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🎛️</div>
+      <div class="feature-card-title">Interactive Controls</div>
+      <div class="feature-card-desc">Expand all or collapse all with a single click. Control the visibility of your data instantly.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🌈</div>
+      <div class="feature-card-title">Syntax Highlighting</div>
+      <div class="feature-card-desc">Different colors for strings, numbers, booleans, and null values make data types easy to distinguish.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">✓</div>
+      <div class="feature-card-title">Lenient Parsing</div>
+      <div class="feature-card-desc">Handles trailing commas and comments in JSON. Perfect for development and debugging scenarios.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">Private & Fast</div>
+      <div class="feature-card-desc">Your JSON never leaves your browser. Processing happens entirely on your machine with no server involvement.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">0️⃣</div>
+      <div class="feature-card-title">Completely Free</div>
+      <div class="feature-card-desc">No accounts, no sign-ups, no ads. Just open the tool and start exploring your data.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/viewer/">JSON Viewer</a>
+      <a class="related-tool-link" href="/query/">JSON Query</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript Types</a>
+      <a class="related-tool-link" href="/format/">JSON Formatter</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+  <script>
+    // Lenient JSON parser
+    function lenientParse(jsonStr) {
+        try {
+            var cleaned = jsonStr
+                .replace(/\/\/.*$/gm, '')
+                .replace(/\/\*[\s\S]*?\*\//g, '')
+                .replace(/,\s*([}\]])/g, '$1');
+            return JSON.parse(cleaned);
+        } catch (e) {
+            throw new Error('Invalid JSON: ' + e.message);
+        }
+    }
+
+    // Escape HTML
+    function escapeHtml(text) {
+        var div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Build tree HTML
+    function buildTree(value, key, path) {
+        if (value === null) {
+            return treeLeaf(key, '<span class="tree-value-null">null</span>');
+        }
+        if (typeof value === 'string') {
+            var display = value.length > 80 ? value.slice(0, 80) + '...' : value;
+            return treeLeaf(key, '<span class="tree-value-string">"' + escapeHtml(display) + '"</span>');
+        }
+        if (typeof value === 'number') {
+            return treeLeaf(key, '<span class="tree-value-number">' + value + '</span>');
+        }
+        if (typeof value === 'boolean') {
+            return treeLeaf(key, '<span class="tree-value-boolean">' + value + '</span>');
+        }
+
+        var isArray = Array.isArray(value);
+        var count = isArray ? value.length : Object.keys(value).length;
+        var preview = isArray ? 'Array(' + count + ')' : 'Object{' + count + '}';
+        var id = 'tree-' + Math.random().toString(36).slice(2, 10);
+
+        var html = '<div>';
+        html += '<span class="tree-toggle" onclick="window.__toggleTree(\'' + id + '\')">';
+        html += '<span class="tree-arrow" id="arrow-' + id + '">&#9660;</span> ';
+        if (key !== undefined) html += '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ';
+        html += '<span class="tree-preview">' + preview + '</span>';
+        html += '</span></div>';
+        html += '<div class="tree-children tree-node" id="' + id + '">';
+
+        if (isArray) {
+            for (var i = 0; i < value.length; i++) {
+                html += buildTree(value[i], i, (path || '') + '[' + i + ']');
+            }
+        } else {
+            var keys = Object.keys(value);
+            for (var k = 0; k < keys.length; k++) {
+                html += buildTree(value[keys[k]], keys[k], (path || '') + '.' + keys[k]);
+            }
+        }
+        html += '</div>';
+        return html;
+    }
+
+    function treeLeaf(key, valueHtml) {
+        var html = '<div>';
+        if (key !== undefined) html += '<span class="tree-key">' + escapeHtml(String(key)) + '</span>: ';
+        html += valueHtml + '</div>';
+        return html;
+    }
+
+    // Toggle tree node
+    window.__toggleTree = function(id) {
+        var el = document.getElementById(id);
+        var arrow = document.getElementById('arrow-' + id);
+        if (el) {
+            el.classList.toggle('collapsed');
+            if (arrow) arrow.classList.toggle('collapsed');
+        }
+    };
+
+    // Build tree from demo
+    function buildTreeDemo() {
+        var jsonStr = document.getElementById('jsonInput').value;
+        var output = document.getElementById('treeOutput');
+
+        try {
+            var data = lenientParse(jsonStr);
+            output.innerHTML = buildTree(data, undefined, '');
+        } catch (e) {
+            output.innerHTML = '<span style="display:none"></span>';
+            output.textContent = 'Error: ' + e.message;
+        }
+    }
+
+    // Expand all
+    function expandAll() {
+        var nodes = document.querySelectorAll('.tree-children');
+        nodes.forEach(function(node) {
+            node.classList.remove('collapsed');
+        });
+        var arrows = document.querySelectorAll('.tree-arrow');
+        arrows.forEach(function(arrow) {
+            arrow.classList.remove('collapsed');
+        });
+    }
+
+    // Collapse all
+    function collapseAll() {
+        var nodes = document.querySelectorAll('.tree-children');
+        nodes.forEach(function(node) {
+            node.classList.add('collapsed');
+        });
+        var arrows = document.querySelectorAll('.tree-arrow');
+        arrows.forEach(function(arrow) {
+            arrow.classList.add('collapsed');
+        });
+    }
+
+    // Auto-build on load
+    window.addEventListener('DOMContentLoaded', function() {
+        buildTreeDemo();
+    });
+
+    async function openInEditor(json, query) {
+      var state = { json: json };
+      if (query) state.query = query;
+      var blob = new Blob([JSON.stringify(state)]);
+      var cs = new CompressionStream('deflate');
+      var stream = blob.stream().pipeThrough(cs);
+      var compressedBlob = await new Response(stream).blob();
+      var buffer = await compressedBlob.arrayBuffer();
+      var bytes = new Uint8Array(buffer);
+      var binary = '';
+      for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      window.open('/#' + hash, '_blank');
+    }
+
+    document.getElementById('btn-open-editor').addEventListener('click', function() {
+      openInEditor(document.getElementById('jsonInput').value);
+    });
+  </script>
+</body>
+</html>

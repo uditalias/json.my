@@ -23,15 +23,15 @@
 <meta property="og:description" content="Query and explore JSON data instantly in your browser. Supports dot notation, wildcards, recursive descent, tree view, and TypeScript type generation. Free, fast, zero dependencies.">
 <meta property="og:url" content="https://json.express">
 <meta property="og:site_name" content="json.express">
-<meta property="og:image" content="https://json.express/icon-app.png">
-<meta property="og:image:width" content="512">
-<meta property="og:image:height" content="512">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="json.express — Online JSON Query and Explorer Tool">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="json.express — Free Online JSON Query &amp; Explorer Tool">
 <meta name="twitter:description" content="Query and explore JSON data instantly in your browser. Tree view, TypeScript types, dot notation, wildcards, recursive descent. Free and private.">
-<meta name="twitter:image" content="https://json.express/icon-app.png">
+<meta name="twitter:image" content="https://json.express/og-card.png">
 <meta name="twitter:image:alt" content="json.express — Online JSON Query and Explorer Tool">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -72,7 +72,7 @@
     "name": "Udi Talias",
     "url": "https://github.com/uditalias"
   },
-  "screenshot": "https://json.express/icon-app.png",
+  "screenshot": "https://json.express/og-card.png",
   "softwareVersion": "1.0",
   "isAccessibleForFree": true,
   "inLanguage": "en"
@@ -187,6 +187,58 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+#app-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 12px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+#app-nav::-webkit-scrollbar { display: none; }
+
+#app-nav .app-nav-logo {
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  padding: 6px 12px 6px 0;
+  white-space: nowrap;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  margin-right: 4px;
+}
+
+#app-nav .app-nav-logo .brace {
+  color: var(--accent);
+}
+
+#app-nav a.app-nav-link {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 10px;
+  white-space: nowrap;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+#app-nav a.app-nav-link:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.06);
+}
+
+#app-nav a.app-nav-link.active {
+  color: var(--accent);
 }
 
 #query-bar {
@@ -396,6 +448,8 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 6px 12px;
+  min-height: 36px;
+  box-sizing: border-box;
   font-size: 12px;
   color: var(--text-muted);
   background: var(--panel-bg);
@@ -1040,6 +1094,20 @@ kbd {
   </div>
 </noscript>
 <div id="app">
+  <nav id="app-nav">
+    <a class="app-nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <a class="app-nav-link active" href="/">Editor</a>
+    <a class="app-nav-link" href="/format/">Format</a>
+    <a class="app-nav-link" href="/validate/">Validate</a>
+    <a class="app-nav-link" href="/minify/">Minify</a>
+    <a class="app-nav-link" href="/viewer/">Viewer</a>
+    <a class="app-nav-link" href="/tree/">Tree</a>
+    <a class="app-nav-link" href="/query/">Query</a>
+    <a class="app-nav-link" href="/typescript/">TypeScript</a>
+    <a class="app-nav-link" href="/compare/">Compare</a>
+    <a class="app-nav-link" href="/blog/">Blog</a>
+    <a class="app-nav-link" href="/about/">About</a>
+  </nav>
   <div id="query-bar">
     <label for="query-input">$</label>
     <div id="query-input-wrapper">
@@ -1051,6 +1119,7 @@ kbd {
     <button class="toolbar-btn" id="btn-ts" title="TypeScript Types">TS</button>
     <button class="toolbar-btn" id="btn-copy" title="Copy result (Ctrl+Shift+C)">Copy</button>
     <button class="toolbar-btn" id="btn-format" title="Format JSON (Ctrl+Enter)">Format</button>
+    <button class="toolbar-btn" id="btn-minify" title="Minify JSON">Min</button>
     <button class="toolbar-btn" id="btn-theme" title="Toggle theme">System</button>
   </div>
 
@@ -1059,10 +1128,12 @@ kbd {
       <div class="panel-header">
         <span class="panel-header-title">Input</span>
         <span id="input-size"></span>
+        <button class="toolbar-btn" id="btn-upload" title="Upload JSON file" style="margin-left:auto;font-size:12px;padding:2px 8px">Upload</button>
+        <input type="file" id="file-upload" accept=".json,.jsonl,.jsonc,.txt" style="display:none">
       </div>
       <div class="input-wrapper">
         <div class="line-numbers" id="input-line-numbers"></div>
-        <textarea id="json-input" spellcheck="false" placeholder="Paste your JSON here..."></textarea>
+        <textarea id="json-input" spellcheck="false" placeholder="Paste your JSON here, drop a file, or click Upload..."></textarea>
       </div>
       <div id="parse-error"></div>
     </div>
@@ -1104,6 +1175,7 @@ kbd {
     <button class="actions-menu-item" id="action-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New JSON</button>
     <button class="actions-menu-item" id="action-qr"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><path d="M21 14h-3v3h3v4h-4v-4h-3v4"/></svg>QR Code</button>
     <button class="actions-menu-item" id="action-share"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share URL</button>
+    <button class="actions-menu-item" id="action-fetch-url"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Fetch from URL</button>
     <button class="actions-menu-item" id="action-download-json"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download JSON</button>
     <button class="actions-menu-item" id="action-download-ts"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download TS</button>
     <div class="actions-menu-separator"></div>
@@ -1473,6 +1545,7 @@ if ('serviceWorker' in navigator) {
     textarea.addEventListener('keydown', function(e) {
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
         e.preventDefault();
+        e.stopPropagation();
         editor.querySelector('.comment-btn-save').click();
       }
       if (e.key === 'Escape') {
@@ -2552,6 +2625,61 @@ if ('serviceWorker' in navigator) {
   dom.btnCopy.addEventListener('click', copyResult);
   dom.btnFormat.addEventListener('click', formatInput);
 
+  // Minify button
+  document.getElementById('btn-minify').addEventListener('click', function() {
+    var result = tryParseJSON(dom.jsonInput.value);
+    if (result.ok) {
+      dom.jsonInput.value = JSON.stringify(result.value);
+      onInputChange();
+      showToast('Minified');
+    } else {
+      showToast('Cannot minify — invalid JSON');
+    }
+  });
+
+  // File upload
+  var btnUpload = document.getElementById('btn-upload');
+  var fileUpload = document.getElementById('file-upload');
+  btnUpload.addEventListener('click', function() { fileUpload.click(); });
+  fileUpload.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { showToast('File too large (max 10MB)'); return; }
+    var reader = new FileReader();
+    reader.onload = function(evt) {
+      dom.jsonInput.value = evt.target.result;
+      onInputChange();
+      showToast('Loaded ' + file.name);
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  // Drag and drop
+  dom.jsonInput.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    this.style.borderColor = 'var(--accent)';
+  });
+  dom.jsonInput.addEventListener('dragleave', function() {
+    this.style.borderColor = '';
+  });
+  dom.jsonInput.addEventListener('drop', function(e) {
+    e.preventDefault();
+    this.style.borderColor = '';
+    var file = e.dataTransfer.files[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) { showToast('File too large (max 10MB)'); return; }
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+        dom.jsonInput.value = evt.target.result;
+        onInputChange();
+        showToast('Loaded ' + file.name);
+      };
+      reader.readAsText(file);
+    }
+  });
+
   var themeCycle = ['system', 'light', 'dark'];
   var themeLabels = { system: 'System', light: 'Light', dark: 'Dark' };
 
@@ -2622,6 +2750,24 @@ if ('serviceWorker' in navigator) {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
+
+  document.getElementById('action-fetch-url').addEventListener('click', function() {
+    closeActionsMenu();
+    var url = prompt('Enter JSON URL:');
+    if (!url) return;
+    try { new URL(url); } catch(e) { showToast('Invalid URL'); return; }
+    showToast('Fetching...');
+    fetch(url)
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+      .then(function(text) {
+        dom.jsonInput.value = text;
+        onInputChange();
+        showToast('Loaded from URL');
+      })
+      .catch(function(err) {
+        showToast('Fetch failed: ' + err.message + (err.message.includes('Failed to fetch') ? ' (CORS blocked — try copy-paste instead)' : ''));
+      });
+  });
 
   document.getElementById('action-download-json').addEventListener('click', function() {
     closeActionsMenu();

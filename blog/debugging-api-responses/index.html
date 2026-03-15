@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Debugging API Responses — A Developer's JSON Workflow — json.express</title>
+<meta name="description" content="Learn practical techniques for inspecting, querying, and validating JSON API responses during development. Speed up debugging with browser tools and json.express.">
+<meta name="keywords" content="debug api response, json api debugging, inspect json response, api troubleshooting, json response validation, rest api debugging">
+<meta property="og:title" content="Debugging API Responses — A Developer's JSON Workflow — json.express">
+<meta property="og:description" content="Learn practical techniques for inspecting, querying, and validating JSON API responses during development. Speed up debugging with browser tools and json.express.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/debugging-api-responses/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Debugging API Responses — A Developer's JSON Workflow — json.express">
+<meta name="twitter:description" content="Learn practical techniques for inspecting, querying, and validating JSON API responses during development. Speed up debugging with browser tools and json.express.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/debugging-api-responses/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Debugging API Responses — A Developer's JSON Workflow",
+  "description": "Learn practical techniques for inspecting, querying, and validating JSON API responses during development. Speed up debugging with browser tools and json.express.",
+  "url": "https://json.express/blog/debugging-api-responses/",
+  "datePublished": "2026-03-10",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; Debugging API Responses — A Developer's JSON Workflow
+  </div>
+
+  <article class="article">
+    <h1>Debugging API Responses — A Developer's JSON Workflow</h1>
+    <p class="article-meta">2026-03-10 &middot; By Udi Talias</p>
+
+    <p>You hit Send in Postman, <code>curl</code> a staging endpoint, or check DevTools — and you&#39;re staring at a wall of JSON. The response is 400 lines deep, nested three levels, and something is wrong. Maybe a field is missing, maybe a value is <code>null</code> when it shouldn&#39;t be, or maybe the shape just doesn&#39;t match what the frontend expects.</p>
+<p>Here&#39;s a workflow for making sense of API responses quickly, without scrolling through raw text.</p>
+<h2>Step 1: Format First, Read Second</h2>
+<p>Raw API responses are often minified. Before you do anything, format the JSON so you can actually read it:</p>
+<pre><code class="language-json">{&quot;users&quot;:[{&quot;id&quot;:1,&quot;name&quot;:&quot;Alice&quot;,&quot;roles&quot;:[&quot;admin&quot;,&quot;editor&quot;],&quot;profile&quot;:{&quot;avatar&quot;:null,&quot;bio&quot;:&quot;Engineer at Acme Corp&quot;,&quot;settings&quot;:{&quot;theme&quot;:&quot;dark&quot;,&quot;notifications&quot;:{&quot;email&quot;:true,&quot;push&quot;:false}}}},{&quot;id&quot;:2,&quot;name&quot;:&quot;Bob&quot;,&quot;roles&quot;:[&quot;viewer&quot;],&quot;profile&quot;:{&quot;avatar&quot;:&quot;https://example.com/bob.jpg&quot;,&quot;bio&quot;:&quot;Designer&quot;,&quot;settings&quot;:{&quot;theme&quot;:&quot;light&quot;,&quot;notifications&quot;:{&quot;email&quot;:false,&quot;push&quot;:true}}}}]}
+</code></pre>
+<p>Paste that into <a href="/">json.express</a> and you instantly see the structure. But formatting alone isn&#39;t enough when you&#39;re debugging — you need to drill into specific parts.</p>
+<h2>Step 2: Query the Parts You Care About</h2>
+<p>Instead of scanning the entire response, use a query to extract exactly what you&#39;re looking for. For instance, if you&#39;re debugging why avatars aren&#39;t rendering:</p>
+<pre><code>users[*].profile.avatar
+</code></pre>
+<p>This returns:</p>
+<pre><code class="language-json">[null, &quot;https://example.com/bob.jpg&quot;]
+</code></pre>
+<p>Now you can see immediately: Alice&#39;s avatar is <code>null</code>. That&#39;s your bug — or at least, that&#39;s where the frontend needs a fallback.</p>
+<h2>Step 3: Check the Shape With TypeScript Types</h2>
+<p>When the API response doesn&#39;t match what your code expects, generating TypeScript types from the actual response is invaluable. Paste the response into json.express, switch to the <strong>TypeScript</strong> tab, and you get:</p>
+<pre><code class="language-json">{
+  &quot;users&quot;: [
+    {
+      &quot;id&quot;: 1,
+      &quot;name&quot;: &quot;Alice&quot;,
+      &quot;profile&quot;: {
+        &quot;avatar&quot;: null,
+        &quot;settings&quot;: {
+          &quot;theme&quot;: &quot;dark&quot;
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+<p>Compare the generated types against your frontend interfaces. Mismatches — like <code>avatar: string</code> in your code vs <code>avatar: string | null</code> in reality — become obvious.</p>
+<h2>Step 4: Compare Before and After</h2>
+<p>Changing an API endpoint? Use the <a href="/compare/">Compare</a> tool to diff the old response against the new one. This catches regressions like:</p>
+<ul>
+<li>Fields that were renamed (<code>userName</code> → <code>name</code>)</li>
+<li>Fields that disappeared entirely</li>
+<li>Type changes (a number becoming a string)</li>
+<li>New <code>null</code> values where there were none before</li>
+</ul>
+<p>Paste the old response on the left, the new one on the right, and the diff highlights every change.</p>
+<h2>Step 5: Share the Evidence</h2>
+<p>Once you&#39;ve found the issue, you need to share it — in a bug report, a Slack message, or a PR comment. json.express encodes both your input and query into the URL hash, so you can share a link that reproduces exactly what you see. No screenshots of terminal output needed.</p>
+<h2>Real-World Example: Pagination Bug</h2>
+<p>Say your frontend shows 10 items but the API claims <code>total_count: 50</code>. Query the response:</p>
+<pre><code>meta.pagination
+</code></pre>
+<pre><code class="language-json">{
+  &quot;page&quot;: 1,
+  &quot;per_page&quot;: 10,
+  &quot;total_count&quot;: 50,
+  &quot;next_cursor&quot;: null
+}
+</code></pre>
+<p><code>next_cursor</code> is <code>null</code> on page 1 — that&#39;s the bug. The API isn&#39;t returning a cursor for the next page, so your frontend thinks there&#39;s nothing more to load.</p>
+<h2>Real-World Example: Auth Token Inspection</h2>
+<p>JWT payloads are just base64-encoded JSON. Decode the payload segment and paste it in:</p>
+<pre><code class="language-json">{
+  &quot;sub&quot;: &quot;user_12345&quot;,
+  &quot;email&quot;: &quot;alice@example.com&quot;,
+  &quot;roles&quot;: [&quot;admin&quot;, &quot;editor&quot;],
+  &quot;iat&quot;: 1710000000,
+  &quot;exp&quot;: 1710003600,
+  &quot;iss&quot;: &quot;auth.example.com&quot;,
+  &quot;permissions&quot;: {
+    &quot;projects&quot;: [&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;],
+    &quot;billing&quot;: [&quot;read&quot;]
+  }
+}
+</code></pre>
+<p>Query <code>permissions.projects</code> to quickly check if the token has the right scopes, or check <code>exp</code> to see if the token has expired.</p>
+<h2>Tips for Faster Debugging</h2>
+<p><strong>Copy from DevTools directly.</strong> In Chrome DevTools, right-click a network response → Copy → Copy Response. Paste into json.express — no need to re-run the request.</p>
+<p><strong>Use recursive descent for deep searches.</strong> If you&#39;re looking for a field but don&#39;t know where it is in the tree, use <code>..fieldName</code>. For example, <code>..email</code> finds every <code>email</code> field at any depth.</p>
+<p><strong>Check arrays with slicing.</strong> If an API returns hundreds of items, use <code>items[0:3]</code> to inspect just the first few without the noise.</p>
+<p><strong>Use the Tree view.</strong> For deeply nested responses, the Tree view lets you expand and collapse sections interactively — much faster than scrolling through formatted JSON.</p>
+<p>Debugging JSON API responses doesn&#39;t have to mean squinting at raw text in a terminal. A good workflow — format, query, compare, share — turns a 20-minute debugging session into a 2-minute one.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

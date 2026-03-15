@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Transforming API Data for Your Frontend — JSON Patterns That Scale — json.express</title>
+<meta name="description" content="Learn practical patterns for reshaping JSON API responses for frontend consumption. Covers normalization, flattening, filtering, and type safety with real examples.">
+<meta name="keywords" content="transform json api, json data transformation, reshape json, normalize json, json frontend patterns, api response mapping, json data mapping">
+<meta property="og:title" content="Transforming API Data for Your Frontend — JSON Patterns That Scale — json.express">
+<meta property="og:description" content="Learn practical patterns for reshaping JSON API responses for frontend consumption. Covers normalization, flattening, filtering, and type safety with real examples.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/transforming-api-data-frontend/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Transforming API Data for Your Frontend — JSON Patterns That Scale — json.express">
+<meta name="twitter:description" content="Learn practical patterns for reshaping JSON API responses for frontend consumption. Covers normalization, flattening, filtering, and type safety with real examples.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/transforming-api-data-frontend/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Transforming API Data for Your Frontend — JSON Patterns That Scale",
+  "description": "Learn practical patterns for reshaping JSON API responses for frontend consumption. Covers normalization, flattening, filtering, and type safety with real examples.",
+  "url": "https://json.express/blog/transforming-api-data-frontend/",
+  "datePublished": "2026-02-07",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; Transforming API Data for Your Frontend — JSON Patterns That Scale
+  </div>
+
+  <article class="article">
+    <h1>Transforming API Data for Your Frontend — JSON Patterns That Scale</h1>
+    <p class="article-meta">2026-02-07 &middot; By Udi Talias</p>
+
+    <p>APIs rarely return data in the exact shape your UI needs. The backend sends nested objects, the frontend wants flat lists. The API returns snake_case, your TypeScript uses camelCase. The response includes 40 fields per item, but the component only renders 5.</p>
+<p>This gap between &quot;what the API gives you&quot; and &quot;what the UI needs&quot; is where data transformation lives. Here are the patterns that come up most often, with practical examples you can explore interactively.</p>
+<h2>Pattern 1: Flattening Nested Responses</h2>
+<p>APIs love nesting. Here&#39;s a typical user endpoint response:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;users&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;attributes&quot;: {
+          &quot;name&quot;: &quot;Alice Chen&quot;,
+          &quot;email&quot;: &quot;alice@example.com&quot;,
+          &quot;department&quot;: {
+            &quot;id&quot;: 10,
+            &quot;name&quot;: &quot;Engineering&quot;,
+            &quot;location&quot;: { &quot;floor&quot;: 3, &quot;building&quot;: &quot;HQ&quot; }
+          }
+        },
+        &quot;relationships&quot;: {
+          &quot;manager&quot;: { &quot;data&quot;: { &quot;id&quot;: 5, &quot;type&quot;: &quot;user&quot; } },
+          &quot;team&quot;: { &quot;data&quot;: [{ &quot;id&quot;: 2 }, { &quot;id&quot;: 3 }, { &quot;id&quot;: 4 }] }
+        }
+      },
+      {
+        &quot;id&quot;: 2,
+        &quot;attributes&quot;: {
+          &quot;name&quot;: &quot;Bob Park&quot;,
+          &quot;email&quot;: &quot;bob@example.com&quot;,
+          &quot;department&quot;: {
+            &quot;id&quot;: 10,
+            &quot;name&quot;: &quot;Engineering&quot;,
+            &quot;location&quot;: { &quot;floor&quot;: 3, &quot;building&quot;: &quot;HQ&quot; }
+          }
+        },
+        &quot;relationships&quot;: {
+          &quot;manager&quot;: { &quot;data&quot;: { &quot;id&quot;: 1, &quot;type&quot;: &quot;user&quot; } },
+          &quot;team&quot;: { &quot;data&quot;: [{ &quot;id&quot;: 1 }, { &quot;id&quot;: 3 }] }
+        }
+      }
+    ]
+  }
+}
+</code></pre>
+<p>Your user list component doesn&#39;t need three levels of nesting. To understand what the frontend actually needs, start by querying the relevant fields:</p>
+<ul>
+<li><code>data.users[*].attributes.name</code> — all user names</li>
+<li><code>data.users[*].attributes.department.name</code> — all department names</li>
+<li><code>data.users[0].relationships</code> — relationship shape for the first user</li>
+</ul>
+<p>This helps you design the flat interface your component will use — something like <code>{ id, name, email, departmentName, managerId }</code>.</p>
+<h2>Pattern 2: Normalizing for State Management</h2>
+<p>If you&#39;re using Redux, Zustand, or similar state management, you typically want normalized data — objects keyed by ID rather than arrays:</p>
+<pre><code class="language-json">{
+  &quot;products&quot;: [
+    { &quot;id&quot;: &quot;p1&quot;, &quot;name&quot;: &quot;Widget&quot;, &quot;categoryId&quot;: &quot;c1&quot;, &quot;price&quot;: 29.99 },
+    { &quot;id&quot;: &quot;p2&quot;, &quot;name&quot;: &quot;Gadget&quot;, &quot;categoryId&quot;: &quot;c1&quot;, &quot;price&quot;: 49.99 },
+    { &quot;id&quot;: &quot;p3&quot;, &quot;name&quot;: &quot;Doohickey&quot;, &quot;categoryId&quot;: &quot;c2&quot;, &quot;price&quot;: 19.99 }
+  ],
+  &quot;categories&quot;: [
+    { &quot;id&quot;: &quot;c1&quot;, &quot;name&quot;: &quot;Electronics&quot;, &quot;productCount&quot;: 2 },
+    { &quot;id&quot;: &quot;c2&quot;, &quot;name&quot;: &quot;Accessories&quot;, &quot;productCount&quot;: 1 }
+  ]
+}
+</code></pre>
+<p>The target normalized shape looks like:</p>
+<pre><code class="language-json">{
+  &quot;products&quot;: {
+    &quot;byId&quot;: {
+      &quot;p1&quot;: { &quot;id&quot;: &quot;p1&quot;, &quot;name&quot;: &quot;Widget&quot;, &quot;categoryId&quot;: &quot;c1&quot;, &quot;price&quot;: 29.99 },
+      &quot;p2&quot;: { &quot;id&quot;: &quot;p2&quot;, &quot;name&quot;: &quot;Gadget&quot;, &quot;categoryId&quot;: &quot;c1&quot;, &quot;price&quot;: 49.99 },
+      &quot;p3&quot;: { &quot;id&quot;: &quot;p3&quot;, &quot;name&quot;: &quot;Doohickey&quot;, &quot;categoryId&quot;: &quot;c2&quot;, &quot;price&quot;: 19.99 }
+    },
+    &quot;allIds&quot;: [&quot;p1&quot;, &quot;p2&quot;, &quot;p3&quot;]
+  },
+  &quot;categories&quot;: {
+    &quot;byId&quot;: {
+      &quot;c1&quot;: { &quot;id&quot;: &quot;c1&quot;, &quot;name&quot;: &quot;Electronics&quot;, &quot;productCount&quot;: 2 },
+      &quot;c2&quot;: { &quot;id&quot;: &quot;c2&quot;, &quot;name&quot;: &quot;Accessories&quot;, &quot;productCount&quot;: 1 }
+    },
+    &quot;allIds&quot;: [&quot;c1&quot;, &quot;c2&quot;]
+  }
+}
+</code></pre>
+<p>Use json.express to explore both shapes side by side. Query <code>products.byId.p1</code> to verify a specific item, or <code>products.allIds</code> to check the ordering. The Compare tool is useful here — paste the original API response and the normalized version to verify nothing was lost.</p>
+<h2>Pattern 3: Extracting Fields for List Views</h2>
+<p>A product API might return 30 fields per item, but your list view only shows 4:</p>
+<pre><code class="language-json">{
+  &quot;items&quot;: [
+    {
+      &quot;id&quot;: &quot;ord_001&quot;,
+      &quot;status&quot;: &quot;shipped&quot;,
+      &quot;created_at&quot;: &quot;2026-03-01T10:00:00Z&quot;,
+      &quot;updated_at&quot;: &quot;2026-03-05T14:30:00Z&quot;,
+      &quot;customer&quot;: {
+        &quot;id&quot;: &quot;cust_42&quot;,
+        &quot;name&quot;: &quot;Alice Chen&quot;,
+        &quot;email&quot;: &quot;alice@example.com&quot;,
+        &quot;tier&quot;: &quot;premium&quot;
+      },
+      &quot;line_items&quot;: [
+        { &quot;sku&quot;: &quot;WDG-001&quot;, &quot;name&quot;: &quot;Widget&quot;, &quot;qty&quot;: 2, &quot;unit_price&quot;: 29.99 },
+        { &quot;sku&quot;: &quot;GDG-001&quot;, &quot;name&quot;: &quot;Gadget&quot;, &quot;qty&quot;: 1, &quot;unit_price&quot;: 49.99 }
+      ],
+      &quot;totals&quot;: {
+        &quot;subtotal&quot;: 109.97,
+        &quot;tax&quot;: 9.90,
+        &quot;shipping&quot;: 5.99,
+        &quot;total&quot;: 125.86
+      },
+      &quot;shipping_address&quot;: {
+        &quot;street&quot;: &quot;123 Main St&quot;,
+        &quot;city&quot;: &quot;Portland&quot;,
+        &quot;state&quot;: &quot;OR&quot;,
+        &quot;zip&quot;: &quot;97201&quot;
+      }
+    }
+  ]
+}
+</code></pre>
+<p>For an order list, you probably only need: order ID, status, customer name, and total. Query these individually to verify the paths:</p>
+<ul>
+<li><code>items[*].id</code> — order IDs</li>
+<li><code>items[*].status</code> — statuses</li>
+<li><code>items[*].customer.name</code> — customer names</li>
+<li><code>items[*].totals.total</code> — totals</li>
+</ul>
+<p>This query-first approach helps you write your transformation function with confidence — you know exactly what path to use before writing any code.</p>
+<h2>Pattern 4: Handling Pagination Metadata</h2>
+<p>Paginated APIs wrap results in metadata:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    { &quot;id&quot;: 1, &quot;title&quot;: &quot;First post&quot; },
+    { &quot;id&quot;: 2, &quot;title&quot;: &quot;Second post&quot; }
+  ],
+  &quot;meta&quot;: {
+    &quot;current_page&quot;: 1,
+    &quot;total_pages&quot;: 15,
+    &quot;total_count&quot;: 147,
+    &quot;per_page&quot;: 10
+  },
+  &quot;links&quot;: {
+    &quot;self&quot;: &quot;/api/posts?page=1&quot;,
+    &quot;next&quot;: &quot;/api/posts?page=2&quot;,
+    &quot;last&quot;: &quot;/api/posts?page=15&quot;
+  }
+}
+</code></pre>
+<p>Your frontend needs to separate the actual data from the pagination state. Query <code>data</code> for the items and <code>meta</code> for the pagination controls. When building infinite scroll or pagination components, the <code>links</code> object tells you where to fetch next.</p>
+<h2>Pattern 5: Type Safety With Generated Interfaces</h2>
+<p>After you&#39;ve figured out the transformation, generate TypeScript types from both the API response and the transformed output. Paste the raw API response into json.express&#39;s TypeScript tab to get the &quot;input&quot; types, then paste your desired flattened shape to get the &quot;output&quot; types.</p>
+<p>This gives you two interfaces:</p>
+<ul>
+<li><code>ApiUserResponse</code> — the raw shape from the server</li>
+<li><code>User</code> — the clean shape your components expect</li>
+</ul>
+<p>Your transformation function signature becomes clear: <code>(response: ApiUserResponse) =&gt; User[]</code>. If the API ever changes its response shape, the TypeScript compiler catches it at build time.</p>
+<h2>The Workflow</h2>
+<p>When you encounter a new API endpoint your frontend needs to consume:</p>
+<ol>
+<li><strong>Fetch the raw response</strong> and paste it into json.express</li>
+<li><strong>Explore with queries</strong> to understand the data structure and find the fields you need</li>
+<li><strong>Switch to Tree view</strong> for deeply nested responses to understand the hierarchy</li>
+<li><strong>Generate TypeScript types</strong> from the raw response</li>
+<li><strong>Design your target shape</strong> — the flat, clean interface your components want</li>
+<li><strong>Write the transformation</strong> using the exact paths you discovered through querying</li>
+<li><strong>Compare the input and output</strong> to verify nothing important was dropped</li>
+</ol>
+<p>This is faster than reading API documentation (which is often incomplete or outdated) and more reliable than guessing at the response structure based on the endpoint name.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

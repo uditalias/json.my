@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free JSON to TypeScript Converter — Generate Interfaces — json.express</title>
+<meta name="description" content="Generate TypeScript interfaces from JSON data instantly. Handles nested objects, arrays, and union types. Free, private, zero dependencies.">
+<meta name="keywords" content="json to typescript, json to typescript online, generate typescript from json, json to ts, json to interface, typescript interface generator">
+<meta property="og:title" content="Free JSON to TypeScript Converter — Generate Interfaces — json.express">
+<meta property="og:description" content="Generate TypeScript interfaces from JSON data instantly. Handles nested objects, arrays, and union types. Free, private, zero dependencies.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/typescript/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free JSON to TypeScript Converter — Generate Interfaces — json.express">
+<meta name="twitter:description" content="Generate TypeScript interfaces from JSON data instantly. Handles nested objects, arrays, and union types. Free, private, zero dependencies.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/typescript/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free JSON to TypeScript Converter",
+  "description": "Generate TypeScript interfaces from JSON data instantly. Handles nested objects, arrays, and union types. Free, private, zero dependencies.",
+  "url": "https://json.express/typescript/",
+  "image": "https://json.express/og-card.png",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "json.express TypeScript Converter",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free JSON to TypeScript Converter</h1>
+  <p class="tagline">Generate TypeScript interfaces from any JSON data. Handles nested objects, arrays, union types, and optional properties. Instant, free, private.</p>
+
+  <div class="demo">
+    <div class="demo-label">Paste JSON</div>
+    <textarea id="ts-json-input" placeholder="Paste JSON here..."></textarea>
+
+    <div class="demo-toolbar">
+      <button id="ts-generate-btn" class="demo-btn">Generate Types</button>
+      <button id="ts-clear-btn" class="demo-btn demo-btn--secondary">Clear</button>
+    </div>
+
+    <div class="demo-label">TypeScript Interfaces</div>
+    <div id="ts-output" class="demo-output ts-output"></div>
+
+    <div class="demo-toolbar">
+      <button id="ts-copy-btn" class="demo-btn">Copy Types</button>
+      <button id="btn-open-editor" class="demo-btn demo-btn--secondary">Open in Full Editor</button>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <p>Need more tools? Explore json.express for JSON formatting, validation, querying, and more.</p>
+    <button class="cta" onclick="document.getElementById('btn-open-editor').click()">Open Full Editor</button>
+  </div>
+
+  <h2>Why Generate TypeScript from JSON?</h2>
+  <p>Converting JSON to TypeScript interfaces provides several key benefits:</p>
+  <ul>
+    <li><strong>Type Safety:</strong> Catch errors at compile time instead of runtime.</li>
+    <li><strong>API Contracts:</strong> Document API responses and ensure consistency.</li>
+    <li><strong>Faster Development:</strong> Reduce boilerplate and get instant type definitions.</li>
+    <li><strong>Better IDE Support:</strong> Autocomplete and inline documentation.</li>
+    <li><strong>Refactoring Confidence:</strong> Change code knowing types will catch breaking changes.</li>
+  </ul>
+
+  <h2>What the Converter Handles</h2>
+  <ul>
+    <li><strong>Nested Objects:</strong> Automatically generates interfaces for nested structures.</li>
+    <li><strong>Arrays:</strong> Infers array element types and handles unions.</li>
+    <li><strong>Union Types:</strong> Detects when properties can be multiple types.</li>
+    <li><strong>Optional Properties:</strong> Marks properties as optional when not all objects have them.</li>
+    <li><strong>Primitive Types:</strong> Correctly identifies strings, numbers, booleans, and nulls.</li>
+    <li><strong>Complex Nesting:</strong> Handles deeply nested data structures.</li>
+  </ul>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">⚡</div>
+      <div class="feature-card-title">Instant Generation</div>
+      <div class="feature-card-desc">Generate interfaces in milliseconds. No server calls, no waiting.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">100% Private</div>
+      <div class="feature-card-desc">All processing happens in your browser. Your data never leaves your computer.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">0️⃣</div>
+      <div class="feature-card-title">Zero Dependencies</div>
+      <div class="feature-card-desc">Pure JavaScript. No frameworks, no libraries, no bloat.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🧠</div>
+      <div class="feature-card-title">Smart Type Inference</div>
+      <div class="feature-card-desc">Intelligently detects types, unions, and optional fields.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🌈</div>
+      <div class="feature-card-title">Syntax Highlighted</div>
+      <div class="feature-card-desc">Beautiful, readable output with syntax highlighting.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">📋</div>
+      <div class="feature-card-title">Easy Copy</div>
+      <div class="feature-card-desc">One-click copy to clipboard. Ready to paste into your project.</div>
+    </div>
+  </div>
+
+  <h2>json.express vs Other Converters</h2>
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>json.express</th>
+        <th>quicktype.io</th>
+        <th>json2ts.com</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Private (no upload)</td>
+        <td>✓</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>TypeScript generation</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Union types</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Zero dependencies</td>
+        <td>✓</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Free</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>No ads</td>
+        <td>✓</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/query/">JSON Query</a>
+      <a class="related-tool-link" href="/viewer/">JSON Viewer</a>
+      <a class="related-tool-link" href="/format/">JSON Formatter</a>
+      <a class="related-tool-link" href="/validate/">JSON Validator</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+  <script>
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function lenientParse(jsonStr) {
+      var cleaned = '';
+      var i = 0;
+      var len = jsonStr.length;
+      while (i < len) {
+        if (jsonStr[i] === '"') {
+          cleaned += '"';
+          i++;
+          while (i < len && jsonStr[i] !== '"') {
+            if (jsonStr[i] === '\\' && i + 1 < len) { cleaned += jsonStr[i] + jsonStr[i + 1]; i += 2; }
+            else { cleaned += jsonStr[i]; i++; }
+          }
+          if (i < len) { cleaned += '"'; i++; }
+        } else if (jsonStr[i] === '/' && i + 1 < len && jsonStr[i + 1] === '/') {
+          i += 2;
+          while (i < len && jsonStr[i] !== '\n') i++;
+        } else if (jsonStr[i] === '/' && i + 1 < len && jsonStr[i + 1] === '*') {
+          i += 2;
+          while (i < len && !(jsonStr[i] === '*' && i + 1 < len && jsonStr[i + 1] === '/')) i++;
+          if (i < len) i += 2;
+        } else { cleaned += jsonStr[i]; i++; }
+      }
+      cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+      return JSON.parse(cleaned);
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function interfaceName(name) {
+      return name.charAt(0) === 'I' && name.length > 1 && name.charAt(1) === name.charAt(1).toUpperCase() ? name : 'I' + name;
+    }
+
+    function inferTSType(value, name, interfaces) {
+      interfaces = interfaces || [];
+      name = name || 'Root';
+      if (value === null) return { type: 'null', interfaces: interfaces };
+      if (typeof value === 'string') return { type: 'string', interfaces: interfaces };
+      if (typeof value === 'number') return { type: 'number', interfaces: interfaces };
+      if (typeof value === 'boolean') return { type: 'boolean', interfaces: interfaces };
+      if (Array.isArray(value)) {
+        if (value.length === 0) return { type: 'unknown[]', interfaces: interfaces };
+        var itemTypes = value.map(function(item) { return inferTSType(item, name + 'Item', []); });
+        var uniqueTypes = []; var seenTypes = new Set(); var objectInterfaces = [];
+        for (var i = 0; i < itemTypes.length; i++) {
+          interfaces = interfaces.concat(itemTypes[i].interfaces);
+          if (itemTypes[i].type.startsWith('interface ')) { objectInterfaces.push(itemTypes[i]); }
+          else if (!seenTypes.has(itemTypes[i].type)) { seenTypes.add(itemTypes[i].type); uniqueTypes.push(itemTypes[i].type); }
+        }
+        if (objectInterfaces.length > 0) {
+          var merged = mergeObjectInterfaces(objectInterfaces, name + 'Item');
+          interfaces = interfaces.concat(merged.interfaces);
+          if (!seenTypes.has(merged.name)) { uniqueTypes.push(merged.name); seenTypes.add(merged.name); }
+        }
+        var itemType = uniqueTypes.length === 1 ? uniqueTypes[0] : '(' + uniqueTypes.join(' | ') + ')';
+        return { type: itemType + '[]', interfaces: interfaces };
+      }
+      if (typeof value === 'object') {
+        var iName = interfaceName(name);
+        var props = []; var okeys = Object.keys(value);
+        for (var j = 0; j < okeys.length; j++) {
+          var propResult = inferTSType(value[okeys[j]], capitalize(okeys[j]), []);
+          interfaces = interfaces.concat(propResult.interfaces);
+          props.push({ key: okeys[j], type: propResult.type, optional: false });
+        }
+        interfaces.push({ name: iName, props: props });
+        return { type: 'interface ' + iName, interfaces: interfaces };
+      }
+      return { type: 'unknown', interfaces: interfaces };
+    }
+
+    function mergeObjectInterfaces(objectTypes, name) {
+      var iName = interfaceName(name);
+      var allKeys = new Map();
+      var total = objectTypes.length;
+      for (var i = 0; i < objectTypes.length; i++) {
+        var ifaceName = objectTypes[i].type.replace('interface ', '');
+        var iface = objectTypes[i].interfaces.find(function(inf) { return inf.name === ifaceName; });
+        if (!iface) continue;
+        for (var j = 0; j < iface.props.length; j++) {
+          var prop = iface.props[j];
+          if (!allKeys.has(prop.key)) { allKeys.set(prop.key, { types: new Set(), count: 0 }); }
+          var entry = allKeys.get(prop.key);
+          entry.types.add(prop.type); entry.count++;
+        }
+      }
+      var props = [];
+      allKeys.forEach(function(entry, key) {
+        var typeStr = Array.from(entry.types).join(' | ');
+        props.push({ key: key, type: entry.types.size > 1 ? '(' + typeStr + ')' : typeStr, optional: entry.count < total });
+      });
+      return { name: iName, interfaces: [{ name: iName, props: props }] };
+    }
+
+    function renderTSInterfaces(value, queryPath) {
+      var name = interfaceName(queryPath
+        ? queryPath.split('.').map(function(s) { return capitalize(s.replace(/\[.*\]/g, '')); }).join('') || 'Root'
+        : 'Root');
+      var result = inferTSType(value, name, []);
+      var rendered = []; var seen = new Set();
+      for (var i = 0; i < result.interfaces.length; i++) {
+        var iface = result.interfaces[i];
+        if (seen.has(iface.name)) continue; seen.add(iface.name);
+        var lines = [];
+        lines.push('<span class="ts-keyword">interface</span> <span class="ts-interface-name">' + escapeHtml(iface.name) + '</span> <span class="ts-punctuation">{</span>');
+        for (var j = 0; j < iface.props.length; j++) {
+          var prop = iface.props[j];
+          var safeKey = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(prop.key) ? prop.key : '"' + escapeHtml(prop.key) + '"';
+          var typeDisplay = prop.type.startsWith('interface ') ? prop.type.replace('interface ', '') : prop.type;
+          lines.push('  <span class="ts-property">' + escapeHtml(safeKey) + (prop.optional ? '?' : '') + '</span><span class="ts-punctuation">:</span> <span class="ts-type">' + escapeHtml(typeDisplay) + '</span><span class="ts-punctuation">;</span>');
+        }
+        lines.push('<span class="ts-punctuation">}</span>');
+        rendered.push(lines.join('\n'));
+      }
+      if (!result.type.startsWith('interface ')) {
+        rendered.push('<span class="ts-keyword">type</span> <span class="ts-interface-name">' + escapeHtml(name) + '</span> <span class="ts-punctuation">=</span> <span class="ts-type">' + escapeHtml(result.type) + '</span><span class="ts-punctuation">;</span>');
+      }
+      return rendered.join('\n\n');
+    }
+
+    var sampleJson = '{\n  "user": {\n    "id": 1,\n    "name": "Alice",\n    "email": "alice@example.com",\n    "address": {\n      "street": "123 Main St",\n      "city": "Springfield",\n      "zipCode": "62701"\n    },\n    "orders": [\n      {"id": 101, "total": 29.99, "status": "shipped"},\n      {"id": 102, "total": 59.50, "status": "pending"}\n    ]\n  }\n}';
+
+    var dom = {
+      jsonInput: document.getElementById('ts-json-input'),
+      output: document.getElementById('ts-output'),
+      generateBtn: document.getElementById('ts-generate-btn'),
+      clearBtn: document.getElementById('ts-clear-btn'),
+      copyBtn: document.getElementById('ts-copy-btn')
+    };
+
+    function generate() {
+      var jsonStr = dom.jsonInput.value.trim();
+      if (!jsonStr) {
+        dom.output.innerHTML = '<span class="ts-punctuation">// Paste JSON to generate types</span>';
+        return;
+      }
+      try {
+        var parsed = lenientParse(jsonStr);
+        dom.output.innerHTML = renderTSInterfaces(parsed);
+      } catch (e) {
+        dom.output.innerHTML = '<span class="ts-punctuation">// Error: ' + escapeHtml(e.message) + '</span>';
+      }
+    }
+
+    function clearForm() {
+      dom.jsonInput.value = '';
+      dom.output.innerHTML = '<span class="ts-punctuation">// Paste JSON to generate types</span>';
+    }
+
+    function copyToClipboard() {
+      var text = dom.output.textContent;
+      if (!text) {
+        alert('Nothing to copy. Generate types first.');
+        return;
+      }
+      navigator.clipboard.writeText(text).then(function() {
+        var originalText = dom.copyBtn.textContent;
+        dom.copyBtn.textContent = 'Copied!';
+        setTimeout(function() {
+          dom.copyBtn.textContent = originalText;
+        }, 2000);
+      }).catch(function(err) {
+        alert('Failed to copy: ' + err);
+      });
+    }
+
+    dom.generateBtn.addEventListener('click', generate);
+    dom.clearBtn.addEventListener('click', clearForm);
+    dom.copyBtn.addEventListener('click', copyToClipboard);
+
+    async function openInEditor(json, query) {
+      var state = { json: json };
+      if (query) state.query = query;
+      var blob = new Blob([JSON.stringify(state)]);
+      var cs = new CompressionStream('deflate');
+      var stream = blob.stream().pipeThrough(cs);
+      var compressedBlob = await new Response(stream).blob();
+      var buffer = await compressedBlob.arrayBuffer();
+      var bytes = new Uint8Array(buffer);
+      var binary = '';
+      for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      window.open('/#' + hash, '_blank');
+    }
+
+    document.getElementById('btn-open-editor').addEventListener('click', function() {
+      openInEditor(dom.jsonInput.value);
+    });
+
+    // Initialize with sample JSON
+    dom.jsonInput.value = sampleJson;
+    generate();
+  </script>
+</body>
+</html>

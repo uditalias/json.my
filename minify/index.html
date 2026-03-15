@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free Online JSON Minifier — Compress JSON — json.express</title>
+<meta name="description" content="Minify JSON to a single line. Remove whitespace and reduce file size. See compression ratio. Free, private, runs in your browser.">
+<meta name="keywords" content="json minify, json minifier online, compress json, json one line, minify json, json compact, remove whitespace json">
+<meta property="og:title" content="Free Online JSON Minifier — Compress JSON — json.express">
+<meta property="og:description" content="Minify JSON to a single line. Remove whitespace and reduce file size. See compression ratio. Free, private, runs in your browser.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/minify/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Online JSON Minifier — Compress JSON — json.express">
+<meta name="twitter:description" content="Minify JSON to a single line. Remove whitespace and reduce file size. See compression ratio. Free, private, runs in your browser.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/minify/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online JSON Minifier",
+  "description": "Minify JSON to a single line. Remove whitespace and reduce file size. See compression ratio. Free, private, runs in your browser.",
+  "url": "https://json.express/minify/",
+  "image": "https://json.express/og-card.png",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "json.express JSON Minifier",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free Online JSON Minifier</h1>
+  <p class="tagline">Compress JSON to a single line. See original vs minified size and compression ratio.</p>
+
+  <div class="demo">
+    <div class="demo-label">Try It Now</div>
+    <textarea id="demo-input" placeholder="Paste your JSON here..."></textarea>
+
+    <div class="demo-toolbar">
+      <button id="btn-minify" class="demo-btn">Minify</button>
+      <button id="btn-format" class="demo-btn demo-btn--secondary">Format</button>
+    </div>
+
+    <div id="demo-output" class="demo-output empty">Output will appear here...</div>
+
+    <div id="demo-stats" class="demo-stats">Compression stats will appear here</div>
+
+    <div class="demo-toolbar">
+      <button id="btn-open-editor" class="demo-btn">Open in Full Editor</button>
+      <button id="btn-copy" class="demo-btn demo-btn--secondary">Copy Result</button>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <p>Need more features? The full editor has tree view, TypeScript generation, URL sharing, and more.</p>
+    <button class="cta" onclick="document.getElementById('btn-open-editor').click()">Open Full Editor</button>
+  </div>
+
+  <h2>What is JSON Minification?</h2>
+  <p>JSON minification is the process of removing unnecessary whitespace, newlines, and indentation from JSON data while preserving its structure and functionality. The result is a compact, single-line version of your JSON that takes up significantly less space.</p>
+  <p>Minifying JSON is useful for reducing bandwidth, optimizing storage, and improving transmission speed. Developers minify JSON for API payloads, browser storage, configuration files, and data transmission to lower costs and improve performance.</p>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">📊</div>
+      <div class="feature-card-title">Compression Stats</div>
+      <div class="feature-card-desc">See exactly how much space you're saving with detailed byte counts and compression ratios.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔧</div>
+      <div class="feature-card-title">Lenient Parser</div>
+      <div class="feature-card-desc">Handles trailing commas and comments, so you can minify nearly any JSON variant.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">⚡</div>
+      <div class="feature-card-title">Instant Processing</div>
+      <div class="feature-card-desc">Real-time minification without delay — see results as you type.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">100% Private</div>
+      <div class="feature-card-desc">Everything runs in your browser. Your data never leaves your device.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">📋</div>
+      <div class="feature-card-title">One-Click Copy</div>
+      <div class="feature-card-desc">Easily copy the minified result to your clipboard with a single click.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">✨</div>
+      <div class="feature-card-title">Format & Validate</div>
+      <div class="feature-card-desc">Not just minifying — also format back to readable JSON for verification.</div>
+    </div>
+  </div>
+
+  <h2>How to Use</h2>
+  <ol>
+    <li><strong>Paste Your JSON</strong><p>Paste your pretty-printed or raw JSON into the input area. The minifier accepts any valid JSON, including malformed JSON with trailing commas and comments.</p></li>
+    <li><strong>Click Minify</strong><p>Click the "Minify" button to instantly compress your JSON to a single line. Alternatively, click "Format" to beautify your JSON with proper indentation.</p></li>
+    <li><strong>Copy & Use</strong><p>Click "Copy Result" to copy the minified output to your clipboard. Paste it into your code, configuration file, or API request.</p></li>
+  </ol>
+
+  <h2>When to Minify JSON</h2>
+  <p>Minifying JSON is essential in several scenarios:</p>
+  <ul>
+    <li><strong>API Payloads</strong> — If your API returns large JSON responses, minifying before transmission can save significant bandwidth and reduce latency for users.</li>
+    <li><strong>Browser Storage</strong> — When storing JSON in localStorage, IndexedDB, or other client-side storage, every byte counts. Minified JSON means more data in less space.</li>
+    <li><strong>Mobile Applications</strong> — Mobile users often have limited bandwidth. Minified JSON responses mean faster load times and lower data consumption.</li>
+    <li><strong>Configuration Shipping</strong> — When bundling JSON configuration files with software packages or libraries, minification reduces the overall package size.</li>
+    <li><strong>Data Archives</strong> — Storing historical JSON data? Minification can significantly reduce storage costs over time.</li>
+  </ul>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">JSON Formatter</a>
+      <a class="related-tool-link" href="/validate/">JSON Validator</a>
+      <a class="related-tool-link" href="/viewer/">JSON Viewer</a>
+      <a class="related-tool-link" href="/query/">JSON Query</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+  <script>
+    function lenientParse(text) {
+      var cleaned = '';
+      var i = 0;
+      var len = text.length;
+      while (i < len) {
+        if (text[i] === '"') {
+          cleaned += '"';
+          i++;
+          while (i < len && text[i] !== '"') {
+            if (text[i] === '\\' && i + 1 < len) { cleaned += text[i] + text[i + 1]; i += 2; }
+            else { cleaned += text[i]; i++; }
+          }
+          if (i < len) { cleaned += '"'; i++; }
+        } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
+          i += 2;
+          while (i < len && text[i] !== '\n') i++;
+        } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
+          i += 2;
+          while (i < len && !(text[i] === '*' && i + 1 < len && text[i + 1] === '/')) i++;
+          if (i < len) i += 2;
+        } else { cleaned += text[i]; i++; }
+      }
+      cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+      return JSON.parse(cleaned);
+    }
+
+    function escapeHtml(text) {
+      var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    var demoInput = document.getElementById('demo-input');
+    var demoOutput = document.getElementById('demo-output');
+    var demoStats = document.getElementById('demo-stats');
+    var btnMinify = document.getElementById('btn-minify');
+    var btnFormat = document.getElementById('btn-format');
+    var btnCopy = document.getElementById('btn-copy');
+
+    var sampleJson = {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "age": 30,
+      "address": {
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105"
+      },
+      "hobbies": ["reading", "hiking", "photography"],
+      "employed": true,
+      "salary": null
+    };
+
+    demoInput.value = JSON.stringify(sampleJson, null, 2);
+
+    function minifyDemo() {
+      try {
+        var parsed = lenientParse(demoInput.value);
+        var minified = JSON.stringify(parsed);
+        demoOutput.textContent = minified;
+        demoOutput.classList.remove('empty');
+
+        var origSize = new Blob([demoInput.value]).size;
+        var minSize = new Blob([minified]).size;
+        var savings = origSize > 0 ? ((1 - minSize / origSize) * 100).toFixed(1) : '0.0';
+
+        demoStats.textContent = origSize.toLocaleString() + ' → ' + minSize.toLocaleString() + ' bytes (' + savings + '% smaller)';
+      } catch (e) {
+        demoOutput.textContent = 'Error: ' + e.message;
+        demoOutput.classList.add('empty');
+        demoStats.textContent = '';
+      }
+    }
+
+    function formatDemo() {
+      try {
+        var parsed = lenientParse(demoInput.value);
+        var formatted = JSON.stringify(parsed, null, 2);
+        demoOutput.textContent = formatted;
+        demoOutput.classList.remove('empty');
+        demoStats.textContent = '';
+      } catch (e) {
+        demoOutput.textContent = 'Error: ' + e.message;
+        demoOutput.classList.add('empty');
+        demoStats.textContent = '';
+      }
+    }
+
+    function copyResult() {
+      var text = demoOutput.textContent;
+      if (!text || demoOutput.classList.contains('empty')) {
+        alert('Nothing to copy. Minify some JSON first.');
+        return;
+      }
+      navigator.clipboard.writeText(text).then(function() {
+        var originalText = btnCopy.textContent;
+        btnCopy.textContent = 'Copied!';
+        setTimeout(function() {
+          btnCopy.textContent = originalText;
+        }, 2000);
+      }).catch(function(err) {
+        alert('Failed to copy: ' + err);
+      });
+    }
+
+    btnMinify.addEventListener('click', minifyDemo);
+    btnFormat.addEventListener('click', formatDemo);
+    btnCopy.addEventListener('click', copyResult);
+
+    async function openInEditor(json, query) {
+      var state = { json: json };
+      if (query) state.query = query;
+      var blob = new Blob([JSON.stringify(state)]);
+      var cs = new CompressionStream('deflate');
+      var stream = blob.stream().pipeThrough(cs);
+      var compressedBlob = await new Response(stream).blob();
+      var buffer = await compressedBlob.arrayBuffer();
+      var bytes = new Uint8Array(buffer);
+      var binary = '';
+      for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      window.open('/#' + hash, '_blank');
+    }
+
+    document.getElementById('btn-open-editor').addEventListener('click', function() {
+      openInEditor(demoInput.value);
+    });
+
+    minifyDemo();
+  </script>
+</body>
+</html>

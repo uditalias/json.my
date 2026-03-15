@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>JSON Dot Notation Explained with Practical Examples — json.express</title>
+<meta name="description" content="Master JSON dot notation for accessing nested values. Learn about edge cases like keys with dots, numeric keys, and special characters.">
+<meta name="keywords" content="json dot notation, access nested json, javascript dot notation json, json property access, nested json values">
+<meta property="og:title" content="JSON Dot Notation Explained with Practical Examples — json.express">
+<meta property="og:description" content="Master JSON dot notation for accessing nested values. Learn about edge cases like keys with dots, numeric keys, and special characters.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/json-dot-notation/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JSON Dot Notation Explained with Practical Examples — json.express">
+<meta name="twitter:description" content="Master JSON dot notation for accessing nested values. Learn about edge cases like keys with dots, numeric keys, and special characters.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/json-dot-notation/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "JSON Dot Notation Explained with Practical Examples",
+  "description": "Master JSON dot notation for accessing nested values. Learn about edge cases like keys with dots, numeric keys, and special characters.",
+  "url": "https://json.express/blog/json-dot-notation/",
+  "datePublished": "2026-02-28",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; JSON Dot Notation Explained with Practical Examples
+  </div>
+
+  <article class="article">
+    <h1>JSON Dot Notation Explained with Practical Examples</h1>
+    <p class="article-meta">2026-02-28 &middot; By Udi Talias</p>
+
+    <p>Dot notation is the most common way to reference values deep inside JSON structures. If you&#39;ve ever written <code>user.profile.avatar</code> or <code>config.database.host</code>, you&#39;re already using it. But there are surprising edge cases and gotchas that trip up developers.</p>
+<p>This guide covers everything: the basics, how it maps to JavaScript, edge cases that break intuition, and when to switch to bracket notation.</p>
+<h2>What Is Dot Notation?</h2>
+<p>Dot notation is a shorthand for accessing properties in nested objects. Instead of writing <code>obj[&#39;key&#39;]</code>, you write <code>obj.key</code>. It&#39;s readable, concise, and the standard across most programming languages.</p>
+<p>In JSON context, it&#39;s the natural way to reference paths through hierarchical data:</p>
+<pre><code>user.name
+user.address.city
+user.posts[0].title
+</code></pre>
+<p>Each dot descends one level. Each bracket <code>[]</code> accesses an array element.</p>
+<h2>Basic Examples</h2>
+<p>Here&#39;s a JSON structure:</p>
+<pre><code class="language-json">{
+  &quot;user&quot;: {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;email&quot;: &quot;alice@example.com&quot;,
+    &quot;address&quot;: {
+      &quot;street&quot;: &quot;123 Main St&quot;,
+      &quot;city&quot;: &quot;New York&quot;,
+      &quot;zip&quot;: &quot;10001&quot;
+    },
+    &quot;posts&quot;: [
+      { &quot;id&quot;: 1, &quot;title&quot;: &quot;First Post&quot; },
+      { &quot;id&quot;: 2, &quot;title&quot;: &quot;Second Post&quot; }
+    ]
+  }
+}
+</code></pre>
+<p>Using dot notation:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>user.name</code></td>
+<td><code>&quot;Alice&quot;</code></td>
+</tr>
+<tr>
+<td><code>user.address.city</code></td>
+<td><code>&quot;New York&quot;</code></td>
+</tr>
+<tr>
+<td><code>user.address.zip</code></td>
+<td><code>&quot;10001&quot;</code></td>
+</tr>
+<tr>
+<td><code>user.posts[0].title</code></td>
+<td><code>&quot;First Post&quot;</code></td>
+</tr>
+<tr>
+<td><code>user.posts[1].id</code></td>
+<td><code>2</code></td>
+</tr>
+</tbody></table>
+<p>In JavaScript, these are equivalent:</p>
+<pre><code class="language-javascript">obj.user.name === obj[&#39;user&#39;][&#39;name&#39;]
+obj.user.address.city === obj[&#39;user&#39;][&#39;address&#39;][&#39;city&#39;]
+</code></pre>
+<p>Dot notation is just syntactic sugar for bracket notation—the runtime behavior is identical.</p>
+<h2>Array Access</h2>
+<p>Arrays use bracket notation with numeric indices:</p>
+<pre><code>users[0]        // First user
+users[5]        // Sixth user
+users[-1]       // Last user (not standard JS, but json.express supports it)
+</code></pre>
+<p>Combine with dot notation for nested access:</p>
+<pre><code>users[0].name                    // First user&#39;s name
+posts[2].author.email            // Third post&#39;s author&#39;s email
+data.results[0].metadata.tags[1] // Nested array access
+</code></pre>
+<h2>How It Maps to JavaScript</h2>
+<p>Dot notation is JavaScript native. When you write:</p>
+<pre><code class="language-javascript">user.address.city
+</code></pre>
+<p>The JavaScript engine:</p>
+<ol>
+<li>Evaluates <code>user</code> → gets the object</li>
+<li>Accesses the <code>address</code> property → gets the nested object</li>
+<li>Accesses the <code>city</code> property → gets the value</li>
+</ol>
+<p>This is equivalent to:</p>
+<pre><code class="language-javascript">user[&#39;address&#39;][&#39;city&#39;]
+</code></pre>
+<p>Both throw an error if a property is missing:</p>
+<pre><code class="language-javascript">user.address.country  // undefined (address exists but no country)
+user.missing.city     // TypeError: Cannot read property &#39;city&#39; of undefined
+</code></pre>
+<p>JavaScript has optional chaining (<code>?.</code>) to handle this safely:</p>
+<pre><code class="language-javascript">user?.address?.city   // Returns undefined if any step is missing
+</code></pre>
+<h2>Edge Cases That Break Things</h2>
+<h3>1. Keys Containing Dots</h3>
+<p>If your JSON key literally contains a dot, dot notation breaks:</p>
+<pre><code class="language-json">{
+  &quot;user.name&quot;: &quot;Alice&quot;,
+  &quot;config&quot;: {
+    &quot;db.host&quot;: &quot;localhost&quot;
+  }
+}
+</code></pre>
+<p>This fails:</p>
+<pre><code class="language-javascript">obj.user.name  // Tries to access obj.user, then .name (wrong!)
+</code></pre>
+<p>Use bracket notation instead:</p>
+<pre><code class="language-javascript">obj[&quot;user.name&quot;]        // ✓ Works: &quot;Alice&quot;
+obj.config[&quot;db.host&quot;]   // ✓ Works: &quot;localhost&quot;
+</code></pre>
+<p>In json.express, you&#39;d write:</p>
+<pre><code>[&quot;user.name&quot;]
+config[&quot;db.host&quot;]
+</code></pre>
+<h3>2. Numeric Object Keys</h3>
+<p>JSON keys can be numbers (as strings). These are tricky:</p>
+<pre><code class="language-json">{
+  &quot;1&quot;: &quot;First&quot;,
+  &quot;2&quot;: &quot;Second&quot;,
+  &quot;users&quot;: {
+    &quot;101&quot;: { &quot;name&quot;: &quot;Alice&quot; },
+    &quot;102&quot;: { &quot;name&quot;: &quot;Bob&quot; }
+  }
+}
+</code></pre>
+<p>With pure dot notation, you can&#39;t access numeric keys reliably:</p>
+<pre><code class="language-javascript">obj.1           // SyntaxError: Unexpected number
+obj[&quot;1&quot;]        // ✓ Works: &quot;First&quot;
+obj.users[&quot;101&quot;].name  // ✓ Works: &quot;Alice&quot;
+</code></pre>
+<p>Use bracket notation for numeric keys.</p>
+<h3>3. Keys with Spaces, Hyphens, or Special Characters</h3>
+<p>Any key with spaces or special characters requires brackets:</p>
+<pre><code class="language-json">{
+  &quot;first name&quot;: &quot;Alice&quot;,
+  &quot;favorite-color&quot;: &quot;blue&quot;,
+  &quot;config@version&quot;: &quot;2.0&quot;
+}
+</code></pre>
+<pre><code class="language-javascript">obj.first name      // SyntaxError
+obj[&quot;first name&quot;]   // ✓ &quot;Alice&quot;
+obj[&quot;favorite-color&quot;]    // ✓ &quot;blue&quot;
+obj[&quot;config@version&quot;]    // ✓ &quot;2.0&quot;
+</code></pre>
+<h3>4. Empty String Keys</h3>
+<p>Yes, JSON allows empty string keys:</p>
+<pre><code class="language-json">{
+  &quot;&quot;: &quot;value&quot;,
+  &quot;name&quot;: &quot;Alice&quot;
+}
+</code></pre>
+<pre><code class="language-javascript">obj[&quot;&quot;]     // ✓ &quot;value&quot;
+obj.name    // ✓ &quot;Alice&quot;
+</code></pre>
+<h3>5. Reserved Words as Keys</h3>
+<p>JavaScript reserves words like <code>class</code>, <code>function</code>, <code>return</code>. As keys, they&#39;re fine:</p>
+<pre><code class="language-json">{
+  &quot;class&quot;: &quot;admin&quot;,
+  &quot;function&quot;: &quot;process&quot;,
+  &quot;return&quot;: true
+}
+</code></pre>
+<pre><code class="language-javascript">obj.class      // ✓ &quot;admin&quot; (works in modern JS)
+obj[&quot;class&quot;]   // ✓ Always works
+obj.return     // ✓ Works in most contexts (but not recommended)
+obj[&quot;return&quot;]  // ✓ Always works (safer)
+</code></pre>
+<p>Use bracket notation to be explicit and avoid issues.</p>
+<h2>Practical Decision Tree</h2>
+<p><strong>Use dot notation when:</strong></p>
+<ul>
+<li>Keys are valid JavaScript identifiers (letters, numbers, <code>_</code>, <code>$</code>)</li>
+<li>Keys don&#39;t start with a number</li>
+<li>No spaces, hyphens, or special characters</li>
+<li>It&#39;s clearer and more readable</li>
+</ul>
+<p><strong>Use bracket notation when:</strong></p>
+<ul>
+<li>Keys contain dots, spaces, or special characters</li>
+<li>Keys are numeric strings</li>
+<li>Keys are reserved words</li>
+<li>You&#39;re accessing keys dynamically (e.g., from a variable)</li>
+</ul>
+<pre><code class="language-javascript">const key = &quot;user.id&quot;;
+obj[key]  // Accesses obj[&quot;user.id&quot;], not nested access
+</code></pre>
+<h2>How json.express Supports Both</h2>
+<p>json.express query bar accepts both styles:</p>
+<pre><code>user.name                    // Dot notation
+user[&quot;address.city&quot;]         // Bracket for keys with dots
+users[0].posts[1].title      // Mixed
+data[&quot;special-key&quot;].value    // Mixed
+[&quot;top-level-key&quot;].nested     // Bracket first, then dot
+</code></pre>
+<p>You can switch freely based on the JSON structure. The query engine understands both and combines them seamlessly.</p>
+<h2>Real-World Example: API Response Paths</h2>
+<p>Here&#39;s a complex API response:</p>
+<pre><code class="language-json">{
+  &quot;response&quot;: {
+    &quot;user&quot;: {
+      &quot;id&quot;: 123,
+      &quot;profile&quot;: {
+        &quot;display_name&quot;: &quot;Alice&quot;,
+        &quot;social-media&quot;: {
+          &quot;twitter&quot;: &quot;@alice&quot;
+        }
+      }
+    },
+    &quot;posts&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;content&quot;: &quot;Hello&quot;,
+        &quot;meta&quot;: {
+          &quot;created_at&quot;: &quot;2026-03-10T10:00:00Z&quot;
+        }
+      }
+    ]
+  }
+}
+</code></pre>
+<p>Different paths you might use:</p>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User ID</td>
+<td><code>response.user.id</code></td>
+</tr>
+<tr>
+<td>Display name</td>
+<td><code>response.user.profile.display_name</code></td>
+</tr>
+<tr>
+<td>Twitter handle</td>
+<td><code>response.user.profile[&quot;social-media&quot;].twitter</code></td>
+</tr>
+<tr>
+<td>First post content</td>
+<td><code>response.posts[0].content</code></td>
+</tr>
+<tr>
+<td>Post creation time</td>
+<td><code>response.posts[0].meta.created_at</code></td>
+</tr>
+</tbody></table>
+<p>Notice the mix: <code>display_name</code> works with dots (it&#39;s a valid identifier), but <code>social-media</code> requires brackets because of the hyphen.</p>
+<h2>Common Mistakes</h2>
+<p><strong>Mistake 1: Forgetting brackets for arrays</strong></p>
+<pre><code class="language-javascript">obj.posts.0.title      // ❌ Wrong
+obj.posts[0].title     // ✓ Correct
+</code></pre>
+<p><strong>Mistake 2: Assuming missing properties return an error</strong></p>
+<pre><code class="language-javascript">obj.missing.nested.path  // ❌ TypeError if &#39;missing&#39; doesn&#39;t exist
+obj?.missing?.nested?.path  // ✓ Safe: returns undefined
+</code></pre>
+<p><strong>Mistake 3: Mixing styles without bracket notation for special keys</strong></p>
+<pre><code class="language-javascript">obj.user.favorite-color  // ❌ Interprets as (obj.user.favorite) - color
+obj.user[&quot;favorite-color&quot;]  // ✓ Correct
+</code></pre>
+<h2>Tips for Working with Dynamic JSON</h2>
+<p>When you don&#39;t know the structure beforehand:</p>
+<ol>
+<li><strong>Explore first</strong>: Paste into json.express and browse the Tree view to understand structure</li>
+<li><strong>Use wildcards</strong>: <code>posts[*].title</code> returns all post titles</li>
+<li><strong>Use recursive descent</strong>: <code>..email</code> finds email anywhere in the tree</li>
+<li><strong>Test your paths</strong>: The Result view shows what your query returns</li>
+</ol>
+<h2>Summary</h2>
+<p>Dot notation is powerful and readable, but has limits. Master the edge cases:</p>
+<ul>
+<li>Use bracket notation for keys with special characters</li>
+<li>Numeric keys, keys with dots, spaces, hyphens—all need brackets</li>
+<li>Combine both styles in the same path</li>
+<li>Use optional chaining (<code>?.</code>) in JavaScript to handle missing properties safely</li>
+</ul>
+<p>Get comfortable switching between styles. The best path is the one that works for your specific JSON structure.</p>
+<p>Ready to explore? Head to <a href="/query/">json.express</a> and try different paths on your own data.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

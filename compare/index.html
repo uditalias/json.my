@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free Online JSON Diff & Compare Tool — json.express</title>
+<meta name="description" content="Compare two JSON objects side by side. See added, removed, and changed values highlighted. Handles nested structures. Free, private.">
+<meta name="keywords" content="json compare, json diff, json diff online, compare two json, json difference, json comparison tool">
+<meta property="og:title" content="Free Online JSON Diff & Compare Tool — json.express">
+<meta property="og:description" content="Compare two JSON objects side by side. See added, removed, and changed values highlighted. Handles nested structures. Free, private.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/compare/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Online JSON Diff & Compare Tool — json.express">
+<meta name="twitter:description" content="Compare two JSON objects side by side. See added, removed, and changed values highlighted. Handles nested structures. Free, private.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/compare/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online JSON Diff & Compare Tool",
+  "description": "Compare two JSON objects side by side. See added, removed, and changed values highlighted.",
+  "url": "https://json.express/compare/",
+  "image": "https://json.express/og-card.png",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "json.express Compare",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}
+</script>
+</head>
+<body>
+<div class="page page--wide">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free Online JSON Diff & Compare Tool</h1>
+  <p class="tagline">Compare two JSON objects side by side. See added, removed, and changed values highlighted.</p>
+
+  <div class="demo">
+    <div class="demo-label">Try It Now</div>
+    <div class="compare-inputs">
+      <textarea id="demo-left" placeholder="Paste your JSON here..." spellcheck="false">{
+  "name": "json.express",
+  "version": "1.0.0",
+  "features": ["format", "validate", "query"],
+  "config": {
+    "theme": "dark",
+    "autoSave": true,
+    "maxSize": 1024
+  }
+}</textarea>
+      <textarea id="demo-right" placeholder="Paste your JSON here..." spellcheck="false">{
+  "name": "json.express",
+  "version": "2.0.0",
+  "features": ["format", "validate", "query", "compare"],
+  "config": {
+    "theme": "light",
+    "autoSave": true,
+    "maxSize": 2048,
+    "newOption": "enabled"
+  },
+  "author": "Udi Talias"
+}</textarea>
+    </div>
+
+    <div class="demo-toolbar">
+      <button id="compare-btn" class="demo-btn">Compare JSON</button>
+      <button id="open-left-btn" class="demo-btn demo-btn--secondary">Open Left in Editor</button>
+      <button id="open-right-btn" class="demo-btn demo-btn--secondary">Open Right in Editor</button>
+    </div>
+
+    <div class="diff-summary" id="compare-summary">
+      <span><span id="added-count">0</span> <span class="diff-type-badge diff-type-added">Added</span></span>
+      <span><span id="removed-count">0</span> <span class="diff-type-badge diff-type-removed">Removed</span></span>
+      <span><span id="changed-count">0</span> <span class="diff-type-badge diff-type-changed">Changed</span></span>
+    </div>
+
+    <div id="compare-results">
+      <div id="no-differences">No differences found</div>
+      <table class="diff-table" id="diff-table">
+        <thead>
+          <tr>
+            <th>Path</th>
+            <th>Type</th>
+            <th>Old Value</th>
+            <th>New Value</th>
+          </tr>
+        </thead>
+        <tbody id="diff-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <p>Need to explore JSON structure? Use the full editor with tree view, TypeScript generation, and URL sharing.</p>
+    <a class="cta" href="/">Open Full Editor</a>
+  </div>
+
+  <h2>What is JSON Comparison?</h2>
+  <p>JSON comparison (or "diff") is the process of identifying differences between two JSON objects. This is essential for:</p>
+  <ul>
+    <li><strong>API Versioning:</strong> Detect breaking changes between API response versions</li>
+    <li><strong>Configuration Drift:</strong> Compare current config with expected baseline to identify unintended changes</li>
+    <li><strong>Test Assertions:</strong> Verify that API responses match expected values in automated tests</li>
+    <li><strong>Data Migration:</strong> Identify what has changed before and after data transformations</li>
+    <li><strong>Audit Trails:</strong> Track modifications to critical JSON documents over time</li>
+  </ul>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">🔍</div>
+      <div class="feature-card-title">Deep Comparison</div>
+      <div class="feature-card-desc">Recursively compares nested objects and arrays to identify all differences at any depth.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🎨</div>
+      <div class="feature-card-title">Color-Coded Results</div>
+      <div class="feature-card-desc">Added, removed, and changed values are highlighted in distinct colors for easy scanning.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">✓</div>
+      <div class="feature-card-title">Lenient Parsing</div>
+      <div class="feature-card-desc">Handles trailing commas and comments in JSON, making it more forgiving than strict JSON.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">100% Private</div>
+      <div class="feature-card-desc">All comparisons happen in your browser. Your data never leaves your device.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">📍</div>
+      <div class="feature-card-title">Detailed Path Info</div>
+      <div class="feature-card-desc">Each difference shows the exact path to the modified value for precise navigation.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">⚡</div>
+      <div class="feature-card-title">No Installation</div>
+      <div class="feature-card-desc">Free, online tool with no sign-up required. Works on any device with a modern browser.</div>
+    </div>
+  </div>
+
+  <h2>How It Works</h2>
+  <p>The comparison algorithm uses recursive deep comparison to examine both JSON objects:</p>
+  <ol>
+    <li><strong>Parse:</strong> Both JSON strings are parsed into JavaScript objects (with support for lenient syntax)</li>
+    <li><strong>Traverse:</strong> The algorithm recursively walks through both object trees simultaneously</li>
+    <li><strong>Categorize:</strong> Each difference is categorized as <em>added</em> (exists only in right), <em>removed</em> (exists only in left), or <em>changed</em> (different values)</li>
+    <li><strong>Track Path:</strong> The full path to each difference is recorded (e.g., <code>config.theme</code> or <code>features[3]</code>)</li>
+    <li><strong>Display:</strong> Results are presented in a table with color coding and truncated value previews</li>
+  </ol>
+  <p>The algorithm handles:</p>
+  <ul>
+    <li>Primitive values (strings, numbers, booleans)</li>
+    <li>Nested objects and arrays</li>
+    <li>Type mismatches (e.g., string vs. number)</li>
+    <li>Null and undefined values</li>
+    <li>Array length differences</li>
+  </ul>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">JSON Formatter</a>
+      <a class="related-tool-link" href="/validate/">JSON Validator</a>
+      <a class="related-tool-link" href="/viewer/">JSON Viewer</a>
+      <a class="related-tool-link" href="/query/">JSON Query</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+  <script>
+    // Utility Functions
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return '';
+      var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    function lenientParse(str) {
+      if (!str || typeof str !== 'string') return null;
+      str = str.trim();
+
+      // Remove single-line comments
+      str = str.replace(/\/\/.*?(\r\n|\n|$)/g, '\n');
+
+      // Remove multi-line comments
+      str = str.replace(/\/\*[\s\S]*?\*\//g, '');
+
+      // Remove trailing commas before } or ]
+      str = str.replace(/,(\s*[}\]])/g, '$1');
+
+      try {
+        return JSON.parse(str);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Deep Diff Algorithm
+    function deepDiff(a, b, path) {
+      path = path || '';
+      var diffs = [];
+
+      if (a === b) return diffs;
+
+      if (typeof a !== typeof b || a === null || b === null || typeof a !== 'object') {
+        if (a === undefined) {
+          diffs.push({ path: path || '(root)', type: 'added', newValue: b });
+        } else if (b === undefined) {
+          diffs.push({ path: path || '(root)', type: 'removed', oldValue: a });
+        } else {
+          diffs.push({ path: path || '(root)', type: 'changed', oldValue: a, newValue: b });
+        }
+        return diffs;
+      }
+
+      if (Array.isArray(a) && Array.isArray(b)) {
+        var maxLen = Math.max(a.length, b.length);
+        for (var i = 0; i < maxLen; i++) {
+          var cp = path + '[' + i + ']';
+          if (i >= a.length) {
+            diffs.push({ path: cp, type: 'added', newValue: b[i] });
+          } else if (i >= b.length) {
+            diffs.push({ path: cp, type: 'removed', oldValue: a[i] });
+          } else {
+            diffs = diffs.concat(deepDiff(a[i], b[i], cp));
+          }
+        }
+        return diffs;
+      }
+
+      if (Array.isArray(a) !== Array.isArray(b)) {
+        diffs.push({ path: path || '(root)', type: 'changed', oldValue: a, newValue: b });
+        return diffs;
+      }
+
+      var allKeys = {};
+      Object.keys(a).forEach(function(k) { allKeys[k] = true; });
+      Object.keys(b).forEach(function(k) { allKeys[k] = true; });
+
+      Object.keys(allKeys).forEach(function(key) {
+        var childPath = path ? path + '.' + key : key;
+        if (!(key in a)) {
+          diffs.push({ path: childPath, type: 'added', newValue: b[key] });
+        } else if (!(key in b)) {
+          diffs.push({ path: childPath, type: 'removed', oldValue: a[key] });
+        } else {
+          diffs = diffs.concat(deepDiff(a[key], b[key], childPath));
+        }
+      });
+
+      return diffs;
+    }
+
+    function truncateValue(value, maxLen) {
+      maxLen = maxLen || 100;
+      var str = typeof value === 'string' ? value : JSON.stringify(value);
+      if (str.length > maxLen) {
+        return str.substring(0, maxLen) + '...';
+      }
+      return str;
+    }
+
+    function formatValue(value) {
+      if (value === null) return 'null';
+      if (value === undefined) return 'undefined';
+      if (typeof value === 'string') return '"' + value + '"';
+      if (typeof value === 'object') return JSON.stringify(value);
+      return String(value);
+    }
+
+    // DOM Elements
+    var leftInput = document.getElementById('demo-left');
+    var rightInput = document.getElementById('demo-right');
+    var compareBtn = document.getElementById('compare-btn');
+    var openLeftBtn = document.getElementById('open-left-btn');
+    var openRightBtn = document.getElementById('open-right-btn');
+    var compareSummary = document.getElementById('compare-summary');
+    var compareResults = document.getElementById('compare-results');
+    var diffTable = document.getElementById('diff-table');
+    var diffTbody = document.getElementById('diff-tbody');
+    var noDifferences = document.getElementById('no-differences');
+
+    function performComparison() {
+      var leftJson = lenientParse(leftInput.value);
+      var rightJson = lenientParse(rightInput.value);
+
+      if (leftJson === null) {
+        alert('Left JSON is invalid');
+        compareResults.style.display = 'none';
+        compareSummary.style.display = 'none';
+        return;
+      }
+      if (rightJson === null) {
+        alert('Right JSON is invalid');
+        compareResults.style.display = 'none';
+        compareSummary.style.display = 'none';
+        return;
+      }
+
+      var diffs = deepDiff(leftJson, rightJson);
+
+      if (diffs.length === 0) {
+        noDifferences.style.display = 'block';
+        diffTable.style.display = 'none';
+        compareResults.style.display = 'block';
+        compareSummary.style.display = 'none';
+        return;
+      }
+
+      noDifferences.style.display = 'none';
+      diffTable.style.display = 'table';
+      diffTbody.innerHTML = '';
+
+      var counts = { added: 0, removed: 0, changed: 0 };
+
+      diffs.forEach(function(diff) {
+        counts[diff.type]++;
+
+        var row = document.createElement('tr');
+        row.className = 'diff-row-' + diff.type;
+
+        // Path cell
+        var pathCell = document.createElement('td');
+        pathCell.textContent = diff.path;
+        row.appendChild(pathCell);
+
+        // Type cell
+        var typeCell = document.createElement('td');
+        var badge = document.createElement('span');
+        badge.className = 'diff-type-badge diff-type-' + diff.type;
+        badge.textContent = diff.type;
+        typeCell.appendChild(badge);
+        row.appendChild(typeCell);
+
+        // Old value cell
+        var oldCell = document.createElement('td');
+        if (diff.oldValue !== undefined) {
+          oldCell.textContent = truncateValue(diff.oldValue);
+        }
+        row.appendChild(oldCell);
+
+        // New value cell
+        var newCell = document.createElement('td');
+        if (diff.newValue !== undefined) {
+          newCell.textContent = truncateValue(diff.newValue);
+        }
+        row.appendChild(newCell);
+
+        diffTbody.appendChild(row);
+      });
+
+      // Update summary
+      document.getElementById('added-count').textContent = counts.added;
+      document.getElementById('removed-count').textContent = counts.removed;
+      document.getElementById('changed-count').textContent = counts.changed;
+
+      compareResults.style.display = 'block';
+      compareSummary.style.display = 'flex';
+    }
+
+    compareBtn.addEventListener('click', performComparison);
+
+    async function openInEditor(json, query) {
+      var state = { json: json };
+      if (query) state.query = query;
+      var blob = new Blob([JSON.stringify(state)]);
+      var cs = new CompressionStream('deflate');
+      var stream = blob.stream().pipeThrough(cs);
+      var compressedBlob = await new Response(stream).blob();
+      var buffer = await compressedBlob.arrayBuffer();
+      var bytes = new Uint8Array(buffer);
+      var binary = '';
+      for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      window.open('/#' + hash, '_blank');
+    }
+
+    openLeftBtn.addEventListener('click', function() {
+      openInEditor(leftInput.value);
+    });
+
+    openRightBtn.addEventListener('click', function() {
+      openInEditor(rightInput.value);
+    });
+
+    // Auto-compare on page load
+    window.addEventListener('load', function() {
+      performComparison();
+    });
+  </script>
+</body>
+</html>

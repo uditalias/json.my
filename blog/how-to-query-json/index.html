@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>How to Query Nested JSON Objects Online — json.express</title>
+<meta name="description" content="Learn how to use dot notation, wildcards, recursive descent, and array slicing to query JSON data. Step-by-step guide with examples.">
+<meta name="keywords" content="query json online, json query tool, extract json values, json path query, json dot notation">
+<meta property="og:title" content="How to Query Nested JSON Objects Online — json.express">
+<meta property="og:description" content="Learn how to use dot notation, wildcards, recursive descent, and array slicing to query JSON data. Step-by-step guide with examples.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/how-to-query-json/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Query Nested JSON Objects Online — json.express">
+<meta name="twitter:description" content="Learn how to use dot notation, wildcards, recursive descent, and array slicing to query JSON data. Step-by-step guide with examples.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/how-to-query-json/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Query Nested JSON Objects Online",
+  "description": "Learn how to use dot notation, wildcards, recursive descent, and array slicing to query JSON data. Step-by-step guide with examples.",
+  "url": "https://json.express/blog/how-to-query-json/",
+  "datePublished": "2026-03-10",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; How to Query Nested JSON Objects Online
+  </div>
+
+  <article class="article">
+    <h1>How to Query Nested JSON Objects Online</h1>
+    <p class="article-meta">2026-03-10 &middot; By Udi Talias</p>
+
+    <p>JSON has become the lingua franca of modern web development, but working with deeply nested JSON structures can be tedious and error-prone. Whether you&#39;re debugging an API response, extracting specific values from a large dataset, or transforming raw JSON data, knowing how to query JSON effectively is a critical skill.</p>
+<p>In this guide, you&#39;ll learn practical techniques for querying nested JSON objects using modern query syntax—without needing to write JavaScript code or use command-line tools. We&#39;ll cover all the essential query patterns, show real-world examples, and help you choose the right approach for your use case.</p>
+<h2>Why JSON Querying Matters</h2>
+<p>When you&#39;re working with APIs, configuration files, or data exports, you often receive deeply nested JSON structures. Rather than manually parsing through layers of objects and arrays to find the value you need, a good JSON query tool lets you:</p>
+<ul>
+<li><strong>Extract specific values</strong> without writing code</li>
+<li><strong>Understand data structure</strong> by navigating hierarchies visually</li>
+<li><strong>Transform raw data</strong> for analysis or reporting</li>
+<li><strong>Debug API responses</strong> quickly and efficiently</li>
+<li><strong>Validate data structure</strong> before processing</li>
+</ul>
+<p>The ability to query JSON directly in your browser eliminates the friction of context-switching to a terminal or spinning up a development environment.</p>
+<h2>Fundamentals: Dot Notation</h2>
+<p>The simplest way to access nested JSON values is <strong>dot notation</strong>. Think of it as a path through your data structure.</p>
+<pre><code class="language-json">{
+  &quot;user&quot;: {
+    &quot;name&quot;: &quot;Alice&quot;,
+    &quot;email&quot;: &quot;alice@example.com&quot;,
+    &quot;profile&quot;: {
+      &quot;age&quot;: 28,
+      &quot;city&quot;: &quot;San Francisco&quot;
+    }
+  }
+}
+</code></pre>
+<p>To get Alice&#39;s city, you&#39;d use:</p>
+<pre><code>user.profile.city
+</code></pre>
+<p><strong>Result:</strong> <code>&quot;San Francisco&quot;</code></p>
+<p>Dot notation is intuitive and handles the most common case: accessing properties of objects at any depth. However, it only works when you know the exact property names.</p>
+<h2>Querying Arrays with Bracket Notation and Indexing</h2>
+<p>When your JSON contains arrays, bracket notation lets you access specific elements or all elements in an array.</p>
+<pre><code class="language-json">{
+  &quot;products&quot;: [
+    {&quot;id&quot;: 1, &quot;name&quot;: &quot;Laptop&quot;, &quot;price&quot;: 1200},
+    {&quot;id&quot;: 2, &quot;name&quot;: &quot;Mouse&quot;, &quot;price&quot;: 25},
+    {&quot;id&quot;: 3, &quot;name&quot;: &quot;Monitor&quot;, &quot;price&quot;: 350}
+  ]
+}
+</code></pre>
+<p>To access the first product&#39;s name:</p>
+<pre><code>products[0].name
+</code></pre>
+<p><strong>Result:</strong> <code>&quot;Laptop&quot;</code></p>
+<p>To access the second product&#39;s price:</p>
+<pre><code>products[1].price
+</code></pre>
+<p><strong>Result:</strong> <code>25</code></p>
+<p>Array indexing works exactly as you&#39;d expect—zero-based, with <code>[0]</code> being the first element.</p>
+<h2>Wildcards: Extract All Values from an Array</h2>
+<p>When you want to extract a specific property from <strong>every element</strong> in an array, use the wildcard operator <code>[*]</code>:</p>
+<pre><code>products[*].name
+</code></pre>
+<p><strong>Result:</strong></p>
+<pre><code class="language-json">[&quot;Laptop&quot;, &quot;Mouse&quot;, &quot;Monitor&quot;]
+</code></pre>
+<p>This is incredibly useful for flattening nested structures. Instead of manually iterating through each element, you get all matching values in a single query.</p>
+<p>Want just the prices?</p>
+<pre><code>products[*].price
+</code></pre>
+<p><strong>Result:</strong></p>
+<pre><code class="language-json">[1200, 25, 350]
+</code></pre>
+<p>You can even chain wildcards through nested structures:</p>
+<pre><code class="language-json">{
+  &quot;orders&quot;: [
+    {
+      &quot;id&quot;: 101,
+      &quot;items&quot;: [
+        {&quot;sku&quot;: &quot;ABC&quot;, &quot;qty&quot;: 2},
+        {&quot;sku&quot;: &quot;XYZ&quot;, &quot;qty&quot;: 1}
+      ]
+    },
+    {
+      &quot;id&quot;: 102,
+      &quot;items&quot;: [
+        {&quot;sku&quot;: &quot;DEF&quot;, &quot;qty&quot;: 3}
+      ]
+    }
+  ]
+}
+</code></pre>
+<pre><code>orders[*].items[*].sku
+</code></pre>
+<p><strong>Result:</strong></p>
+<pre><code class="language-json">[[&quot;ABC&quot;, &quot;XYZ&quot;], [&quot;DEF&quot;]]
+</code></pre>
+<h2>Array Slicing: Get a Range of Elements</h2>
+<p>Array slicing lets you extract a contiguous subset of elements without knowing how many there are. The syntax is <code>[start:end]</code>, where <code>end</code> is exclusive (just like Python):</p>
+<pre><code>products[0:2]
+</code></pre>
+<p><strong>Result:</strong></p>
+<pre><code class="language-json">[
+  {&quot;id&quot;: 1, &quot;name&quot;: &quot;Laptop&quot;, &quot;price&quot;: 1200},
+  {&quot;id&quot;: 2, &quot;name&quot;: &quot;Mouse&quot;, &quot;price&quot;: 25}
+]
+</code></pre>
+<p>Get the last two elements:</p>
+<pre><code>products[1:3]
+</code></pre>
+<p><strong>Result:</strong></p>
+<pre><code class="language-json">[
+  {&quot;id&quot;: 2, &quot;name&quot;: &quot;Mouse&quot;, &quot;price&quot;: 25},
+  {&quot;id&quot;: 3, &quot;name&quot;: &quot;Monitor&quot;, &quot;price&quot;: 350}
+]
+</code></pre>
+<p>Omit the start index to slice from the beginning:</p>
+<pre><code>products[:2]
+</code></pre>
+<p>Omit the end index to slice to the end:</p>
+<pre><code>products[1:]
+</code></pre>
+<p>Slicing is particularly useful when you&#39;re working with paginated datasets or need to preview the first few items without loading everything.</p>
+<h2>Bracket Notation: Query Keys with Special Characters</h2>
+<p>When a JSON key contains spaces, hyphens, or other special characters, dot notation won&#39;t work. Use bracket notation with quotes instead:</p>
+<pre><code class="language-json">{
+  &quot;api-response&quot;: {
+    &quot;status-code&quot;: 200,
+    &quot;data&quot;: {}
+  }
+}
+</code></pre>
+<pre><code>[&quot;api-response&quot;][&quot;status-code&quot;]
+</code></pre>
+<p><strong>Result:</strong> <code>200</code></p>
+<p>This is essential for working with configuration files and API responses that use kebab-case or other unconventional naming.</p>
+<h2>Recursive Descent: Find Values at Any Depth</h2>
+<p>The most powerful query feature is <strong>recursive descent</strong>, which searches for a property at any depth in your JSON structure without knowing the exact path.</p>
+<p>Use the <code>..</code> operator:</p>
+<pre><code class="language-json">{
+  &quot;company&quot;: {
+    &quot;department&quot;: {
+      &quot;team&quot;: {
+        &quot;email&quot;: &quot;team@company.com&quot;
+      }
+    },
+    &quot;email&quot;: &quot;contact@company.com&quot;
+  }
+}
+</code></pre>
+<pre><code>..email
+</code></pre>
+<p><strong>Result:</strong></p>
+<pre><code class="language-json">[&quot;team@company.com&quot;, &quot;contact@company.com&quot;]
+</code></pre>
+<p>Recursive descent finds all occurrences of the property, at any nesting level. This is invaluable when exploring unfamiliar data structures—you don&#39;t need to know the exact hierarchy to find what you&#39;re looking for.</p>
+<p>Combine it with wildcards for even more power:</p>
+<pre><code class="language-json">{
+  &quot;regions&quot;: [
+    {
+      &quot;countries&quot;: [
+        {&quot;name&quot;: &quot;France&quot;, &quot;capital&quot;: &quot;Paris&quot;},
+        {&quot;name&quot;: &quot;Spain&quot;, &quot;capital&quot;: &quot;Madrid&quot;}
+      ]
+    },
+    {
+      &quot;countries&quot;: [
+        {&quot;name&quot;: &quot;Japan&quot;, &quot;capital&quot;: &quot;Tokyo&quot;}
+      ]
+    }
+  ]
+}
+</code></pre>
+<pre><code>..capital
+</code></pre>
+<p><strong>Result:</strong></p>
+<pre><code class="language-json">[&quot;Paris&quot;, &quot;Madrid&quot;, &quot;Tokyo&quot;]
+</code></pre>
+<h2>Real-World Example: Querying an API Response</h2>
+<p>Let&#39;s combine these techniques with a realistic example:</p>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;data&quot;: {
+    &quot;users&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;username&quot;: &quot;alice&quot;,
+        &quot;email&quot;: &quot;alice@example.com&quot;,
+        &quot;posts&quot;: [
+          {&quot;id&quot;: 101, &quot;title&quot;: &quot;First Post&quot;, &quot;likes&quot;: 15},
+          {&quot;id&quot;: 102, &quot;title&quot;: &quot;Second Post&quot;, &quot;likes&quot;: 42}
+        ]
+      },
+      {
+        &quot;id&quot;: 2,
+        &quot;username&quot;: &quot;bob&quot;,
+        &quot;email&quot;: &quot;bob@example.com&quot;,
+        &quot;posts&quot;: [
+          {&quot;id&quot;: 103, &quot;title&quot;: &quot;Hello World&quot;, &quot;likes&quot;: 8}
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p>Extract all usernames:</p>
+<pre><code>data.users[*].username
+</code></pre>
+<p><strong>Result:</strong> <code>[&quot;alice&quot;, &quot;bob&quot;]</code></p>
+<p>Extract all post titles from all users:</p>
+<pre><code>data.users[*].posts[*].title
+</code></pre>
+<p><strong>Result:</strong> <code>[[&quot;First Post&quot;, &quot;Second Post&quot;], [&quot;Hello World&quot;]]</code></p>
+<p>Get the first user&#39;s email:</p>
+<pre><code>data.users[0].email
+</code></pre>
+<p><strong>Result:</strong> <code>&quot;alice@example.com&quot;</code></p>
+<p>Get like counts for the first two posts across all users:</p>
+<pre><code>data.users[*].posts[0:2][*].likes
+</code></pre>
+<p><strong>Result:</strong> <code>[[15, 42], [8]]</code></p>
+<h2>Combining Syntax Patterns</h2>
+<p>The real power emerges when you combine these patterns:</p>
+<ul>
+<li><strong>Dot notation + wildcards</strong>: <code>users[*].email</code> → extract a single property from all array elements</li>
+<li><strong>Dot notation + bracket notation</strong>: <code>config[&quot;api-key&quot;].production</code> → navigate objects with special character keys</li>
+<li><strong>Wildcards + array slicing</strong>: <code>users[*].posts[0:3]</code> → get the first three posts from each user</li>
+<li><strong>Recursive descent + wildcards</strong>: <code>..phone[*]</code> → find all phone arrays anywhere in the structure</li>
+<li><strong>Bracket notation + recursive descent</strong>: <code>..[&quot;private-key&quot;]</code> → find all properties named <code>private-key</code> anywhere</li>
+</ul>
+<h2>Best Practices for JSON Querying</h2>
+<ol>
+<li><strong>Start simple</strong>: Begin with dot notation for straightforward lookups</li>
+<li><strong>Use wildcards</strong> to extract properties from all array elements</li>
+<li><strong>Leverage recursive descent</strong> when exploring unfamiliar data</li>
+<li><strong>Combine slicing and wildcards</strong> for efficient extraction of subsets</li>
+<li><strong>Test incrementally</strong>: Build queries step-by-step to understand data structure</li>
+<li><strong>Document complex queries</strong>: If you have a multi-step query, add a comment explaining what you&#39;re extracting</li>
+</ol>
+<h2>Try It Yourself</h2>
+<p>The best way to learn JSON querying is hands-on experimentation. <strong>Try it in <a href="/query/">json.express</a></strong> — paste your own JSON data and start querying. The browser-based interface gives you immediate feedback and helps you understand how each query pattern works with your specific data.</p>
+<h2>Summary of Query Syntax</h2>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Example</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dot notation</td>
+<td><code>user.profile.age</code></td>
+<td>Access nested object properties</td>
+</tr>
+<tr>
+<td>Bracket notation</td>
+<td><code>config[&quot;api-key&quot;]</code></td>
+<td>Access keys with special characters</td>
+</tr>
+<tr>
+<td>Array index</td>
+<td><code>items[0]</code></td>
+<td>Access specific array element</td>
+</tr>
+<tr>
+<td>Wildcard</td>
+<td><code>items[*].name</code></td>
+<td>Extract property from all array elements</td>
+</tr>
+<tr>
+<td>Array slicing</td>
+<td><code>items[0:3]</code></td>
+<td>Get a range of array elements</td>
+</tr>
+<tr>
+<td>Recursive descent</td>
+<td><code>..email</code></td>
+<td>Find property at any depth</td>
+</tr>
+<tr>
+<td>Combined</td>
+<td><code>data.users[*].posts[0:2].title</code></td>
+<td>Complex nested extraction</td>
+</tr>
+</tbody></table>
+<p>Mastering these patterns will make JSON querying intuitive and efficient, whether you&#39;re debugging API responses, analyzing data exports, or transforming configuration files.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

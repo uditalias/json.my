@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Exploring package.json — Querying Your Node.js Project Metadata — json.express</title>
+<meta name="description" content="Use JSON querying to quickly inspect dependencies, scripts, and metadata in package.json files. Practical examples for everyday Node.js development.">
+<meta name="keywords" content="package.json, node.js package json, npm dependencies, query package json, inspect package json, npm scripts">
+<meta property="og:title" content="Exploring package.json — Querying Your Node.js Project Metadata — json.express">
+<meta property="og:description" content="Use JSON querying to quickly inspect dependencies, scripts, and metadata in package.json files. Practical examples for everyday Node.js development.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/exploring-package-json/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Exploring package.json — Querying Your Node.js Project Metadata — json.express">
+<meta name="twitter:description" content="Use JSON querying to quickly inspect dependencies, scripts, and metadata in package.json files. Practical examples for everyday Node.js development.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/exploring-package-json/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Exploring package.json — Querying Your Node.js Project Metadata",
+  "description": "Use JSON querying to quickly inspect dependencies, scripts, and metadata in package.json files. Practical examples for everyday Node.js development.",
+  "url": "https://json.express/blog/exploring-package-json/",
+  "datePublished": "2026-02-20",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; Exploring package.json — Querying Your Node.js Project Metadata
+  </div>
+
+  <article class="article">
+    <h1>Exploring package.json — Querying Your Node.js Project Metadata</h1>
+    <p class="article-meta">2026-02-20 &middot; By Udi Talias</p>
+
+    <p>Every Node.js project starts with <code>package.json</code>. It&#39;s the manifest for your application — dependencies, scripts, metadata, build configuration, and more. In small projects, it&#39;s easy to scan. In large monorepos or mature applications, it becomes a 200-line file where finding what you need takes real effort.</p>
+<p>Here&#39;s how to use JSON querying to extract exactly what you need from <code>package.json</code> files.</p>
+<h2>Inspecting Dependencies</h2>
+<p>A typical production <code>package.json</code> has dozens of dependencies. To see just your production deps:</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;my-web-app&quot;,
+  &quot;version&quot;: &quot;2.4.1&quot;,
+  &quot;dependencies&quot;: {
+    &quot;express&quot;: &quot;^4.18.2&quot;,
+    &quot;pg&quot;: &quot;^8.11.3&quot;,
+    &quot;redis&quot;: &quot;^4.6.7&quot;,
+    &quot;zod&quot;: &quot;^3.22.4&quot;,
+    &quot;pino&quot;: &quot;^8.16.2&quot;,
+    &quot;helmet&quot;: &quot;^7.1.0&quot;,
+    &quot;cors&quot;: &quot;^2.8.5&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;typescript&quot;: &quot;^5.3.3&quot;,
+    &quot;vitest&quot;: &quot;^1.2.0&quot;,
+    &quot;eslint&quot;: &quot;^8.56.0&quot;,
+    &quot;@types/express&quot;: &quot;^4.17.21&quot;,
+    &quot;@types/cors&quot;: &quot;^2.8.17&quot;,
+    &quot;prettier&quot;: &quot;^3.2.4&quot;,
+    &quot;tsx&quot;: &quot;^4.7.0&quot;
+  }
+}
+</code></pre>
+<p>Query <code>dependencies</code> to see just the runtime deps. Query <code>devDependencies</code> to see tooling. This is especially useful when reviewing a new project — you can quickly understand the tech stack without scrolling through the entire file.</p>
+<h2>Listing All Scripts</h2>
+<p>In mature projects, the <code>scripts</code> section grows large:</p>
+<pre><code class="language-json">{
+  &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;tsx watch src/server.ts&quot;,
+    &quot;build&quot;: &quot;tsc &amp;&amp; node scripts/build.mjs&quot;,
+    &quot;start&quot;: &quot;node dist/server.js&quot;,
+    &quot;test&quot;: &quot;vitest run&quot;,
+    &quot;test:watch&quot;: &quot;vitest&quot;,
+    &quot;test:coverage&quot;: &quot;vitest run --coverage&quot;,
+    &quot;lint&quot;: &quot;eslint src/&quot;,
+    &quot;lint:fix&quot;: &quot;eslint src/ --fix&quot;,
+    &quot;format&quot;: &quot;prettier --write src/&quot;,
+    &quot;db:migrate&quot;: &quot;node scripts/migrate.mjs&quot;,
+    &quot;db:seed&quot;: &quot;node scripts/seed.mjs&quot;,
+    &quot;db:reset&quot;: &quot;node scripts/migrate.mjs --fresh &amp;&amp; node scripts/seed.mjs&quot;,
+    &quot;docker:up&quot;: &quot;docker compose up -d&quot;,
+    &quot;docker:down&quot;: &quot;docker compose down&quot;,
+    &quot;deploy:staging&quot;: &quot;node scripts/deploy.mjs --env staging&quot;,
+    &quot;deploy:production&quot;: &quot;node scripts/deploy.mjs --env production&quot;
+  }
+}
+</code></pre>
+<p>Query <code>scripts</code> and you get a clean view of every available command. No need to open the file and scroll past dependencies, engine requirements, and other sections.</p>
+<h2>Checking Specific Configuration</h2>
+<p>Many tools store their config inside <code>package.json</code> rather than in separate files. ESLint, Prettier, Jest, Babel — they all support <code>package.json</code> configuration:</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;my-app&quot;,
+  &quot;prettier&quot;: {
+    &quot;semi&quot;: false,
+    &quot;singleQuote&quot;: true,
+    &quot;tabWidth&quot;: 2,
+    &quot;trailingComma&quot;: &quot;es5&quot;,
+    &quot;printWidth&quot;: 100
+  },
+  &quot;eslintConfig&quot;: {
+    &quot;extends&quot;: [&quot;eslint:recommended&quot;, &quot;plugin:@typescript-eslint/recommended&quot;],
+    &quot;rules&quot;: {
+      &quot;no-unused-vars&quot;: &quot;off&quot;,
+      &quot;@typescript-eslint/no-unused-vars&quot;: &quot;error&quot;,
+      &quot;no-console&quot;: &quot;warn&quot;
+    }
+  }
+}
+</code></pre>
+<p>Query <code>prettier</code> or <code>eslintConfig.rules</code> to inspect specific tool configurations without noise from the rest of the file.</p>
+<h2>Comparing Versions Across Projects</h2>
+<p>When you&#39;re maintaining multiple services, you need to check if dependencies are aligned. Copy <code>dependencies</code> from one <code>package.json</code> and <code>dependencies</code> from another, then use the <a href="/compare/">Compare</a> tool to see which packages differ and which versions are out of sync.</p>
+<p>This is especially valuable for:</p>
+<ul>
+<li>Monorepo packages that should share dependency versions</li>
+<li>Microservices that need compatible library versions</li>
+<li>Upgrading a library across multiple projects</li>
+</ul>
+<h2>Inspecting Lock Files</h2>
+<p><code>package-lock.json</code> files are notoriously large — thousands of lines. You almost never read them directly, but sometimes you need to check the exact resolved version of a transitive dependency.</p>
+<p>Use recursive descent: <code>..node_modules..lodash</code> finds every resolved instance of lodash in the dependency tree. Or query <code>packages[&quot;node_modules/lodash&quot;].version</code> for the top-level resolved version.</p>
+<h2>Workspace Queries in Monorepos</h2>
+<p>In npm/yarn/pnpm workspaces, the root <code>package.json</code> defines the workspace structure:</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;monorepo&quot;,
+  &quot;private&quot;: true,
+  &quot;workspaces&quot;: [
+    &quot;packages/core&quot;,
+    &quot;packages/api&quot;,
+    &quot;packages/web&quot;,
+    &quot;packages/shared&quot;
+  ],
+  &quot;scripts&quot;: {
+    &quot;build&quot;: &quot;npm run build --workspaces&quot;,
+    &quot;test&quot;: &quot;npm run test --workspaces&quot;
+  }
+}
+</code></pre>
+<p>Query <code>workspaces</code> to see all packages at a glance. In tools like Turborepo or Nx, the workspace config gets more complex — json.express&#39;s Tree view helps navigate the dependency graph configuration without getting lost.</p>
+<h2>Quick Reference</h2>
+<p>Here are the most useful queries for <code>package.json</code> exploration:</p>
+<ul>
+<li><code>name</code> — project name</li>
+<li><code>version</code> — current version</li>
+<li><code>scripts</code> — all available npm scripts</li>
+<li><code>dependencies</code> — production dependencies</li>
+<li><code>devDependencies</code> — development dependencies</li>
+<li><code>engines</code> — required Node.js/npm versions</li>
+<li><code>peerDependencies</code> — peer dependency requirements</li>
+<li><code>exports</code> — package entry points (ESM/CJS)</li>
+</ul>
+<p>Each of these pulls out exactly the section you need from even the largest <code>package.json</code> files. It&#39;s faster than opening the file and scrolling, and cleaner than piping <code>cat package.json | jq &#39;.scripts&#39;</code> in the terminal.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

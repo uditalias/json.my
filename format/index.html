@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free Online JSON Formatter & Beautifier — json.express</title>
+<meta name="description" content="Format and beautify JSON instantly in your browser. Handles trailing commas and comments. Free, private, zero dependencies — your data never leaves your device.">
+<meta name="keywords" content="json formatter online, json beautifier, json format, pretty print json, json pretty printer, format json, beautify json">
+<meta property="og:title" content="Free Online JSON Formatter & Beautifier — json.express">
+<meta property="og:description" content="Format and beautify JSON instantly in your browser. Handles trailing commas and comments. Free, private, zero dependencies — your data never leaves your device.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/format/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Online JSON Formatter & Beautifier — json.express">
+<meta name="twitter:description" content="Format and beautify JSON instantly in your browser. Handles trailing commas and comments. Free, private, zero dependencies — your data never leaves your device.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/format/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online JSON Formatter & Beautifier",
+  "description": "Format and beautify JSON instantly in your browser. Handles trailing commas and comments. Free, private, zero dependencies — your data never leaves your device.",
+  "url": "https://json.express/format/",
+  "image": "https://json.express/og-card.png",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "json.express JSON Formatter",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free Online JSON Formatter & Beautifier</h1>
+  <p class="tagline">Format, beautify, and pretty-print JSON instantly. Handles trailing commas and comments. Your data never leaves your browser.</p>
+
+  <div class="demo">
+    <div class="demo-label">Try It Now</div>
+    <textarea id="demo-input" placeholder="Paste your JSON here...">{"users":[{"name":"Alice","age":30,"active":true},{"name":"Bob","age":25,"active":false}],"meta":{"total":2,"page":1}}</textarea>
+
+    <div class="demo-toolbar">
+      <button id="btn-format" class="demo-btn">Format</button>
+      <button id="btn-minify" class="demo-btn demo-btn--secondary">Minify</button>
+    </div>
+
+    <div id="demo-output" class="demo-output empty">Output will appear here...</div>
+
+    <div class="demo-toolbar">
+      <button id="btn-open-editor" class="demo-btn">Open in Full Editor</button>
+      <button id="btn-copy" class="demo-btn demo-btn--secondary">Copy Result</button>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <p>Need more features? The full editor has tree view, TypeScript generation, URL sharing, and more.</p>
+    <button id="btn-open-editor-cta" class="cta" onclick="document.getElementById('btn-open-editor').click()">Open Full Editor</button>
+  </div>
+
+  <h2>What is JSON Formatting?</h2>
+  <p>JSON formatting, also known as pretty-printing, is the process of organizing JSON data into a readable, hierarchical structure with proper indentation and line breaks. Raw JSON is often minified (compressed) for efficiency, making it difficult for humans to read and debug.</p>
+  <p>Developers use JSON formatters to instantly beautify compressed JSON, validate syntax, identify structure issues, and understand data relationships at a glance. Whether you're working with APIs, configuration files, or data exports, a good formatter saves time and reduces errors.</p>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">🔍</div>
+      <div class="feature-card-title">Handles Comments</div>
+      <div class="feature-card-desc">Strips JavaScript-style comments (//) and block comments (/* */) while preserving your JSON structure.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">✓</div>
+      <div class="feature-card-title">Trailing Commas</div>
+      <div class="feature-card-desc">Automatically removes trailing commas in objects and arrays—they won't break your formatting.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">⚡</div>
+      <div class="feature-card-title">Instant Formatting</div>
+      <div class="feature-card-desc">Format or minify JSON as you type. No waiting, no server uploads, no latency.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">Privacy First</div>
+      <div class="feature-card-desc">Your data never leaves your browser. We don't store, log, or transmit any of your JSON.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🌈</div>
+      <div class="feature-card-title">Syntax Highlighting</div>
+      <div class="feature-card-desc">Beautiful color-coded output makes keys, strings, numbers, and booleans instantly recognizable.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">0️⃣</div>
+      <div class="feature-card-title">Zero Dependencies</div>
+      <div class="feature-card-desc">Lightweight, fast, and reliable. No frameworks, no plugins, just pure JavaScript.</div>
+    </div>
+  </div>
+
+  <h2>How to Use</h2>
+  <ol>
+    <li><strong>Paste Your JSON</strong><p>Paste your minified or raw JSON into the input area. The formatter accepts any valid JSON, including malformed JSON with trailing commas and comments.</p></li>
+    <li><strong>Click Format</strong><p>Click the "Format" button to instantly beautify your JSON with proper indentation and line breaks. Alternatively, click "Minify" to compress your JSON into a single line.</p></li>
+    <li><strong>Copy & Use</strong><p>Click "Copy Result" to copy the formatted output to your clipboard. Paste it into your code, configuration file, or API request.</p></li>
+  </ol>
+
+  <h2>json.express vs Other Formatters</h2>
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>json.express</th>
+        <th>Other Formatters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Comments & Trailing Commas</td>
+        <td>✓ Supported</td>
+        <td>Limited or not supported</td>
+      </tr>
+      <tr>
+        <td>Privacy</td>
+        <td>✓ 100% Client-Side</td>
+        <td>Often cloud-based, data logging</td>
+      </tr>
+      <tr>
+        <td>Speed</td>
+        <td>✓ Instant, No Latency</td>
+        <td>Depends on server, delays possible</td>
+      </tr>
+      <tr>
+        <td>Ad-Free</td>
+        <td>✓ No Ads</td>
+        <td>Often cluttered with ads</td>
+      </tr>
+      <tr>
+        <td>Zero Dependencies</td>
+        <td>✓ Pure JavaScript</td>
+        <td>Often requires libraries/frameworks</td>
+      </tr>
+      <tr>
+        <td>Open Source</td>
+        <td>✓ Yes</td>
+        <td>Varies</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/validate/">JSON Validator</a>
+      <a class="related-tool-link" href="/minify/">JSON Minifier</a>
+      <a class="related-tool-link" href="/viewer/">JSON Viewer</a>
+      <a class="related-tool-link" href="/query/">JSON Query</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+  <script>
+    function lenientParse(text) {
+      var cleaned = '';
+      var i = 0;
+      var len = text.length;
+      while (i < len) {
+        if (text[i] === '"') {
+          cleaned += '"';
+          i++;
+          while (i < len && text[i] !== '"') {
+            if (text[i] === '\\' && i + 1 < len) { cleaned += text[i] + text[i + 1]; i += 2; }
+            else { cleaned += text[i]; i++; }
+          }
+          if (i < len) { cleaned += '"'; i++; }
+        } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '/') {
+          i += 2;
+          while (i < len && text[i] !== '\n') i++;
+        } else if (text[i] === '/' && i + 1 < len && text[i + 1] === '*') {
+          i += 2;
+          while (i < len && !(text[i] === '*' && i + 1 < len && text[i + 1] === '/')) i++;
+          if (i < len) i += 2;
+        } else { cleaned += text[i]; i++; }
+      }
+      cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+      return JSON.parse(cleaned);
+    }
+
+    var demoInput = document.getElementById('demo-input');
+    var btnFormat = document.getElementById('btn-format');
+    var btnMinify = document.getElementById('btn-minify');
+    var demoOutput = document.getElementById('demo-output');
+    var btnCopy = document.getElementById('btn-copy');
+
+    btnFormat.addEventListener('click', function() {
+      try {
+        var input = demoInput.value.trim();
+        if (!input) {
+          demoOutput.textContent = 'Please enter JSON to format.';
+          demoOutput.classList.add('empty');
+          return;
+        }
+        var parsed = lenientParse(input);
+        var formatted = JSON.stringify(parsed, null, 2);
+        demoOutput.textContent = formatted;
+        demoOutput.classList.remove('empty');
+      } catch (e) {
+        demoOutput.textContent = 'Error: ' + e.message;
+        demoOutput.classList.add('empty');
+      }
+    });
+
+    btnMinify.addEventListener('click', function() {
+      try {
+        var input = demoInput.value.trim();
+        if (!input) {
+          demoOutput.textContent = 'Please enter JSON to minify.';
+          demoOutput.classList.add('empty');
+          return;
+        }
+        var parsed = lenientParse(input);
+        var minified = JSON.stringify(parsed);
+        demoOutput.textContent = minified;
+        demoOutput.classList.remove('empty');
+      } catch (e) {
+        demoOutput.textContent = 'Error: ' + e.message;
+        demoOutput.classList.add('empty');
+      }
+    });
+
+    async function openInEditor(json, query) {
+      var state = { json: json };
+      if (query) state.query = query;
+      var blob = new Blob([JSON.stringify(state)]);
+      var cs = new CompressionStream('deflate');
+      var stream = blob.stream().pipeThrough(cs);
+      var compressedBlob = await new Response(stream).blob();
+      var buffer = await compressedBlob.arrayBuffer();
+      var bytes = new Uint8Array(buffer);
+      var binary = '';
+      for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      window.open('/#' + hash, '_blank');
+    }
+
+    document.getElementById('btn-open-editor').addEventListener('click', function() {
+      openInEditor(demoInput.value);
+    });
+
+    btnCopy.addEventListener('click', function() {
+      var text = demoOutput.textContent;
+      if (!text || demoOutput.classList.contains('empty')) {
+        alert('Nothing to copy. Format or minify JSON first.');
+        return;
+      }
+      navigator.clipboard.writeText(text).then(function() {
+        var originalText = btnCopy.textContent;
+        btnCopy.textContent = 'Copied!';
+        setTimeout(function() {
+          btnCopy.textContent = originalText;
+        }, 2000);
+      }).catch(function(err) {
+        alert('Failed to copy: ' + err);
+      });
+    });
+  </script>
+</body>
+</html>

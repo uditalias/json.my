@@ -3,224 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NGE2BEE96H');
-</script>
-<title>json.express — About</title>
-<meta name="description" content="About json.express — a fast, zero-dependency JSON query and explorer tool built by Udi Talias.">
-<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>About — json.express</title>
+<meta name="description" content="About json.express — a fast, zero-dependency JSON query, format, validate, compare, and explorer tool. Single HTML file, no data leaves your browser.">
+<meta name="keywords" content="json.express, about, json tool, json query, json formatter, json validator, json compare, json viewer, json tree, json typescript, zero dependency">
+<meta property="og:title" content="About — json.express">
+<meta property="og:description" content="A fast, zero-dependency JSON query, format, validate, compare, and explorer tool built by Udi Talias.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/about/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About — json.express">
+<meta name="twitter:description" content="A fast, zero-dependency JSON query, format, validate, compare, and explorer tool.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/about/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html {
-    color-scheme: light dark;
-    scroll-behavior: smooth;
-  }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    color: light-dark(#1f2328, #e6edf3);
-    background: light-dark(#f6f8fa, #0d1117);
-    min-height: 100vh;
-  }
-
-  .page {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 60px 24px 80px;
-  }
-
-  /* ===== Back link ===== */
-  .back {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    color: light-dark(#656d76, #8b949e);
-    text-decoration: none;
-    margin-bottom: 48px;
-    transition: color 0.15s;
-  }
-  .back:hover { color: light-dark(#1f2328, #e6edf3); }
-  .back svg { width: 16px; height: 16px; }
-
-  /* ===== Hero ===== */
-  .hero {
-    margin-bottom: 64px;
-  }
-  .hero-logo {
-    font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
-    font-size: clamp(32px, 8vw, 48px);
-    font-weight: 700;
-    letter-spacing: -2px;
-    margin-bottom: 8px;
-    white-space: nowrap;
-  }
-  .hero-logo .brace {
-    color: light-dark(#0969da, #58a6ff);
-  }
-  .hero-tagline {
-    font-size: 20px;
-    color: light-dark(#656d76, #8b949e);
-    font-weight: 400;
-  }
-
-  /* ===== Sections ===== */
-  .section {
-    margin-bottom: 56px;
-  }
-  .section-title {
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: light-dark(#656d76, #8b949e);
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid light-dark(#d0d7de, #30363d);
-  }
-  .section p {
-    margin-bottom: 12px;
-  }
-
-  /* ===== Ideas grid ===== */
-  .ideas {
-    display: grid;
-    gap: 12px;
-  }
-  .idea {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 16px;
-    background: light-dark(#ffffff, #161b22);
-    border: 1px solid light-dark(#d0d7de, #30363d);
-    border-radius: 10px;
-    transition: border-color 0.15s;
-  }
-  .idea:hover {
-    border-color: light-dark(#0969da, #58a6ff);
-  }
-  .idea-icon {
-    font-size: 22px;
-    flex-shrink: 0;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: light-dark(#f3f4f6, #21262d);
-    border-radius: 8px;
-  }
-  .idea-content {
-    min-width: 0;
-  }
-  .idea-title {
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 2px;
-  }
-  .idea-desc {
-    font-size: 14px;
-    color: light-dark(#656d76, #8b949e);
-    line-height: 1.5;
-  }
-
-  /* ===== Query examples ===== */
-  code {
-    font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
-    font-size: 13px;
-    padding: 2px 6px;
-    background: light-dark(#f3f4f6, #21262d);
-    border-radius: 4px;
-  }
-
-  /* ===== Author ===== */
-  .author {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 24px;
-    background: light-dark(#ffffff, #161b22);
-    border: 1px solid light-dark(#d0d7de, #30363d);
-    border-radius: 12px;
-  }
-  .author-avatar {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    border: 2px solid light-dark(#d0d7de, #30363d);
-  }
-  .author-info {
-    min-width: 0;
-  }
-  .author-name {
-    font-weight: 600;
-    font-size: 18px;
-    margin-bottom: 4px;
-  }
-  .author-bio {
-    font-size: 14px;
-    color: light-dark(#656d76, #8b949e);
-    margin-bottom: 8px;
-  }
-  .author-links {
-    display: flex;
-    gap: 16px;
-  }
-  .author-links a {
-    font-size: 13px;
-    color: light-dark(#0969da, #58a6ff);
-    text-decoration: none;
-  }
-  .author-links a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  /* ===== Footer ===== */
-  .footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid light-dark(#d0d7de, #30363d);
-    font-size: 13px;
-    color: light-dark(#656d76, #8b949e);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .footer a {
-    color: light-dark(#0969da, #58a6ff);
-    text-decoration: none;
-  }
-  .footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .footer-dot {
-    margin: 0 8px;
-    opacity: 0.4;
-  }
-</style>
+<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
+<link rel="stylesheet" href="/shared.css">
 </head>
 <body>
 <div class="page">
 
-  <a class="back" id="back" href="/">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to editor
-  </a>
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
 
   <div class="hero">
     <div class="hero-logo"><span class="brace">{</span> json.express <span class="brace">}</span></div>
-    <div class="hero-tagline">Query and explore JSON, right in your browser.</div>
+    <div class="hero-tagline">Query, format, compare, and explore JSON — right in your browser.</div>
+    <img src="/og-card.png" alt="json.express — Query & explore JSON in your browser" class="hero-card">
   </div>
 
   <div class="section">
@@ -232,12 +51,45 @@
     </p>
     <p>
       No data ever leaves your browser. Everything runs client-side &mdash;
-      parsing, querying, formatting, and type inference. Your JSON stays yours.
+      parsing, querying, formatting, validating, comparing, and type inference. Your JSON stays yours.
     </p>
     <p>
-      The entire app is compressed into the URL hash, so you can bookmark or share
-      any state with a single link.
+      The entire app state is compressed into the URL hash, so you can bookmark or share
+      any state &mdash; input, query, highlights, and comments &mdash; with a single link.
     </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tools</div>
+    <div class="tools-list">
+      <a class="tool-item" href="/">
+        <div><div class="tool-name">Editor</div><div class="tool-desc">Full editor with query, tree view, TypeScript generation, highlights, comments, and URL sharing</div></div>
+      </a>
+      <a class="tool-item" href="/format/">
+        <div><div class="tool-name">Format &amp; Beautify</div><div class="tool-desc">Pretty-print minified JSON with proper indentation</div></div>
+      </a>
+      <a class="tool-item" href="/validate/">
+        <div><div class="tool-name">Validate</div><div class="tool-desc">Check JSON syntax with strict and lenient modes, with error line numbers</div></div>
+      </a>
+      <a class="tool-item" href="/minify/">
+        <div><div class="tool-name">Minify</div><div class="tool-desc">Compress JSON by removing whitespace, with compression stats</div></div>
+      </a>
+      <a class="tool-item" href="/viewer/">
+        <div><div class="tool-name">Viewer</div><div class="tool-desc">Syntax-highlighted JSON viewer with color-coded types</div></div>
+      </a>
+      <a class="tool-item" href="/tree/">
+        <div><div class="tool-name">Tree View</div><div class="tool-desc">Collapsible, interactive tree for navigating deeply nested structures</div></div>
+      </a>
+      <a class="tool-item" href="/query/">
+        <div><div class="tool-name">Query</div><div class="tool-desc">Extract data with dot notation, wildcards, array slicing, and recursive descent</div></div>
+      </a>
+      <a class="tool-item" href="/typescript/">
+        <div><div class="tool-name">TypeScript Types</div><div class="tool-desc">Generate TypeScript interfaces from any JSON structure</div></div>
+      </a>
+      <a class="tool-item" href="/compare/">
+        <div><div class="tool-name">Compare &amp; Diff</div><div class="tool-desc">Side-by-side diff of two JSON objects showing added, removed, and changed fields</div></div>
+      </a>
+    </div>
   </div>
 
   <div class="section">
@@ -275,14 +127,21 @@
         <div class="idea-icon">&#128279;</div>
         <div class="idea-content">
           <div class="idea-title">Share JSON snippets</div>
-          <div class="idea-desc">The URL encodes your data and query. Share a link with a teammate instead of pasting blocks of JSON in Slack.</div>
+          <div class="idea-desc">The URL encodes your data, query, highlights, and comments. Share a link with a teammate instead of pasting blocks of JSON in Slack.</div>
         </div>
       </div>
       <div class="idea">
         <div class="idea-icon">&#128466;</div>
         <div class="idea-content">
-          <div class="idea-title">Format messy JSON</div>
-          <div class="idea-desc">Paste minified or poorly formatted JSON and hit Format. Handles trailing commas and comments too.</div>
+          <div class="idea-title">Format &amp; validate</div>
+          <div class="idea-desc">Paste minified or broken JSON and instantly format, validate, or minify it. The lenient parser handles trailing commas and comments.</div>
+        </div>
+      </div>
+      <div class="idea">
+        <div class="idea-icon">&#128260;</div>
+        <div class="idea-content">
+          <div class="idea-title">Compare JSON</div>
+          <div class="idea-desc">Diff two JSON objects side by side. See exactly what fields were added, removed, or changed &mdash; useful for API versioning and config reviews.</div>
         </div>
       </div>
       <div class="idea">
@@ -296,7 +155,7 @@
         <div class="idea-icon">&#128396;</div>
         <div class="idea-content">
           <div class="idea-title">Highlight &amp; comment</div>
-          <div class="idea-desc">Click line numbers to highlight lines in the result. Add comments to highlighted sections &mdash; everything is stored in the URL, so it's included when you share.</div>
+          <div class="idea-desc">Click line numbers to highlight lines in the result. Add comments to highlighted sections &mdash; everything is stored in the URL for sharing.</div>
         </div>
       </div>
       <div class="idea">
@@ -307,6 +166,26 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">More features</div>
+    <p>
+      <code>Upload</code> &mdash; load .json, .jsonl, .jsonc, and .txt files directly<br>
+      <code>Lenient parser</code> &mdash; handles trailing commas, // comments, and /* */ block comments<br>
+      <code>Copy &amp; download</code> &mdash; one-click copy, or export as .json or .d.ts<br>
+      <code>QR code</code> &mdash; generate a QR code for the current URL to scan from another device<br>
+      <code>Themes</code> &mdash; light, dark, or follow your system preference<br>
+      <code>Zero dependencies</code> &mdash; single HTML file, no build step, no frameworks
+    </p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Blog</div>
+    <p>
+      Developer guides, tutorials, and tips for working with JSON.
+      <a href="/blog/">Browse all posts</a>.
+    </p>
   </div>
 
   <div class="section">
@@ -335,29 +214,17 @@
       Found a bug? Have an idea for a new feature? Want to suggest an improvement?
       Open an issue on GitHub &mdash; all feedback is welcome.
     </p>
-    <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
-      <a href="https://github.com/uditalias/json.my/issues/new?template=bug_report.md" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: light-dark(#f3f4f6, #21262d); border: 1px solid light-dark(#d0d7de, #30363d); border-radius: 8px; font-size: 14px; text-decoration: none; color: inherit; transition: border-color 0.15s;">Report a bug</a>
-      <a href="https://github.com/uditalias/json.my/issues/new?template=feature_request.md" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: light-dark(#f3f4f6, #21262d); border: 1px solid light-dark(#d0d7de, #30363d); border-radius: 8px; font-size: 14px; text-decoration: none; color: inherit; transition: border-color 0.15s;">Request a feature</a>
+    <div class="feedback-links">
+      <a class="feedback-link" href="https://github.com/uditalias/json.my/issues/new?template=bug_report.md" target="_blank" rel="noopener">Report a bug</a>
+      <a class="feedback-link" href="https://github.com/uditalias/json.my/issues/new?template=feature_request.md" target="_blank" rel="noopener">Request a feature</a>
     </div>
   </div>
 
-  <div class="footer">
-    <span>
-      <a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">Source on GitHub</a>
-      <span class="footer-dot">&middot;</span>
-      Zero dependencies. Single file. MIT.
-    </span>
-  </div>
+  <footer class="footer">
+    <span><a href="/">json.express</a> &mdash; Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
 
 </div>
-
-<script>
-(function() {
-  // Preserve hash for back navigation
-  var hash = location.hash || '';
-  var back = document.getElementById('back');
-  back.href = '/' + hash;
-})();
-</script>
 </body>
 </html>

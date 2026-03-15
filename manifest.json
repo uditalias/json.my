@@ -1,7 +1,7 @@
 {
-  "name": "json.express",
+  "name": "json.express — JSON Query, Viewer & Explorer",
   "short_name": "json.express",
-  "description": "Query & Explore JSON in the browser",
+  "description": "Free online JSON query, viewer, formatter, validator, and TypeScript type generator. Zero dependencies, runs in your browser.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0d1117",
@@ -16,6 +16,11 @@
       "src": "/apple-touch-icon.png",
       "type": "image/png",
       "sizes": "180x180"
+    },
+    {
+      "src": "/icon-app.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ]
 }

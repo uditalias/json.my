@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>JSON Config Files — Patterns, Pitfalls, and Validation — json.express</title>
+<meta name="description" content="Practical guide to using JSON for application configuration. Covers common patterns, environment-specific configs, validation strategies, and mistakes to avoid.">
+<meta name="keywords" content="json config file, json configuration, app config json, json settings file, config validation, environment config json">
+<meta property="og:title" content="JSON Config Files — Patterns, Pitfalls, and Validation — json.express">
+<meta property="og:description" content="Practical guide to using JSON for application configuration. Covers common patterns, environment-specific configs, validation strategies, and mistakes to avoid.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/blog/json-config-files/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="JSON Config Files — Patterns, Pitfalls, and Validation — json.express">
+<meta name="twitter:description" content="Practical guide to using JSON for application configuration. Covers common patterns, environment-specific configs, validation strategies, and mistakes to avoid.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/blog/json-config-files/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "JSON Config Files — Patterns, Pitfalls, and Validation",
+  "description": "Practical guide to using JSON for application configuration. Covers common patterns, environment-specific configs, validation strategies, and mistakes to avoid.",
+  "url": "https://json.express/blog/json-config-files/",
+  "datePublished": "2026-03-05",
+  "image": "https://json.express/og-card.png",
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "json.express",
+    "url": "https://json.express"
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; JSON Config Files — Patterns, Pitfalls, and Validation
+  </div>
+
+  <article class="article">
+    <h1>JSON Config Files — Patterns, Pitfalls, and Validation</h1>
+    <p class="article-meta">2026-03-05 &middot; By Udi Talias</p>
+
+    <p>JSON is everywhere in configuration: <code>tsconfig.json</code>, <code>.eslintrc.json</code>, <code>manifest.json</code>, Firebase configs, Terraform state, Docker Compose (yes, YAML is a superset of JSON). Whether you&#39;re designing a config schema for your own app or debugging someone else&#39;s, there are patterns worth knowing and traps worth avoiding.</p>
+<h2>The Anatomy of a Good Config File</h2>
+<p>A well-structured config file groups related settings, uses sensible defaults, and is easy to scan. Here&#39;s an example for a typical web service:</p>
+<pre><code class="language-json">{
+  &quot;server&quot;: {
+    &quot;port&quot;: 3000,
+    &quot;host&quot;: &quot;0.0.0.0&quot;,
+    &quot;cors&quot;: {
+      &quot;origins&quot;: [&quot;https://app.example.com&quot;],
+      &quot;credentials&quot;: true
+    }
+  },
+  &quot;database&quot;: {
+    &quot;host&quot;: &quot;localhost&quot;,
+    &quot;port&quot;: 5432,
+    &quot;name&quot;: &quot;myapp&quot;,
+    &quot;pool&quot;: {
+      &quot;min&quot;: 2,
+      &quot;max&quot;: 10
+    }
+  },
+  &quot;redis&quot;: {
+    &quot;url&quot;: &quot;redis://localhost:6379&quot;,
+    &quot;ttl&quot;: 3600
+  },
+  &quot;logging&quot;: {
+    &quot;level&quot;: &quot;info&quot;,
+    &quot;format&quot;: &quot;json&quot;,
+    &quot;destinations&quot;: [&quot;stdout&quot;, &quot;file&quot;]
+  },
+  &quot;features&quot;: {
+    &quot;newDashboard&quot;: false,
+    &quot;betaApi&quot;: true
+  }
+}
+</code></pre>
+<p>Notice the grouping: server settings together, database settings together, feature flags in their own section. You can query any section in isolation — <code>database.pool</code> gives you just the pool config, <code>features</code> gives you all flags.</p>
+<h2>Environment-Specific Configs</h2>
+<p>A common pattern is to have a base config and environment overrides:</p>
+<pre><code class="language-json">{
+  &quot;base&quot;: {
+    &quot;server&quot;: { &quot;port&quot;: 3000 },
+    &quot;logging&quot;: { &quot;level&quot;: &quot;info&quot; },
+    &quot;features&quot;: { &quot;betaApi&quot;: false }
+  },
+  &quot;development&quot;: {
+    &quot;database&quot;: { &quot;host&quot;: &quot;localhost&quot;, &quot;name&quot;: &quot;myapp_dev&quot; },
+    &quot;logging&quot;: { &quot;level&quot;: &quot;debug&quot; }
+  },
+  &quot;production&quot;: {
+    &quot;database&quot;: { &quot;host&quot;: &quot;db.internal&quot;, &quot;name&quot;: &quot;myapp_prod&quot; },
+    &quot;server&quot;: { &quot;port&quot;: 8080 },
+    &quot;logging&quot;: { &quot;level&quot;: &quot;warn&quot; }
+  }
+}
+</code></pre>
+<p>You can use json.express queries to inspect what a specific environment will look like. Query <code>production</code> to see just the production overrides, or use the Compare tool to diff <code>development</code> vs <code>production</code> side by side.</p>
+<h2>Common Pitfalls</h2>
+<p><strong>Trailing commas.</strong> Standard JSON doesn&#39;t allow them. This is invalid:</p>
+<pre><code class="language-json">{
+  &quot;port&quot;: 3000,
+  &quot;host&quot;: &quot;localhost&quot;,
+}
+</code></pre>
+<p>Many developers hit this constantly when editing config files by hand. json.express uses a lenient parser that handles trailing commas, so you can paste in broken configs and still explore them — but you should fix them before committing.</p>
+<p><strong>Comments.</strong> JSON has no comment syntax. You can&#39;t do this:</p>
+<pre><code class="language-json">{
+  // Listen on all interfaces
+  &quot;host&quot;: &quot;0.0.0.0&quot;,
+  &quot;port&quot;: 3000
+}
+</code></pre>
+<p>Some tools (TypeScript&#39;s <code>tsconfig.json</code>, VS Code&#39;s <code>settings.json</code>) support JSONC — JSON with comments. If you need to explore a JSONC file, json.express strips comments before parsing, so it works out of the box. See our post on <a href="/blog/json-with-comments/">JSON with Comments</a> for more on this.</p>
+<p><strong>Deeply nested configs.</strong> When configs get four or five levels deep, they become hard to reason about. If you find yourself writing <code>config.server.middleware.rateLimit.sliding.windowMs</code>, it might be time to flatten.</p>
+<p><strong>Secrets in config files.</strong> Never put API keys, database passwords, or tokens directly in JSON config files that get committed to version control. Use environment variables or a secrets manager, and reference them by name:</p>
+<pre><code class="language-json">{
+  &quot;database&quot;: {
+    &quot;host&quot;: &quot;localhost&quot;,
+    &quot;password&quot;: &quot;$DATABASE_PASSWORD&quot;
+  }
+}
+</code></pre>
+<h2>Validating Config Files</h2>
+<p>Before your app even starts, validate the config. Here&#39;s a pattern: generate TypeScript types from your config JSON using json.express&#39;s TypeScript tab, then use those types in your application code:</p>
+<pre><code class="language-json">{
+  &quot;server&quot;: {
+    &quot;port&quot;: 3000,
+    &quot;host&quot;: &quot;0.0.0.0&quot;
+  },
+  &quot;database&quot;: {
+    &quot;host&quot;: &quot;localhost&quot;,
+    &quot;port&quot;: 5432,
+    &quot;name&quot;: &quot;myapp&quot;
+  }
+}
+</code></pre>
+<p>Paste this in, switch to the TypeScript tab, and you get interfaces that match the actual shape. Use those as the source of truth for validation at startup — if the loaded config doesn&#39;t match the type, fail fast with a clear error.</p>
+<h2>Exploring Large Config Files</h2>
+<p>Some configs are huge — Terraform state files, Firebase remote config exports, large <code>package.json</code> dependency trees. When you need to find something specific:</p>
+<p>Use <strong>recursive descent</strong> (<code>..key</code>) to search for a field name anywhere in the tree. For example, if you&#39;re looking for every <code>timeout</code> setting across a complex config, <code>..timeout</code> finds them all regardless of nesting depth.</p>
+<p>Use <strong>the Tree view</strong> to collapse sections you don&#39;t care about and focus on the section that matters.</p>
+<p>Use <strong>bracket notation</strong> for keys with special characters: <code>[&quot;@scope/package&quot;]</code> or <code>[&quot;some.dotted.key&quot;]</code>.</p>
+<h2>A Note on Alternatives</h2>
+<p>JSON isn&#39;t always the best choice for config. YAML supports comments natively and is more readable for deeply nested structures. TOML is great for flat configs. <code>.env</code> files work well for secrets and environment-specific values.</p>
+<p>But JSON has a huge advantage: tooling. Every language has a built-in JSON parser. There&#39;s no ambiguity in parsing (unlike YAML&#39;s implicit typing). And tools like json.express let you query, validate, and explore config files interactively — something that&#39;s harder with other formats.</p>
+<p>If your config is JSON, lean into it. Structure it well, validate it early, and use the right tools to inspect it when things go wrong.</p>
+
+
+    <div class="cta-banner">
+      <p><strong>Try it yourself</strong></p>
+      <p>json.express is a free, private JSON tool that runs entirely in your browser.</p>
+      <a class="cta" href="/">Open json.express</a>
+    </div>
+  </article>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">Formatter</a>
+      <a class="related-tool-link" href="/validate/">Validator</a>
+      <a class="related-tool-link" href="/query/">Query</a>
+      <a class="related-tool-link" href="/viewer/">Viewer</a>
+      <a class="related-tool-link" href="/typescript/">TypeScript</a>
+      <a class="related-tool-link" href="/compare/">Compare</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+
+</div>
+<script>
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function highlight(val,indent){
+    indent=indent||0;var sp='  '.repeat(indent);
+    if(val===null)return'<span class="json-null">null</span>';
+    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
+    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
+    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
+    if(Array.isArray(val)){
+      if(!val.length)return'<span class="json-bracket">[]</span>';
+      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
+      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
+    }
+    if(typeof val==='object'){
+      var keys=Object.keys(val);
+      if(!keys.length)return'<span class="json-bracket">{}</span>';
+      var entries=keys.map(function(k){
+        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
+      });
+      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
+    }
+    return esc(String(val));
+  }
+  document.querySelectorAll('pre code.language-json').forEach(function(el){
+    try{
+      var parsed=JSON.parse(el.textContent);
+      el.innerHTML=highlight(parsed);
+    }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

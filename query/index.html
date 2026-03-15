@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGE2BEE96H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NGE2BEE96H');</script>
+<title>Free Online JSON Query Tool — JSONPath & Dot Notation — json.express</title>
+<meta name="description" content="Query JSON with dot notation, wildcards, recursive descent, array slicing, and bracket notation. Like jq for the browser. Free, private, instant results.">
+<meta name="keywords" content="json query online, jsonpath tester, json path online, jq online, json query tool, json dot notation, jsonpath evaluator, json filter">
+<meta property="og:title" content="Free Online JSON Query Tool — JSONPath & Dot Notation — json.express">
+<meta property="og:description" content="Query JSON with dot notation, wildcards, recursive descent, array slicing, and bracket notation. Like jq for the browser. Free, private, instant results.">
+<meta property="og:image" content="https://json.express/og-card.png">
+<meta property="og:url" content="https://json.express/query/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Online JSON Query Tool — JSONPath & Dot Notation — json.express">
+<meta name="twitter:description" content="Query JSON with dot notation, wildcards, recursive descent, array slicing, and bracket notation. Like jq for the browser.">
+<meta name="twitter:image" content="https://json.express/og-card.png">
+<link rel="canonical" href="https://json.express/query/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/shared.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online JSON Query Tool",
+  "description": "Query JSON with dot notation, wildcards, recursive descent, array slicing, and bracket notation. Like jq for the browser.",
+  "url": "https://json.express/query/",
+  "image": "https://json.express/og-card.png",
+  "mainEntity": {
+    "@type": "SoftwareApplication",
+    "name": "json.express Query Tool",
+    "applicationCategory": "DeveloperApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+}
+</script>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a class="nav-logo" href="/"><span class="brace">{</span> json.express <span class="brace">}</span></a>
+    <div class="nav-links">
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+    </div>
+  </nav>
+
+  <h1>Free Online JSON Query Tool</h1>
+  <p class="tagline">Query JSON with dot notation, wildcards, recursive descent, array slicing, and bracket notation. Like jq, but in your browser.</p>
+
+  <div class="demo">
+    <div class="demo-label">Try It Now</div>
+    <textarea id="demo-input" placeholder="Paste your JSON here...">{
+  "company": "Acme Corp",
+  "employees": [
+    {"id": 1, "name": "Alice", "role": "Engineer", "skills": ["TypeScript", "React", "Node.js"]},
+    {"id": 2, "name": "Bob", "role": "Designer", "skills": ["Figma", "CSS", "SVG"]},
+    {"id": 3, "name": "Charlie", "role": "Engineer", "skills": ["Python", "PostgreSQL", "Docker"]}
+  ],
+  "offices": {
+    "hq": {"city": "San Francisco", "headcount": 150},
+    "remote": {"city": "Distributed", "headcount": 85}
+  }
+}</textarea>
+
+    <div class="demo-toolbar">
+      <label>Query</label>
+      <input type="text" id="demo-query" class="demo-query" placeholder="e.g. employees[*].name" value="employees[*].name">
+    </div>
+
+    <div class="demo-toolbar">
+      <button id="btn-query" class="demo-btn">Run Query</button>
+      <button id="btn-copy" class="demo-btn demo-btn--secondary">Copy Result</button>
+    </div>
+
+    <div class="demo-label">Quick Examples</div>
+    <div class="quick-picks">
+      <button class="quick-pick" data-query="employees[0].name">employees[0].name</button>
+      <button class="quick-pick" data-query="employees[*].skills">employees[*].skills</button>
+      <button class="quick-pick" data-query="..city">..city</button>
+      <button class="quick-pick" data-query="employees[1:3]">employees[1:3]</button>
+      <button class="quick-pick" data-query="offices[\"hq\"]">offices["hq"]</button>
+    </div>
+
+    <div class="demo-label">Result</div>
+    <div id="demo-output" class="demo-output empty">Output will appear here...</div>
+
+    <div class="demo-toolbar">
+      <button id="btn-open-editor" class="demo-btn">Open in Full Editor</button>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <p>Need more features? The full editor has tree view, TypeScript generation, URL sharing, and more.</p>
+    <button class="cta" onclick="document.getElementById('btn-open-editor').click()">Open Full Editor</button>
+  </div>
+
+  <h2>What is JSON Querying?</h2>
+  <p>JSON querying is the process of extracting specific data from JSON documents using a query language. Instead of manually parsing the entire JSON structure, you can use powerful syntax to target exactly the data you need.</p>
+  <p>JSON querying is similar to how CSS selectors work for HTML or how XPath works for XML. It allows you to navigate complex, nested JSON structures with minimal effort.</p>
+  <p>Whether you're debugging APIs, transforming configuration files, or exploring datasets, JSON querying makes it fast and intuitive to find the data you're looking for—all in your browser, with zero dependencies and no privacy concerns.</p>
+
+  <h2>Query Syntax Reference</h2>
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th>Syntax</th>
+        <th>Description</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>data.name</code></td>
+        <td>Dot notation to access a property</td>
+        <td><code>company</code> returns "Acme Corp"</td>
+      </tr>
+      <tr>
+        <td><code>users[0]</code></td>
+        <td>Array index to access an element</td>
+        <td><code>employees[0]</code> returns the first employee</td>
+      </tr>
+      <tr>
+        <td><code>users[*]</code></td>
+        <td>Wildcard to select all array elements or object values</td>
+        <td><code>employees[*].name</code> returns all names</td>
+      </tr>
+      <tr>
+        <td><code>users[0:3]</code></td>
+        <td>Array slice (start inclusive, end exclusive)</td>
+        <td><code>employees[0:2]</code> returns first two employees</td>
+      </tr>
+      <tr>
+        <td><code>..key</code></td>
+        <td>Recursive descent to find all matching keys</td>
+        <td><code>..city</code> finds all cities at any depth</td>
+      </tr>
+      <tr>
+        <td><code>data["key-name"]</code></td>
+        <td>Bracket notation for keys with special characters</td>
+        <td><code>offices["hq"]</code> accesses the hq property</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-card-icon">⚡</div>
+      <div class="feature-card-title">Instant Results</div>
+      <div class="feature-card-desc">Queries execute instantly in your browser. No API calls, no waiting—results are computed in milliseconds.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔒</div>
+      <div class="feature-card-title">Zero Privacy Concerns</div>
+      <div class="feature-card-desc">Your data never leaves your computer. All processing happens locally in your browser.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">✓</div>
+      <div class="feature-card-title">No Installation</div>
+      <div class="feature-card-desc">Use it immediately in any modern browser. No command-line setup, no configuration files, no dependencies.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🔍</div>
+      <div class="feature-card-title">Rich Query Syntax</div>
+      <div class="feature-card-desc">Dot notation, wildcards, recursive descent, array slicing, bracket notation—everything you need in one tool.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">🌐</div>
+      <div class="feature-card-title">Shareable Queries</div>
+      <div class="feature-card-desc">Compress your JSON and queries into URLs for easy sharing and collaboration with teammates.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-icon">0️⃣</div>
+      <div class="feature-card-title">Zero Dependencies</div>
+      <div class="feature-card-desc">Lightweight, fast, and reliable. No frameworks, no plugins, just pure JavaScript.</div>
+    </div>
+  </div>
+
+  <h2>json.express vs jq vs JSONPath</h2>
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>json.express</th>
+        <th>jq</th>
+        <th>JSONPath</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Browser-based</td>
+        <td>✓</td>
+        <td>✗</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>No installation</td>
+        <td>✓</td>
+        <td>✗</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Dot notation</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✗</td>
+      </tr>
+      <tr>
+        <td>Wildcards</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Recursive descent</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Array slicing</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Bracket notation</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✓</td>
+      </tr>
+      <tr>
+        <td>Private (no servers)</td>
+        <td>✓</td>
+        <td>✓</td>
+        <td>✗</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Use Cases</h2>
+  <ol>
+    <li><strong>API Debugging:</strong><p>Query API responses to extract specific fields and debug integration issues.</p></li>
+    <li><strong>Configuration Management:</strong><p>Navigate large config files and quickly locate settings without manual parsing.</p></li>
+    <li><strong>Data Extraction:</strong><p>Extract specific subsets of JSON data for reporting, analysis, or data migration.</p></li>
+    <li><strong>Testing & QA:</strong><p>Verify API response structures and validate data in test suites.</p></li>
+    <li><strong>Log Analysis:</strong><p>Parse and query JSON-formatted logs to find errors or specific events.</p></li>
+    <li><strong>Data Transformation:</strong><p>Prepare data for downstream processing by extracting and filtering JSON at scale.</p></li>
+  </ol>
+
+  <div class="section">
+    <div class="section-title">Related Tools</div>
+    <div class="related-tools">
+      <a class="related-tool-link" href="/format/">JSON Formatter</a>
+      <a class="related-tool-link" href="/validate/">JSON Validator</a>
+      <a class="related-tool-link" href="/viewer/">JSON Viewer</a>
+      <a class="related-tool-link" href="/minify/">JSON Minifier</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span><a href="/">json.express</a> — Free, open-source JSON tools</span>
+    <span><a href="https://github.com/uditalias/json.my" target="_blank" rel="noopener">GitHub</a></span>
+  </footer>
+</div>
+
+<script>
+  function tokenizePath(path) {
+    var segments = [];
+    var i = 0;
+    var len = path.length;
+    while (i < len) {
+      if (path[i] === '.') {
+        if (i + 1 < len && path[i + 1] === '.') { segments.push({ type: 'recursive' }); i += 2; continue; }
+        i++; continue;
+      }
+      if (path[i] === '[') {
+        i++;
+        if (path[i] === '*') { segments.push({ type: 'wildcard' }); i++; if (path[i] === ']') i++; continue; }
+        if (path[i] === '"' || path[i] === "'") {
+          var quote = path[i]; i++; var qkey = '';
+          while (i < len && path[i] !== quote) {
+            if (path[i] === '\\' && i + 1 < len) { qkey += path[++i]; } else { qkey += path[i]; }
+            i++;
+          }
+          if (path[i] === quote) i++;
+          if (path[i] === ']') i++;
+          segments.push({ type: 'key', value: qkey }); continue;
+        }
+        var numStr = ''; var hasColon = false; var sliceEnd = '';
+        while (i < len && path[i] !== ']') {
+          if (path[i] === ':') { hasColon = true; i++;
+            while (i < len && path[i] !== ']') { sliceEnd += path[i]; i++; }
+            break;
+          }
+          numStr += path[i]; i++;
+        }
+        if (path[i] === ']') i++;
+        if (hasColon) { segments.push({ type: 'slice', start: numStr === '' ? 0 : parseInt(numStr, 10), end: sliceEnd === '' ? undefined : parseInt(sliceEnd, 10) }); }
+        else { segments.push({ type: 'index', value: parseInt(numStr, 10) }); }
+        continue;
+      }
+      var key = '';
+      while (i < len && path[i] !== '.' && path[i] !== '[') { key += path[i]; i++; }
+      if (key) { segments.push({ type: 'key', value: key }); }
+    }
+    return segments;
+  }
+
+  function evaluatePath(segments, data) {
+    if (segments.length === 0) return { found: true, value: data };
+    var current = [data];
+    for (var si = 0; si < segments.length; si++) {
+      var seg = segments[si]; var next = [];
+      if (seg.type === 'recursive') {
+        var nextSeg = segments[si + 1];
+        if (!nextSeg) { for (var ri = 0; ri < current.length; ri++) collectAllValues(current[ri], next); }
+        else { si++;
+          for (var rj = 0; rj < current.length; rj++) {
+            var descendants = []; collectAllNodes(current[rj], descendants);
+            for (var dk = 0; dk < descendants.length; dk++) applySegment(descendants[dk], nextSeg, next);
+          }
+        }
+      } else { for (var ci = 0; ci < current.length; ci++) applySegment(current[ci], seg, next); }
+      if (next.length === 0) return { found: false, value: undefined };
+      current = next;
+    }
+    return current.length === 1 ? { found: true, value: current[0] } : { found: true, value: current };
+  }
+
+  function applySegment(data, seg, results) {
+    if (data === null || data === undefined) return;
+    switch (seg.type) {
+      case 'key':
+        if (typeof data === 'object' && !Array.isArray(data) && data !== null && seg.value in data) results.push(data[seg.value]);
+        else if (Array.isArray(data)) { var idx = parseInt(seg.value, 10); if (!isNaN(idx) && idx >= 0 && idx < data.length) results.push(data[idx]); }
+        break;
+      case 'index':
+        if (Array.isArray(data)) { var idxVal = seg.value < 0 ? data.length + seg.value : seg.value; if (idxVal >= 0 && idxVal < data.length) results.push(data[idxVal]); }
+        break;
+      case 'wildcard':
+        if (Array.isArray(data)) { for (var wi = 0; wi < data.length; wi++) results.push(data[wi]); }
+        else if (typeof data === 'object' && data !== null) { var wkeys = Object.keys(data); for (var wk = 0; wk < wkeys.length; wk++) results.push(data[wkeys[wk]]); }
+        break;
+      case 'slice':
+        if (Array.isArray(data)) {
+          var start = seg.start < 0 ? Math.max(0, data.length + seg.start) : seg.start;
+          var end = seg.end === undefined ? data.length : (seg.end < 0 ? data.length + seg.end : seg.end);
+          for (var si = start; si < Math.min(end, data.length); si++) results.push(data[si]);
+        }
+        break;
+    }
+  }
+
+  function collectAllNodes(data, results) {
+    results.push(data);
+    if (Array.isArray(data)) { for (var i = 0; i < data.length; i++) collectAllNodes(data[i], results); }
+    else if (typeof data === 'object' && data !== null) { var keys = Object.keys(data); for (var k = 0; k < keys.length; k++) collectAllNodes(data[keys[k]], results); }
+  }
+
+  function collectAllValues(data, results) {
+    if (Array.isArray(data)) { for (var i = 0; i < data.length; i++) { results.push(data[i]); collectAllValues(data[i], results); } }
+    else if (typeof data === 'object' && data !== null) { var keys = Object.keys(data); for (var k = 0; k < keys.length; k++) { results.push(data[keys[k]]); collectAllValues(data[keys[k]], results); } }
+  }
+
+  function lenientParse(text) {
+    var stripped = text.replace(/\/\*[\s\S]*?\*\//g, function(m) { return m.split('\n').map(function() { return ''; }).join('\n'); }).replace(/\/\/.*$/gm, '');
+    try { return JSON.parse(stripped); } catch (e) { return null; }
+  }
+
+  function escapeHtml(text) {
+    var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+  }
+
+  function highlightJSON(obj, depth) {
+    depth = depth || 0;
+    if (obj === null) return '<span class="color-null">null</span>';
+    if (typeof obj === 'boolean') return '<span class="color-boolean">' + obj + '</span>';
+    if (typeof obj === 'number') return '<span class="color-number">' + obj + '</span>';
+    if (typeof obj === 'string') return '<span class="color-string">"' + escapeHtml(obj) + '"</span>';
+    if (Array.isArray(obj)) {
+      if (obj.length === 0) return '[]';
+      var indent = '  '.repeat(depth);
+      var nextIndent = '  '.repeat(depth + 1);
+      return '[\n' + nextIndent + obj.map(function(item) { return highlightJSON(item, depth + 1); }).join(',\n' + nextIndent) + '\n' + indent + ']';
+    }
+    if (typeof obj === 'object') {
+      var keys = Object.keys(obj);
+      if (keys.length === 0) return '{}';
+      var indent = '  '.repeat(depth);
+      var nextIndent = '  '.repeat(depth + 1);
+      return '{\n' + nextIndent + keys.map(function(k) { return '<span class="color-key">"' + escapeHtml(k) + '"</span>: ' + highlightJSON(obj[k], depth + 1); }).join(',\n' + nextIndent) + '\n' + indent + '}';
+    }
+    return String(obj);
+  }
+
+  function runDemoQuery() {
+    var inputText = document.getElementById('demo-input').value;
+    var queryText = document.getElementById('demo-query').value.trim();
+    var data = lenientParse(inputText);
+    var output = document.getElementById('demo-output');
+
+    if (!data) {
+      output.textContent = 'Invalid JSON in sample data';
+      output.classList.add('empty');
+      return;
+    }
+
+    if (!queryText) {
+      output.textContent = 'Enter a query';
+      output.classList.add('empty');
+      return;
+    }
+
+    var segments = tokenizePath(queryText);
+    var result = evaluatePath(segments, data);
+
+    if (!result.found) {
+      output.textContent = 'No results found';
+      output.classList.add('empty');
+    } else {
+      output.innerHTML = highlightJSON(result.value);
+      output.classList.remove('empty');
+    }
+  }
+
+  function setPreset(query) {
+    document.getElementById('demo-query').value = query;
+    runDemoQuery();
+  }
+
+  var demoInput = document.getElementById('demo-input');
+  var demoQuery = document.getElementById('demo-query');
+  var btnQuery = document.getElementById('btn-query');
+  var btnCopy = document.getElementById('btn-copy');
+  var demoOutput = document.getElementById('demo-output');
+
+  btnQuery.addEventListener('click', runDemoQuery);
+
+  demoQuery.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') runDemoQuery();
+  });
+
+  demoInput.addEventListener('input', function() {
+    runDemoQuery();
+  });
+
+  btnCopy.addEventListener('click', function() {
+    var text = demoOutput.textContent;
+    if (!text || demoOutput.classList.contains('empty')) {
+      alert('Nothing to copy. Run a query first.');
+      return;
+    }
+    navigator.clipboard.writeText(text).then(function() {
+      var originalText = btnCopy.textContent;
+      btnCopy.textContent = 'Copied!';
+      setTimeout(function() {
+        btnCopy.textContent = originalText;
+      }, 2000);
+    }).catch(function(err) {
+      alert('Failed to copy: ' + err);
+    });
+  });
+
+  document.querySelectorAll('.quick-pick').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setPreset(btn.getAttribute('data-query'));
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    runDemoQuery();
+  });
+
+  async function openInEditor(json, query) {
+    var state = { json: json };
+    if (query) state.query = query;
+    var blob = new Blob([JSON.stringify(state)]);
+    var cs = new CompressionStream('deflate');
+    var stream = blob.stream().pipeThrough(cs);
+    var compressedBlob = await new Response(stream).blob();
+    var buffer = await compressedBlob.arrayBuffer();
+    var bytes = new Uint8Array(buffer);
+    var binary = '';
+    for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    var hash = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    window.open('/#' + hash, '_blank');
+  }
+
+  document.getElementById('btn-open-editor').addEventListener('click', function() {
+    openInEditor(demoInput.value, demoQuery.value);
+  });
+</script>
+</body>
+</html>
