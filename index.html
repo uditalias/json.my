@@ -427,25 +427,7 @@ html, body {
 }
 
 #result-line-numbers {
-  pointer-events: auto;
-  cursor: default;
-  opacity: 1;
-}
-
-#result-line-numbers div {
-  cursor: pointer;
-  color: var(--text-muted);
-  opacity: 0.5;
-  transition: color 0.15s, opacity 0.15s;
-}
-
-#result-line-numbers div:hover {
-  opacity: 0.8;
-}
-
-#result-line-numbers div.line-highlighted {
-  color: var(--accent);
-  opacity: 1;
+  display: none;
 }
 
 #result-output {
@@ -460,10 +442,173 @@ html, body {
   line-height: 1.5;
   margin: 0 -12px 0 -48px;
   padding: 0 12px 0 48px;
+  position: relative;
+}
+
+.result-line-num {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  text-align: right;
+  padding-right: 8px;
+  box-sizing: border-box;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  opacity: 0.5;
+  user-select: none;
+  cursor: pointer;
+  transition: color 0.15s, opacity 0.15s;
+}
+
+.result-line-num:hover {
+  opacity: 0.8;
+}
+
+#result-output .result-line.line-highlighted .result-line-num {
+  color: var(--accent);
+  opacity: 1;
 }
 
 #result-output .result-line.line-highlighted {
   background: var(--highlight-bg);
+}
+
+#result-output .result-line.line-highlighted.has-comment {
+  cursor: pointer;
+}
+
+.line-comment {
+  margin: 0 -12px 0 -48px;
+  padding: 8px 12px 8px 48px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+  position: relative;
+}
+
+.line-comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.line-comment-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.line-comment-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.line-comment-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+.line-comment-btn:hover {
+  color: var(--text);
+  background: var(--btn-hover);
+}
+
+.line-comment-btn.delete:hover {
+  color: var(--error);
+}
+
+.line-comment-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.line-comment-editor {
+  margin: 0 -12px 0 -48px;
+  padding: 8px 12px 8px 48px;
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  background: var(--bg);
+}
+
+.line-comment-editor textarea {
+  width: 100%;
+  min-height: 52px;
+  padding: 6px 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.line-comment-editor textarea:focus {
+  border-color: var(--accent);
+}
+
+.line-comment-editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.comment-btn-cancel, .comment-btn-save {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  border: 1px solid var(--border);
+}
+
+.comment-btn-cancel {
+  background: var(--panel-bg);
+  color: var(--text);
+}
+
+.comment-btn-cancel:hover { background: var(--btn-hover); }
+
+.comment-btn-save {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.comment-btn-save:hover { opacity: 0.85; }
+
+.line-comment-indicator {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  color: var(--accent);
+  font-size: 14px;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 #result-output .json-key { color: var(--key-color); }
@@ -970,8 +1115,8 @@ if ('serviceWorker' in navigator) {
   var dragBaseLines = {};       // snapshot of selectedLines before drag started
 
   function getLineFromEl(el) {
-    if (!el || el.parentNode !== dom.resultLineNumbers) return null;
-    var n = parseInt(el.textContent, 10);
+    if (!el || !el.classList.contains('result-line-num')) return null;
+    var n = parseInt(el.getAttribute('data-line'), 10);
     return isNaN(n) ? null : n;
   }
 
@@ -985,6 +1130,7 @@ if ('serviceWorker' in navigator) {
   function clearLineSelection() {
     selectedLines = {};
     lineSelectAnchor = null;
+    clearLineComments();
     applyLineHighlights();
   }
 
@@ -1003,15 +1149,19 @@ if ('serviceWorker' in navigator) {
   }
 
   function applyLineHighlights() {
-    var numDivs = dom.resultLineNumbers.children;
-    for (var i = 0; i < numDivs.length; i++) {
-      numDivs[i].classList.toggle('line-highlighted', !!selectedLines[i + 1]);
-    }
     var lineDivs = dom.resultOutput.querySelectorAll('.result-line');
     for (var j = 0; j < lineDivs.length; j++) {
       var ln = parseInt(lineDivs[j].getAttribute('data-line'), 10);
       lineDivs[j].classList.toggle('line-highlighted', !!selectedLines[ln]);
     }
+    // Prune comments whose group no longer matches a highlighted group
+    if (lineComments.length > 0) {
+      var groups = getHighlightedGroups();
+      var validKeys = {};
+      for (var g = 0; g < groups.length; g++) validKeys[groupKey(groups[g])] = true;
+      lineComments = lineComments.filter(function(c) { return validKeys[c.lines]; });
+    }
+    renderComments();
   }
 
   // Parse "1,3-5,10" into selectedLines map
@@ -1067,9 +1217,199 @@ if ('serviceWorker' in navigator) {
     return parts.join(',');
   }
 
-  dom.resultLineNumbers.addEventListener('mousedown', function(e) {
+  // Line comments — array of {lines: "3-5", text: "comment"}
+  var lineComments = [];
+
+  function getHighlightedGroups() {
+    var nums = [];
+    for (var k in selectedLines) {
+      if (selectedLines.hasOwnProperty(k)) nums.push(parseInt(k, 10));
+    }
+    nums.sort(function(a, b) { return a - b; });
+    var groups = [];
+    var i = 0;
+    while (i < nums.length) {
+      var start = nums[i];
+      while (i + 1 < nums.length && nums[i + 1] === nums[i] + 1) i++;
+      groups.push({ start: start, end: nums[i] });
+      i++;
+    }
+    return groups;
+  }
+
+  function groupKey(group) {
+    return group.start === group.end ? '' + group.start : group.start + '-' + group.end;
+  }
+
+  function findCommentForGroup(group) {
+    var key = groupKey(group);
+    for (var i = 0; i < lineComments.length; i++) {
+      if (lineComments[i].lines === key) return i;
+    }
+    return -1;
+  }
+
+  function clearLineComments() {
+    lineComments = [];
+  }
+
+  function renderComments() {
+    // Remove existing comment elements and editors
+    var existing = dom.resultOutput.querySelectorAll('.line-comment, .line-comment-editor');
+    for (var i = 0; i < existing.length; i++) existing[i].remove();
+
+    // Remove has-comment class
+    var marked = dom.resultOutput.querySelectorAll('.result-line.has-comment');
+    for (var j = 0; j < marked.length; j++) marked[j].classList.remove('has-comment');
+
+    // Remove comment indicators
+    var indicators = dom.resultOutput.querySelectorAll('.line-comment-indicator');
+    for (var k = 0; k < indicators.length; k++) indicators[k].remove();
+
+    // Insert comment bubbles after the last line of each group
+    var groups = getHighlightedGroups();
+    for (var g = 0; g < groups.length; g++) {
+      var group = groups[g];
+      var ci = findCommentForGroup(group);
+      var lastLine = dom.resultOutput.querySelector('.result-line[data-line="' + group.end + '"]');
+      if (!lastLine) continue;
+
+      // Mark lines that have a comment
+      if (ci !== -1) {
+        for (var ln = group.start; ln <= group.end; ln++) {
+          var lineEl = dom.resultOutput.querySelector('.result-line[data-line="' + ln + '"]');
+          if (lineEl) lineEl.classList.add('has-comment');
+        }
+        // Add indicator on first line
+        var firstLine = dom.resultOutput.querySelector('.result-line[data-line="' + group.start + '"]');
+        if (firstLine && !firstLine.querySelector('.line-comment-indicator')) {
+          var indicator = document.createElement('span');
+          indicator.className = 'line-comment-indicator';
+          indicator.innerHTML = '&#128172;';
+          firstLine.style.position = 'relative';
+          firstLine.appendChild(indicator);
+        }
+      }
+
+      if (ci !== -1) {
+        var comment = lineComments[ci];
+        var bubble = document.createElement('div');
+        bubble.className = 'line-comment';
+        bubble.setAttribute('data-group', groupKey(group));
+        bubble.innerHTML =
+          '<div class="line-comment-header">' +
+            '<span class="line-comment-label">Comment on L' + groupKey(group) + '</span>' +
+            '<div class="line-comment-actions">' +
+              '<button class="line-comment-btn edit" title="Edit">&#9998;</button>' +
+              '<button class="line-comment-btn delete" title="Delete">&#10005;</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="line-comment-text">' + escapeHtml(comment.text) + '</div>';
+        lastLine.after(bubble);
+
+        (function(grp) {
+          bubble.querySelector('.edit').addEventListener('click', function(e) {
+            e.stopPropagation();
+            openCommentEditor(grp, true);
+          });
+          bubble.querySelector('.delete').addEventListener('click', function(e) {
+            e.stopPropagation();
+            var idx = findCommentForGroup(grp);
+            if (idx !== -1) lineComments.splice(idx, 1);
+            renderComments();
+            scheduleSaveHash();
+          });
+        })(group);
+      }
+    }
+  }
+
+  function openCommentEditor(group, isEdit) {
+    // Remove any existing editor
+    var existingEditor = dom.resultOutput.querySelector('.line-comment-editor');
+    if (existingEditor) existingEditor.remove();
+
+    var lastLine = dom.resultOutput.querySelector('.result-line[data-line="' + group.end + '"]');
+    if (!lastLine) return;
+
+    // If editing, also remove the displayed bubble temporarily
+    var existingBubble = dom.resultOutput.querySelector('.line-comment[data-group="' + groupKey(group) + '"]');
+    if (existingBubble) existingBubble.style.display = 'none';
+
+    var ci = findCommentForGroup(group);
+    var existingText = ci !== -1 ? lineComments[ci].text : '';
+
+    var editor = document.createElement('div');
+    editor.className = 'line-comment-editor';
+    editor.innerHTML =
+      '<textarea placeholder="Add a comment...">' + escapeHtml(existingText) + '</textarea>' +
+      '<div class="line-comment-editor-actions">' +
+        '<button class="comment-btn-cancel">Cancel</button>' +
+        '<button class="comment-btn-save">' + (isEdit ? 'Update' : 'Comment') + '</button>' +
+      '</div>';
+    lastLine.after(editor);
+
+    var textarea = editor.querySelector('textarea');
+    textarea.focus();
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+
+    editor.querySelector('.comment-btn-cancel').addEventListener('click', function() {
+      editor.remove();
+      if (existingBubble) existingBubble.style.display = '';
+    });
+
+    editor.querySelector('.comment-btn-save').addEventListener('click', function() {
+      var text = textarea.value.trim();
+      if (!text) {
+        // Empty = delete
+        if (ci !== -1) lineComments.splice(ci, 1);
+      } else if (ci !== -1) {
+        lineComments[ci].text = text;
+      } else {
+        lineComments.push({ lines: groupKey(group), text: text });
+      }
+      editor.remove();
+      renderComments();
+      scheduleSaveHash();
+    });
+
+    // Ctrl/Cmd+Enter to save
+    textarea.addEventListener('keydown', function(e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        editor.querySelector('.comment-btn-save').click();
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        editor.querySelector('.comment-btn-cancel').click();
+      }
+    });
+  }
+
+  // Click on highlighted lines to add/edit comments
+  dom.resultOutput.addEventListener('click', function(e) {
+    var lineEl = e.target.closest('.result-line.line-highlighted');
+    if (!lineEl) return;
+    // Don't trigger when clicking inside comment or editor
+    if (e.target.closest('.line-comment') || e.target.closest('.line-comment-editor')) return;
+
+    var lineNum = parseInt(lineEl.getAttribute('data-line'), 10);
+    // Find which group this line belongs to
+    var groups = getHighlightedGroups();
+    for (var i = 0; i < groups.length; i++) {
+      if (lineNum >= groups[i].start && lineNum <= groups[i].end) {
+        var ci = findCommentForGroup(groups[i]);
+        openCommentEditor(groups[i], ci !== -1);
+        break;
+      }
+    }
+  });
+
+  dom.resultOutput.addEventListener('mousedown', function(e) {
+    var numEl = e.target.closest('.result-line-num');
+    if (!numEl) return;
     if (dom.resultOutput.classList.contains('primitive')) return;
-    var line = getLineFromEl(e.target);
+    var line = getLineFromEl(numEl);
     if (line === null) return;
     e.preventDefault();
 
@@ -1078,14 +1418,11 @@ if ('serviceWorker' in navigator) {
     if (e.shiftKey && lineSelectAnchor !== null) {
       var range = rangeToMap(lineSelectAnchor, line);
       if (metaKey) {
-        // Cmd+Shift+Click: add range to existing selection
         selectedLines = mergeMaps(selectedLines, range);
       } else {
-        // Shift+Click: replace with range
         selectedLines = range;
       }
     } else if (metaKey) {
-      // Cmd+Click: toggle single line
       if (selectedLines[line]) {
         delete selectedLines[line];
       } else {
@@ -1093,14 +1430,12 @@ if ('serviceWorker' in navigator) {
       }
       lineSelectAnchor = line;
     } else {
-      // Plain click: if clicking the only selected line, deselect all
       var keys = Object.keys(selectedLines);
       if (keys.length === 1 && parseInt(keys[0], 10) === line) {
         clearLineSelection();
         scheduleSaveHash();
         return;
       }
-      // Otherwise replace selection with this line
       selectedLines = {};
       selectedLines[line] = true;
       lineSelectAnchor = line;
@@ -1112,7 +1447,6 @@ if ('serviceWorker' in navigator) {
     lineSelectAdditive = metaKey;
     dragBaseLines = {};
     if (metaKey) {
-      // snapshot current selection minus the drag range (which is just the anchor for now)
       for (var k in selectedLines) {
         if (selectedLines.hasOwnProperty(k)) dragBaseLines[k] = true;
       }
@@ -1120,9 +1454,11 @@ if ('serviceWorker' in navigator) {
     document.body.style.userSelect = 'none';
   });
 
-  dom.resultLineNumbers.addEventListener('mouseover', function(e) {
+  dom.resultOutput.addEventListener('mouseover', function(e) {
     if (!lineSelectDragging) return;
-    var line = getLineFromEl(e.target);
+    var numEl = e.target.closest('.result-line-num');
+    if (!numEl) return;
+    var line = getLineFromEl(numEl);
     if (line === null) return;
     var range = rangeToMap(lineSelectAnchor, line);
     if (lineSelectAdditive) {
@@ -1790,6 +2126,7 @@ if ('serviceWorker' in navigator) {
     };
     var linesStr = getLineSelectionString();
     if (linesStr) state.lines = linesStr;
+    if (lineComments.length > 0) state.comments = lineComments;
     try {
       var hash = await compressState(state);
       suppressHashUpdate = true;
@@ -1810,7 +2147,12 @@ if ('serviceWorker' in navigator) {
       onInputChange();
       if (state.lines) {
         // Apply after a tick so the result has rendered
-        setTimeout(function() { applyLineSelectionFromState(state.lines); }, 50);
+        setTimeout(function() {
+          if (state.comments && Array.isArray(state.comments)) {
+            lineComments = state.comments;
+          }
+          applyLineSelectionFromState(state.lines);
+        }, 50);
       }
     } catch (e) {
       suppressHashUpdate = false;
@@ -1939,7 +2281,8 @@ if ('serviceWorker' in navigator) {
   function wrapResultLines(html) {
     var lines = html.split('\n');
     return lines.map(function(line, i) {
-      return '<div class="result-line" data-line="' + (i + 1) + '">' + (line || ' ') + '</div>';
+      var num = i + 1;
+      return '<div class="result-line" data-line="' + num + '"><span class="result-line-num" data-line="' + num + '">' + num + '</span>' + (line || ' ') + '</div>';
     }).join('');
   }
 
@@ -1963,12 +2306,6 @@ if ('serviceWorker' in navigator) {
 
     var resultStr = JSON.stringify(value, null, 2) || '';
     dom.resultSize.textContent = formatSize(byteSize(resultStr));
-    var lineCount = dom.resultOutput.querySelectorAll('.result-line').length;
-    if (lineCount > 0) {
-      dom.resultLineNumbers.innerHTML = generateLineNumbers(lineCount);
-    } else {
-      updatePanelLineNumbers(dom.resultLineNumbers, dom.resultOutput.textContent);
-    }
   }
 
   function renderTreeView() {
@@ -2330,6 +2667,14 @@ if ('serviceWorker' in navigator) {
         ['Click', 'Select a line'],
         [modKey + '+Click', 'Add/remove lines'],
         ['Shift+Click', 'Select a range']
+      ]
+    },
+    {
+      text: 'Click on <b>highlighted lines</b> to add a comment. Comments are persisted in the URL, so they are included when you share.',
+      examples: [
+        ['Click highlighted line', 'Open comment editor'],
+        [modKey + '+Enter', 'Save comment'],
+        ['Esc', 'Cancel editing']
       ]
     },
     {

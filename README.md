@@ -42,6 +42,18 @@ Auto-generate TypeScript interfaces from any JSON. Copy them straight into your 
 
 ![TypeScript Types](screenshots/typescript.png)
 
+### Highlight Lines
+
+Click line numbers in the result panel to highlight lines. Use Shift+Click to select a range, or Cmd/Ctrl+Click to select multiple groups. Highlights are persisted in the URL for easy sharing.
+
+![Highlight Lines](screenshots/highlight.png)
+
+### Comments
+
+Click on highlighted lines to add comments. Comments are stored in the URL alongside your data and query, so they're included when you share a link — perfect for code reviews or annotating API responses.
+
+![Comments](screenshots/comments.png)
+
 ---
 
 ## What is this
