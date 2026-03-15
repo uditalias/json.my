@@ -426,9 +426,44 @@ html, body {
   background: var(--panel-bg);
 }
 
+#result-line-numbers {
+  pointer-events: auto;
+  cursor: default;
+  opacity: 1;
+}
+
+#result-line-numbers div {
+  cursor: pointer;
+  color: var(--text-muted);
+  opacity: 0.5;
+  transition: color 0.15s, opacity 0.15s;
+}
+
+#result-line-numbers div:hover {
+  opacity: 0.8;
+}
+
+#result-line-numbers div.line-highlighted {
+  color: var(--accent);
+  opacity: 1;
+}
+
 #result-output {
+  white-space: pre;
+  word-break: break-word;
+}
+
+#result-output .result-line {
   white-space: pre-wrap;
   word-break: break-word;
+  min-height: 1.5em;
+  line-height: 1.5;
+  margin: 0 -12px 0 -48px;
+  padding: 0 12px 0 48px;
+}
+
+#result-output .result-line.line-highlighted {
+  background: var(--highlight-bg);
 }
 
 #result-output .json-key { color: var(--key-color); }
@@ -749,6 +784,107 @@ if ('serviceWorker' in navigator) {
     }
     el.innerHTML = generateLineNumbers(text.split('\n').length);
   }
+
+  // Line selection state
+  var lineSelectStart = null;
+  var lineSelectEnd = null;
+  var lineSelectAnchor = null;
+  var lineSelectDragging = false;
+
+  function getLineFromEl(el) {
+    if (!el || el.parentNode !== dom.resultLineNumbers) return null;
+    var n = parseInt(el.textContent, 10);
+    return isNaN(n) ? null : n;
+  }
+
+  function clearLineSelection() {
+    lineSelectStart = null;
+    lineSelectEnd = null;
+    lineSelectAnchor = null;
+    applyLineHighlights();
+  }
+
+  function setLineSelection(start, end) {
+    if (start > end) { var t = start; start = end; end = t; }
+    lineSelectStart = start;
+    lineSelectEnd = end;
+    applyLineHighlights();
+    scheduleSaveHash();
+  }
+
+  function applyLineHighlights() {
+    var numDivs = dom.resultLineNumbers.children;
+    for (var i = 0; i < numDivs.length; i++) {
+      var lineNum = i + 1;
+      var active = lineSelectStart !== null && lineNum >= lineSelectStart && lineNum <= lineSelectEnd;
+      numDivs[i].classList.toggle('line-highlighted', active);
+    }
+    var lineDivs = dom.resultOutput.querySelectorAll('.result-line');
+    for (var j = 0; j < lineDivs.length; j++) {
+      var ln = parseInt(lineDivs[j].getAttribute('data-line'), 10);
+      var on = lineSelectStart !== null && ln >= lineSelectStart && ln <= lineSelectEnd;
+      lineDivs[j].classList.toggle('line-highlighted', on);
+    }
+  }
+
+  function applyLineSelectionFromState(linesStr) {
+    if (!linesStr) return;
+    var parts = linesStr.split('-');
+    var s = parseInt(parts[0], 10);
+    var e = parts.length > 1 ? parseInt(parts[1], 10) : s;
+    if (isNaN(s) || isNaN(e)) return;
+    lineSelectStart = Math.min(s, e);
+    lineSelectEnd = Math.max(s, e);
+    lineSelectAnchor = lineSelectStart;
+    applyLineHighlights();
+    // Scroll first highlighted line into view
+    var firstLine = dom.resultOutput.querySelector('.result-line[data-line="' + lineSelectStart + '"]');
+    if (firstLine) {
+      firstLine.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }
+
+  function getLineSelectionString() {
+    if (lineSelectStart === null) return undefined;
+    if (lineSelectStart === lineSelectEnd) return '' + lineSelectStart;
+    return lineSelectStart + '-' + lineSelectEnd;
+  }
+
+  dom.resultLineNumbers.addEventListener('mousedown', function(e) {
+    if (dom.resultOutput.classList.contains('primitive')) return;
+    var line = getLineFromEl(e.target);
+    if (line === null) return;
+    e.preventDefault();
+
+    if (e.shiftKey && lineSelectAnchor !== null) {
+      setLineSelection(lineSelectAnchor, line);
+    } else {
+      // Click on already-selected single line = deselect
+      if (lineSelectStart === line && lineSelectEnd === line) {
+        clearLineSelection();
+        scheduleSaveHash();
+        return;
+      }
+      lineSelectAnchor = line;
+      setLineSelection(line, line);
+    }
+    lineSelectDragging = true;
+    document.body.style.userSelect = 'none';
+  });
+
+  dom.resultLineNumbers.addEventListener('mouseover', function(e) {
+    if (!lineSelectDragging) return;
+    var line = getLineFromEl(e.target);
+    if (line === null) return;
+    setLineSelection(lineSelectAnchor, line);
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (lineSelectDragging) {
+      lineSelectDragging = false;
+      document.body.style.userSelect = '';
+    }
+  });
 
   dom.jsonInput.addEventListener('scroll', function() {
     dom.inputLineNumbers.style.top = -dom.jsonInput.scrollTop + 'px';
@@ -1395,6 +1531,8 @@ if ('serviceWorker' in navigator) {
       json: dom.jsonInput.value,
       query: dom.queryInput.value
     };
+    var linesStr = getLineSelectionString();
+    if (linesStr) state.lines = linesStr;
     try {
       var hash = await compressState(state);
       suppressHashUpdate = true;
@@ -1413,6 +1551,10 @@ if ('serviceWorker' in navigator) {
       if (state.query !== undefined) dom.queryInput.value = state.query;
       suppressHashUpdate = false;
       onInputChange();
+      if (state.lines) {
+        // Apply after a tick so the result has rendered
+        setTimeout(function() { applyLineSelectionFromState(state.lines); }, 50);
+      }
     } catch (e) {
       suppressHashUpdate = false;
     }
@@ -1537,8 +1679,16 @@ if ('serviceWorker' in navigator) {
     if (viewMode === 'ts') renderTSView();
   }
 
+  function wrapResultLines(html) {
+    var lines = html.split('\n');
+    return lines.map(function(line, i) {
+      return '<div class="result-line" data-line="' + (i + 1) + '">' + (line || ' ') + '</div>';
+    }).join('');
+  }
+
   function displayResult(value) {
     dom.noMatch.classList.remove('visible');
+    clearLineSelection();
 
     if (isPrimitive(value)) {
       dom.resultOutput.classList.add('primitive');
@@ -1546,7 +1696,7 @@ if ('serviceWorker' in navigator) {
       dom.resultCount.textContent = '';
     } else {
       dom.resultOutput.classList.remove('primitive');
-      dom.resultOutput.innerHTML = highlightJSON(value);
+      dom.resultOutput.innerHTML = wrapResultLines(highlightJSON(value));
       if (Array.isArray(value)) {
         dom.resultCount.textContent = value.length + ' items';
       } else {
@@ -1556,7 +1706,12 @@ if ('serviceWorker' in navigator) {
 
     var resultStr = JSON.stringify(value, null, 2) || '';
     dom.resultSize.textContent = formatSize(byteSize(resultStr));
-    updatePanelLineNumbers(dom.resultLineNumbers, dom.resultOutput.textContent);
+    var lineCount = dom.resultOutput.querySelectorAll('.result-line').length;
+    if (lineCount > 0) {
+      dom.resultLineNumbers.innerHTML = generateLineNumbers(lineCount);
+    } else {
+      updatePanelLineNumbers(dom.resultLineNumbers, dom.resultOutput.textContent);
+    }
   }
 
   function renderTreeView() {
