@@ -617,6 +617,154 @@ html, body {
   transform: translateX(-50%) translateY(0);
 }
 
+#tips-wizard {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  width: 420px;
+  z-index: 140;
+  display: none;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel-bg);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  animation: tips-slide-up 0.25s ease-out;
+  overflow: hidden;
+}
+
+@keyframes tips-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#tips-wizard.visible { display: flex; flex-direction: column; }
+
+.tips-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 0;
+  flex-shrink: 0;
+}
+
+.tips-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.tips-nav-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.tips-nav-btn:hover { text-decoration: underline; }
+
+.tips-body {
+  padding: 10px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+  height: 160px;
+  overflow: hidden;
+}
+
+.tips-body p {
+  margin: 0 0 8px;
+}
+
+.tips-example {
+  display: flex;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  gap: 0;
+  margin: 0 -16px;
+  padding: 0 16px;
+  background: var(--bg);
+  border-radius: 0;
+}
+
+.tips-example-input {
+  flex: 1;
+  padding: 6px 10px;
+  color: var(--accent);
+  white-space: pre;
+}
+
+.tips-example-output {
+  flex: 1;
+  padding: 6px 10px;
+  border-left: 1px solid var(--border);
+  color: var(--text-muted);
+  white-space: pre;
+}
+
+.tips-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.tips-footer-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tips-hide-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.tips-hide-btn:hover { text-decoration: underline; }
+
+.tips-dont-show {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.tips-dont-show input {
+  cursor: pointer;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--panel-bg) 0%, var(--bg) 100%);
+  border: 1px solid var(--border);
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  vertical-align: middle;
+}
+
 @media (max-width: 768px) {
   #panels {
     flex-direction: column;
@@ -637,6 +785,15 @@ html, body {
     flex-basis: 100%;
   }
   #shortcuts-hint { display: none; }
+  #tips-wizard {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
 }
 </style>
 </head>
@@ -709,8 +866,22 @@ html, body {
     <button class="actions-menu-item" id="action-download-json"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download JSON</button>
     <button class="actions-menu-item" id="action-download-ts"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download TS</button>
     <div class="actions-menu-separator"></div>
+    <button class="actions-menu-item" id="action-tips"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>Tips &amp; Tricks</button>
     <button class="actions-menu-item" id="action-about"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>About</button>
     <button class="actions-menu-item" id="action-github"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>GitHub</button>
+  </div>
+</div>
+
+<div id="tips-wizard">
+  <div class="tips-header">
+    <span class="tips-title">Tips &amp; Tricks</span>
+    <button class="tips-nav-btn" id="tips-next">Next &rarr;</button>
+  </div>
+  <div class="tips-body" id="tips-body"></div>
+  <div class="tips-footer">
+    <button class="tips-hide-btn" id="tips-hide">Hide</button>
+    <span class="tips-footer-center" id="tips-counter"></span>
+    <label class="tips-dont-show"><input type="checkbox" id="tips-dont-show"> Don't show</label>
   </div>
 </div>
 
@@ -754,6 +925,12 @@ if ('serviceWorker' in navigator) {
     tsContent: document.getElementById('ts-content'),
     btnActions: document.getElementById('btn-actions'),
     actionsMenu: document.getElementById('actions-menu'),
+    tipsWizard: document.getElementById('tips-wizard'),
+    tipsBody: document.getElementById('tips-body'),
+    tipsNext: document.getElementById('tips-next'),
+    tipsHide: document.getElementById('tips-hide'),
+    tipsCounter: document.getElementById('tips-counter'),
+    tipsDontShow: document.getElementById('tips-dont-show'),
   };
 
   var parsedJSON = undefined;
@@ -785,11 +962,12 @@ if ('serviceWorker' in navigator) {
     el.innerHTML = generateLineNumbers(text.split('\n').length);
   }
 
-  // Line selection state
-  var lineSelectStart = null;
-  var lineSelectEnd = null;
-  var lineSelectAnchor = null;
+  // Line selection state — supports multiple non-contiguous selections
+  var selectedLines = {};       // map of line number -> true
+  var lineSelectAnchor = null;  // anchor for shift-range operations
   var lineSelectDragging = false;
+  var lineSelectAdditive = false; // true when Cmd/Ctrl held during drag
+  var dragBaseLines = {};       // snapshot of selectedLines before drag started
 
   function getLineFromEl(el) {
     if (!el || el.parentNode !== dom.resultLineNumbers) return null;
@@ -797,57 +975,96 @@ if ('serviceWorker' in navigator) {
     return isNaN(n) ? null : n;
   }
 
+  function isSelectedLinesEmpty() {
+    for (var k in selectedLines) {
+      if (selectedLines.hasOwnProperty(k)) return false;
+    }
+    return true;
+  }
+
   function clearLineSelection() {
-    lineSelectStart = null;
-    lineSelectEnd = null;
+    selectedLines = {};
     lineSelectAnchor = null;
     applyLineHighlights();
   }
 
-  function setLineSelection(start, end) {
-    if (start > end) { var t = start; start = end; end = t; }
-    lineSelectStart = start;
-    lineSelectEnd = end;
-    applyLineHighlights();
-    scheduleSaveHash();
+  function rangeToMap(a, b) {
+    var s = Math.min(a, b), e = Math.max(a, b);
+    var m = {};
+    for (var i = s; i <= e; i++) m[i] = true;
+    return m;
+  }
+
+  function mergeMaps(base, add) {
+    var m = {};
+    for (var k in base) { if (base.hasOwnProperty(k)) m[k] = true; }
+    for (var j in add) { if (add.hasOwnProperty(j)) m[j] = true; }
+    return m;
   }
 
   function applyLineHighlights() {
     var numDivs = dom.resultLineNumbers.children;
     for (var i = 0; i < numDivs.length; i++) {
-      var lineNum = i + 1;
-      var active = lineSelectStart !== null && lineNum >= lineSelectStart && lineNum <= lineSelectEnd;
-      numDivs[i].classList.toggle('line-highlighted', active);
+      numDivs[i].classList.toggle('line-highlighted', !!selectedLines[i + 1]);
     }
     var lineDivs = dom.resultOutput.querySelectorAll('.result-line');
     for (var j = 0; j < lineDivs.length; j++) {
       var ln = parseInt(lineDivs[j].getAttribute('data-line'), 10);
-      var on = lineSelectStart !== null && ln >= lineSelectStart && ln <= lineSelectEnd;
-      lineDivs[j].classList.toggle('line-highlighted', on);
+      lineDivs[j].classList.toggle('line-highlighted', !!selectedLines[ln]);
     }
   }
 
+  // Parse "1,3-5,10" into selectedLines map
   function applyLineSelectionFromState(linesStr) {
     if (!linesStr) return;
-    var parts = linesStr.split('-');
-    var s = parseInt(parts[0], 10);
-    var e = parts.length > 1 ? parseInt(parts[1], 10) : s;
-    if (isNaN(s) || isNaN(e)) return;
-    lineSelectStart = Math.min(s, e);
-    lineSelectEnd = Math.max(s, e);
-    lineSelectAnchor = lineSelectStart;
+    selectedLines = {};
+    var segments = linesStr.split(',');
+    var firstLine = Infinity;
+    for (var i = 0; i < segments.length; i++) {
+      var seg = segments[i].trim();
+      if (!seg) continue;
+      var dashIdx = seg.indexOf('-');
+      if (dashIdx === -1) {
+        var n = parseInt(seg, 10);
+        if (!isNaN(n)) {
+          selectedLines[n] = true;
+          if (n < firstLine) firstLine = n;
+        }
+      } else {
+        var s = parseInt(seg.substring(0, dashIdx), 10);
+        var e = parseInt(seg.substring(dashIdx + 1), 10);
+        if (!isNaN(s) && !isNaN(e)) {
+          var lo = Math.min(s, e), hi = Math.max(s, e);
+          for (var j = lo; j <= hi; j++) selectedLines[j] = true;
+          if (lo < firstLine) firstLine = lo;
+        }
+      }
+    }
     applyLineHighlights();
-    // Scroll first highlighted line into view
-    var firstLine = dom.resultOutput.querySelector('.result-line[data-line="' + lineSelectStart + '"]');
-    if (firstLine) {
-      firstLine.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    if (firstLine < Infinity) {
+      var el = dom.resultOutput.querySelector('.result-line[data-line="' + firstLine + '"]');
+      if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
   }
 
+  // Serialize selectedLines map to "1,3-5,10" format
   function getLineSelectionString() {
-    if (lineSelectStart === null) return undefined;
-    if (lineSelectStart === lineSelectEnd) return '' + lineSelectStart;
-    return lineSelectStart + '-' + lineSelectEnd;
+    var nums = [];
+    for (var k in selectedLines) {
+      if (selectedLines.hasOwnProperty(k)) nums.push(parseInt(k, 10));
+    }
+    if (nums.length === 0) return undefined;
+    nums.sort(function(a, b) { return a - b; });
+    var parts = [];
+    var i = 0;
+    while (i < nums.length) {
+      var start = nums[i];
+      while (i + 1 < nums.length && nums[i + 1] === nums[i] + 1) i++;
+      var end = nums[i];
+      parts.push(start === end ? '' + start : start + '-' + end);
+      i++;
+    }
+    return parts.join(',');
   }
 
   dom.resultLineNumbers.addEventListener('mousedown', function(e) {
@@ -856,19 +1073,50 @@ if ('serviceWorker' in navigator) {
     if (line === null) return;
     e.preventDefault();
 
+    var metaKey = e.metaKey || e.ctrlKey;
+
     if (e.shiftKey && lineSelectAnchor !== null) {
-      setLineSelection(lineSelectAnchor, line);
+      var range = rangeToMap(lineSelectAnchor, line);
+      if (metaKey) {
+        // Cmd+Shift+Click: add range to existing selection
+        selectedLines = mergeMaps(selectedLines, range);
+      } else {
+        // Shift+Click: replace with range
+        selectedLines = range;
+      }
+    } else if (metaKey) {
+      // Cmd+Click: toggle single line
+      if (selectedLines[line]) {
+        delete selectedLines[line];
+      } else {
+        selectedLines[line] = true;
+      }
+      lineSelectAnchor = line;
     } else {
-      // Click on already-selected single line = deselect
-      if (lineSelectStart === line && lineSelectEnd === line) {
+      // Plain click: if clicking the only selected line, deselect all
+      var keys = Object.keys(selectedLines);
+      if (keys.length === 1 && parseInt(keys[0], 10) === line) {
         clearLineSelection();
         scheduleSaveHash();
         return;
       }
+      // Otherwise replace selection with this line
+      selectedLines = {};
+      selectedLines[line] = true;
       lineSelectAnchor = line;
-      setLineSelection(line, line);
     }
+
+    applyLineHighlights();
+    scheduleSaveHash();
     lineSelectDragging = true;
+    lineSelectAdditive = metaKey;
+    dragBaseLines = {};
+    if (metaKey) {
+      // snapshot current selection minus the drag range (which is just the anchor for now)
+      for (var k in selectedLines) {
+        if (selectedLines.hasOwnProperty(k)) dragBaseLines[k] = true;
+      }
+    }
     document.body.style.userSelect = 'none';
   });
 
@@ -876,12 +1124,21 @@ if ('serviceWorker' in navigator) {
     if (!lineSelectDragging) return;
     var line = getLineFromEl(e.target);
     if (line === null) return;
-    setLineSelection(lineSelectAnchor, line);
+    var range = rangeToMap(lineSelectAnchor, line);
+    if (lineSelectAdditive) {
+      selectedLines = mergeMaps(dragBaseLines, range);
+    } else {
+      selectedLines = range;
+    }
+    applyLineHighlights();
+    scheduleSaveHash();
   });
 
   document.addEventListener('mouseup', function() {
     if (lineSelectDragging) {
       lineSelectDragging = false;
+      lineSelectAdditive = false;
+      dragBaseLines = {};
       document.body.style.userSelect = '';
     }
   });
@@ -1968,6 +2225,7 @@ if ('serviceWorker' in navigator) {
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       closeActionsMenu();
+      hideTips();
     }
     if ((e.metaKey || e.ctrlKey) && e.key === 'l') {
       e.preventDefault();
@@ -2013,6 +2271,144 @@ if ('serviceWorker' in navigator) {
       loadFromHash();
     }
   });
+
+  // Tips & Tricks wizard
+  var isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  var modKey = isMac ? '\u2318' : 'Ctrl';
+
+  var tips = [
+    {
+      text: 'Use <b>dot notation</b> to query nested properties in your JSON data.',
+      examples: [
+        ['data.users', '[{name: "Alice"}, ...]'],
+        ['data.users[0].name', '"Alice"'],
+        ['data.config.enabled', 'true']
+      ]
+    },
+    {
+      text: 'Use <b>wildcards</b> <code>[*]</code> to select all items in an array or all values in an object.',
+      examples: [
+        ['users[*].name', '["Alice", "Bob", ...]'],
+        ['config[*]', '[true, 42, "dev"]']
+      ]
+    },
+    {
+      text: 'Use <b>array slicing</b> <code>[start:end]</code> to extract a range of elements.',
+      examples: [
+        ['users[0:2]', 'First 2 items'],
+        ['users[-2:]', 'Last 2 items'],
+        ['users[1:]', 'Skip first item']
+      ]
+    },
+    {
+      text: 'Use <b>recursive descent</b> <code>..</code> to find a key anywhere in the structure, no matter how deeply nested.',
+      examples: [
+        ['..id', 'All "id" values'],
+        ['..name', 'All "name" values'],
+        ['users..email', 'All emails under users']
+      ]
+    },
+    {
+      text: 'Use <b>bracket notation</b> <code>["key"]</code> to access properties with special characters in their names.',
+      examples: [
+        ['data["my-key"]', 'Hyphenated keys'],
+        ['data["key.name"]', 'Dotted keys'],
+        ['data[""]', 'Empty string keys']
+      ]
+    },
+    {
+      text: 'Press <kbd>' + modKey + '</kbd>+<kbd>L</kbd> to focus the query input. Press <kbd>' + modKey + '</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd> to copy the result.',
+      examples: [
+        [modKey + '+L', 'Focus query input'],
+        [modKey + '+Shift+C', 'Copy result'],
+        [modKey + '+Enter', 'Format JSON']
+      ]
+    },
+    {
+      text: 'Click a <b>line number</b> in the result panel to highlight it. Use <kbd>' + modKey + '</kbd>+click to select multiple lines, or drag to select a range.',
+      examples: [
+        ['Click', 'Select a line'],
+        [modKey + '+Click', 'Add/remove lines'],
+        ['Shift+Click', 'Select a range']
+      ]
+    },
+    {
+      text: 'Switch between <b>Result</b>, <b>Tree</b>, and <b>TypeScript</b> views using the toolbar buttons. Tree view lets you explore data interactively.',
+      examples: [
+        ['Result', 'Syntax-highlighted JSON'],
+        ['Tree', 'Collapsible hierarchy'],
+        ['TS', 'Auto-generated types']
+      ]
+    },
+    {
+      text: 'Your JSON input, query, and highlighted lines are <b>encoded in the URL</b>. Share the URL to give someone the exact same view.',
+      examples: [
+        ['Share URL', 'Copy link to clipboard'],
+        ['QR Code', 'Generate scannable QR'],
+        ['Download', 'Save result as file']
+      ]
+    }
+  ];
+
+  var tipIndex = 0;
+
+  function renderTip() {
+    var tip = tips[tipIndex];
+    var html = '<p>' + tip.text + '</p>';
+    html += '<div class="tips-example"><div class="tips-example-input">';
+    for (var i = 0; i < tip.examples.length; i++) {
+      html += escapeHtml(tip.examples[i][0]) + '\n';
+    }
+    html += '</div><div class="tips-example-output">';
+    for (var j = 0; j < tip.examples.length; j++) {
+      html += escapeHtml(tip.examples[j][1]) + '\n';
+    }
+    html += '</div></div>';
+    dom.tipsBody.innerHTML = html;
+    dom.tipsCounter.textContent = (tipIndex + 1) + ' of ' + tips.length;
+    dom.tipsNext.textContent = tipIndex === tips.length - 1 ? '\u2190 First' : 'Next \u2192';
+  }
+
+  function showTips() {
+    dom.tipsWizard.classList.add('visible');
+    renderTip();
+  }
+
+  function hideTips() {
+    dom.tipsWizard.classList.remove('visible');
+  }
+
+  dom.tipsNext.addEventListener('click', function() {
+    tipIndex = (tipIndex + 1) % tips.length;
+    renderTip();
+  });
+
+  dom.tipsHide.addEventListener('click', hideTips);
+
+  dom.tipsDontShow.addEventListener('change', function() {
+    if (dom.tipsDontShow.checked) {
+      localStorage.setItem('hideTips', '1');
+      hideTips();
+    } else {
+      localStorage.removeItem('hideTips');
+    }
+  });
+
+  document.getElementById('action-tips').addEventListener('click', function() {
+    closeActionsMenu();
+    if (dom.tipsWizard.classList.contains('visible')) {
+      hideTips();
+    } else {
+      dom.tipsDontShow.checked = false;
+      localStorage.removeItem('hideTips');
+      showTips();
+    }
+  });
+
+  // Show tips on first visit unless user opted out
+  if (!localStorage.getItem('hideTips')) {
+    showTips();
+  }
 
   loadFromHash().then(function() {
     if (!dom.jsonInput.value) {
