@@ -3,25 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>json.express — Query &amp; Explore JSON</title>
-<meta name="description" content="A fast, zero-dependency tool to query and explore JSON data in the browser. Supports dot notation, wildcards, recursive descent, and more.">
-<meta name="keywords" content="JSON, query, explorer, viewer, formatter, TypeScript, browser tool">
+<title>json.express — Free Online JSON Query, Viewer &amp; Explorer Tool</title>
+<meta name="description" content="Free online JSON query and explorer tool. Query with dot notation, wildcards, recursive descent, array slicing, and more. View as tree, generate TypeScript types. Zero dependencies, runs entirely in your browser — your data never leaves your device.">
+<meta name="keywords" content="JSON, query, explorer, viewer, formatter, validator, editor, online, free, browser tool, JSON path, JSONPath, jq, tree view, TypeScript, JSON beautifier, JSON parser, JSON formatter online, developer tools, API debugging, data explorer">
 <meta name="author" content="Udi Talias">
+<meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="website">
-<meta property="og:title" content="json.express — Query &amp; Explore JSON">
-<meta property="og:description" content="A fast, zero-dependency tool to query and explore JSON data in the browser.">
+<meta property="og:title" content="json.express — Free Online JSON Query &amp; Explorer Tool">
+<meta property="og:description" content="Query and explore JSON data instantly in your browser. Supports dot notation, wildcards, recursive descent, tree view, and TypeScript type generation. Free, fast, zero dependencies.">
 <meta property="og:url" content="https://json.express">
 <meta property="og:site_name" content="json.express">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="json.express — Query &amp; Explore JSON">
-<meta name="twitter:description" content="A fast, zero-dependency tool to query and explore JSON data in the browser.">
+<meta property="og:image" content="https://json.express/icon-app.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="json.express — Online JSON Query and Explorer Tool">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="json.express — Free Online JSON Query &amp; Explorer Tool">
+<meta name="twitter:description" content="Query and explore JSON data instantly in your browser. Tree view, TypeScript types, dot notation, wildcards, recursive descent. Free and private.">
+<meta name="twitter:image" content="https://json.express/icon-app.png">
+<meta name="twitter:image:alt" content="json.express — Online JSON Query and Explorer Tool">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="https://json.express">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "json.express",
+  "url": "https://json.express",
+  "description": "Free online JSON query and explorer tool. Query JSON with dot notation, wildcards, recursive descent, array slicing, and bracket notation. View results as syntax-highlighted JSON, collapsible tree, or auto-generated TypeScript interfaces.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires a modern web browser with JavaScript enabled",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "featureList": [
+    "JSON path query with dot notation",
+    "Wildcard and recursive descent queries",
+    "Array slicing and bracket notation",
+    "Syntax-highlighted JSON output",
+    "Collapsible tree view",
+    "Auto-generated TypeScript interfaces",
+    "URL sharing with compression",
+    "Dark and light theme support",
+    "Zero dependencies",
+    "Privacy-first — data never leaves your browser",
+    "Lenient JSON parser with comment support",
+    "QR code sharing",
+    "JSON download and export"
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Udi Talias",
+    "url": "https://github.com/uditalias"
+  },
+  "screenshot": "https://json.express/icon-app.png",
+  "softwareVersion": "1.0",
+  "isAccessibleForFree": true,
+  "inLanguage": "en"
+}
+</script>
 <style>
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
 :root {
   --bg: #0d1117;
   --panel-bg: #161b22;
@@ -943,6 +1003,34 @@ kbd {
 </style>
 </head>
 <body>
+<h1 class="sr-only">json.express — Free Online JSON Query, Viewer &amp; Explorer Tool</h1>
+<noscript>
+  <div style="max-width:640px;margin:40px auto;padding:0 24px;font-family:system-ui,sans-serif;line-height:1.6">
+    <h2>json.express — Online JSON Query &amp; Explorer</h2>
+    <p>json.express is a free, fast, zero-dependency online tool for querying and exploring JSON data directly in your browser. Your data never leaves your device.</p>
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Powerful JSON Queries</strong> — Use dot notation, array indexing, wildcards ([*]), array slicing ([0:3]), recursive descent (..key), and bracket notation (["key"]) to extract exactly the data you need.</li>
+      <li><strong>Multiple View Modes</strong> — View query results as syntax-highlighted JSON, an interactive collapsible tree, or auto-generated TypeScript interfaces.</li>
+      <li><strong>Lenient JSON Parser</strong> — Handles trailing commas, single-line and block comments while preserving string content.</li>
+      <li><strong>Shareable URLs</strong> — Compress your JSON input and query into a shareable URL using built-in deflate compression.</li>
+      <li><strong>QR Code Sharing</strong> — Generate QR codes for quick mobile sharing.</li>
+      <li><strong>TypeScript Type Generation</strong> — Automatically generate TypeScript interfaces from your JSON data.</li>
+      <li><strong>Theme Support</strong> — Switch between system, light, and dark themes.</li>
+      <li><strong>Privacy First</strong> — Everything runs locally in your browser. No server, no tracking, no data collection.</li>
+    </ul>
+    <h3>Query Syntax Examples</h3>
+    <ul>
+      <li><code>data.users[0].name</code> — Access nested properties</li>
+      <li><code>data.users[*].email</code> — Wildcard to get all emails</li>
+      <li><code>data..id</code> — Recursive descent to find all id fields</li>
+      <li><code>data.items[0:3]</code> — Array slicing</li>
+      <li><code>data["special-key"]</code> — Bracket notation for special characters</li>
+    </ul>
+    <p>json.express is an alternative to tools like jq, JSONPath evaluators, JSON Crack, JSON Editor Online, and JSON formatters. It combines querying power with a clean, minimal interface — all in a single HTML file with zero dependencies.</p>
+    <p><a href="/about/">Learn more about json.express</a></p>
+  </div>
+</noscript>
 <div id="app">
   <div id="query-bar">
     <label for="query-input">$</label>
