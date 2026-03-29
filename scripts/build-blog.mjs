@@ -1,10 +1,37 @@
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'fs';
 import { join, basename } from 'path';
 import { marked } from 'marked';
+import { createHighlighter } from 'shiki';
 
 const POSTS_DIR = 'scripts/blog-posts';
 const OUTPUT_DIR = 'blog';
 const GA_ID = 'G-NGE2BEE96H';
+
+// Initialize Shiki highlighter with dual themes
+const highlighter = await createHighlighter({
+  themes: ['github-light', 'github-dark'],
+  langs: ['json', 'javascript', 'typescript', 'html', 'css', 'bash', 'shell', 'yaml', 'markdown', 'text'],
+});
+
+// Custom marked renderer that uses Shiki for code blocks
+const renderer = new marked.Renderer();
+renderer.code = function ({ text, lang }) {
+  const language = lang || 'text';
+  try {
+    return highlighter.codeToHtml(text, {
+      lang: language,
+      themes: { light: 'github-light', dark: 'github-dark' },
+    });
+  } catch (e) {
+    // Fallback for unsupported languages
+    return highlighter.codeToHtml(text, {
+      lang: 'text',
+      themes: { light: 'github-light', dark: 'github-dark' },
+    });
+  }
+};
+
+marked.setOptions({ renderer });
 
 // Parse frontmatter (simple YAML between --- lines)
 function parseFrontmatter(content) {
@@ -129,38 +156,6 @@ function buildPostPage(meta, htmlContent, slug) {
   </footer>
 
 </div>
-<script>
-(function(){
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function highlight(val,indent){
-    indent=indent||0;var sp='  '.repeat(indent);
-    if(val===null)return'<span class="json-null">null</span>';
-    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
-    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
-    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
-    if(Array.isArray(val)){
-      if(!val.length)return'<span class="json-bracket">[]</span>';
-      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
-      return'<span class="json-bracket">[</span>\\n'+items.join(',\\n')+'\\n'+sp+'<span class="json-bracket">]</span>';
-    }
-    if(typeof val==='object'){
-      var keys=Object.keys(val);
-      if(!keys.length)return'<span class="json-bracket">{}</span>';
-      var entries=keys.map(function(k){
-        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
-      });
-      return'<span class="json-bracket">{</span>\\n'+entries.join(',\\n')+'\\n'+sp+'<span class="json-bracket">}</span>';
-    }
-    return esc(String(val));
-  }
-  document.querySelectorAll('pre code.language-json').forEach(function(el){
-    try{
-      var parsed=JSON.parse(el.textContent);
-      el.innerHTML=highlight(parsed);
-    }catch(e){}
-  });
-})();
-</script>
 </body>
 </html>`;
 }

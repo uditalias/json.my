@@ -65,35 +65,27 @@
 <p>Here&#39;s a workflow for making sense of API responses quickly, without scrolling through raw text.</p>
 <h2>Step 1: Format First, Read Second</h2>
 <p>Raw API responses are often minified. Before you do anything, format the JSON so you can actually read it:</p>
-<pre><code class="language-json">{&quot;users&quot;:[{&quot;id&quot;:1,&quot;name&quot;:&quot;Alice&quot;,&quot;roles&quot;:[&quot;admin&quot;,&quot;editor&quot;],&quot;profile&quot;:{&quot;avatar&quot;:null,&quot;bio&quot;:&quot;Engineer at Acme Corp&quot;,&quot;settings&quot;:{&quot;theme&quot;:&quot;dark&quot;,&quot;notifications&quot;:{&quot;email&quot;:true,&quot;push&quot;:false}}}},{&quot;id&quot;:2,&quot;name&quot;:&quot;Bob&quot;,&quot;roles&quot;:[&quot;viewer&quot;],&quot;profile&quot;:{&quot;avatar&quot;:&quot;https://example.com/bob.jpg&quot;,&quot;bio&quot;:&quot;Designer&quot;,&quot;settings&quot;:{&quot;theme&quot;:&quot;light&quot;,&quot;notifications&quot;:{&quot;email&quot;:false,&quot;push&quot;:true}}}}]}
-</code></pre>
-<p>Paste that into <a href="/">json.express</a> and you instantly see the structure. But formatting alone isn&#39;t enough when you&#39;re debugging — you need to drill into specific parts.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"users"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:[{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"roles"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"admin"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"editor"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"profile"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"avatar"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">null</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"bio"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Engineer at Acme Corp"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"settings"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"theme"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dark"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"notifications"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"email"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"push"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}}}},{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Bob"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"roles"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"viewer"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"profile"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"avatar"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"https://example.com/bob.jpg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"bio"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Designer"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"settings"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"theme"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"light"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"notifications"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"email"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"push"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}}}}]}</span></span></code></pre><p>Paste that into <a href="/">json.express</a> and you instantly see the structure. But formatting alone isn&#39;t enough when you&#39;re debugging — you need to drill into specific parts.</p>
 <h2>Step 2: Query the Parts You Care About</h2>
 <p>Instead of scanning the entire response, use a query to extract exactly what you&#39;re looking for. For instance, if you&#39;re debugging why avatars aren&#39;t rendering:</p>
-<pre><code>users[*].profile.avatar
-</code></pre>
-<p>This returns:</p>
-<pre><code class="language-json">[null, &quot;https://example.com/bob.jpg&quot;]
-</code></pre>
-<p>Now you can see immediately: Alice&#39;s avatar is <code>null</code>. That&#39;s your bug — or at least, that&#39;s where the frontend needs a fallback.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>users[*].profile.avatar</span></span></code></pre><p>This returns:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">[</span><span style="color:#005CC5;--shiki-dark:#79B8FF">null</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"https://example.com/bob.jpg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre><p>Now you can see immediately: Alice&#39;s avatar is <code>null</code>. That&#39;s your bug — or at least, that&#39;s where the frontend needs a fallback.</p>
 <h2>Step 3: Check the Shape With TypeScript Types</h2>
 <p>When the API response doesn&#39;t match what your code expects, generating TypeScript types from the actual response is invaluable. Paste the response into json.express, switch to the <strong>TypeScript</strong> tab, and you get:</p>
-<pre><code class="language-json">{
-  &quot;users&quot;: [
-    {
-      &quot;id&quot;: 1,
-      &quot;name&quot;: &quot;Alice&quot;,
-      &quot;profile&quot;: {
-        &quot;avatar&quot;: null,
-        &quot;settings&quot;: {
-          &quot;theme&quot;: &quot;dark&quot;
-        }
-      }
-    }
-  ]
-}
-</code></pre>
-<p>Compare the generated types against your frontend interfaces. Mismatches — like <code>avatar: string</code> in your code vs <code>avatar: string | null</code> in reality — become obvious.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "users"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "profile"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">        "avatar"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">null</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">        "settings"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">          "theme"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dark"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Compare the generated types against your frontend interfaces. Mismatches — like <code>avatar: string</code> in your code vs <code>avatar: string | null</code> in reality — become obvious.</p>
 <h2>Step 4: Compare Before and After</h2>
 <p>Changing an API endpoint? Use the <a href="/compare/">Compare</a> tool to diff the old response against the new one. This catches regressions like:</p>
 <ul>
@@ -107,32 +99,26 @@
 <p>Once you&#39;ve found the issue, you need to share it — in a bug report, a Slack message, or a PR comment. json.express encodes both your input and query into the URL hash, so you can share a link that reproduces exactly what you see. No screenshots of terminal output needed.</p>
 <h2>Real-World Example: Pagination Bug</h2>
 <p>Say your frontend shows 10 items but the API claims <code>total_count: 50</code>. Query the response:</p>
-<pre><code>meta.pagination
-</code></pre>
-<pre><code class="language-json">{
-  &quot;page&quot;: 1,
-  &quot;per_page&quot;: 10,
-  &quot;total_count&quot;: 50,
-  &quot;next_cursor&quot;: null
-}
-</code></pre>
-<p><code>next_cursor</code> is <code>null</code> on page 1 — that&#39;s the bug. The API isn&#39;t returning a cursor for the next page, so your frontend thinks there&#39;s nothing more to load.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>meta.pagination</span></span></code></pre><pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "page"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "per_page"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "total_count"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">50</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "next_cursor"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">null</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p><code>next_cursor</code> is <code>null</code> on page 1 — that&#39;s the bug. The API isn&#39;t returning a cursor for the next page, so your frontend thinks there&#39;s nothing more to load.</p>
 <h2>Real-World Example: Auth Token Inspection</h2>
 <p>JWT payloads are just base64-encoded JSON. Decode the payload segment and paste it in:</p>
-<pre><code class="language-json">{
-  &quot;sub&quot;: &quot;user_12345&quot;,
-  &quot;email&quot;: &quot;alice@example.com&quot;,
-  &quot;roles&quot;: [&quot;admin&quot;, &quot;editor&quot;],
-  &quot;iat&quot;: 1710000000,
-  &quot;exp&quot;: 1710003600,
-  &quot;iss&quot;: &quot;auth.example.com&quot;,
-  &quot;permissions&quot;: {
-    &quot;projects&quot;: [&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;],
-    &quot;billing&quot;: [&quot;read&quot;]
-  }
-}
-</code></pre>
-<p>Query <code>permissions.projects</code> to quickly check if the token has the right scopes, or check <code>exp</code> to see if the token has expired.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "sub"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"user_12345"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "email"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"alice@example.com"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "roles"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"admin"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"editor"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "iat"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1710000000</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "exp"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1710003600</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "iss"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"auth.example.com"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "permissions"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "projects"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"read"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"write"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"delete"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "billing"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"read"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Query <code>permissions.projects</code> to quickly check if the token has the right scopes, or check <code>exp</code> to see if the token has expired.</p>
 <h2>Tips for Faster Debugging</h2>
 <p><strong>Copy from DevTools directly.</strong> In Chrome DevTools, right-click a network response → Copy → Copy Response. Paste into json.express — no need to re-run the request.</p>
 <p><strong>Use recursive descent for deep searches.</strong> If you&#39;re looking for a field but don&#39;t know where it is in the tree, use <code>..fieldName</code>. For example, <code>..email</code> finds every <code>email</code> field at any depth.</p>
@@ -166,37 +152,5 @@
   </footer>
 
 </div>
-<script>
-(function(){
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function highlight(val,indent){
-    indent=indent||0;var sp='  '.repeat(indent);
-    if(val===null)return'<span class="json-null">null</span>';
-    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
-    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
-    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
-    if(Array.isArray(val)){
-      if(!val.length)return'<span class="json-bracket">[]</span>';
-      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
-      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
-    }
-    if(typeof val==='object'){
-      var keys=Object.keys(val);
-      if(!keys.length)return'<span class="json-bracket">{}</span>';
-      var entries=keys.map(function(k){
-        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
-      });
-      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
-    }
-    return esc(String(val));
-  }
-  document.querySelectorAll('pre code.language-json').forEach(function(el){
-    try{
-      var parsed=JSON.parse(el.textContent);
-      el.innerHTML=highlight(parsed);
-    }catch(e){}
-  });
-})();
-</script>
 </body>
 </html>

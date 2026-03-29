@@ -6,6 +6,7 @@
     "build": "npm run build:blog && npm run build:sitemap"
   },
   "devDependencies": {
-    "marked": "^17.0.4"
+    "marked": "^17.0.4",
+    "shiki": "^4.0.2"
   }
 }

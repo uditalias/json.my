@@ -478,23 +478,33 @@ pre code {
 }
 
 /* Code blocks inside articles and general content */
-.article pre {
-  background: light-dark(#161b22, #161b22);
-  border: 1px solid light-dark(#30363d, #30363d);
+.article pre.shiki {
+  border: 1px solid light-dark(#d0d7de, #30363d);
   border-radius: 8px;
   padding: 16px;
   overflow-x: auto;
   margin: 16px 0;
 }
 
-.article pre code {
+.article pre.shiki code {
   font-family: "SF Mono", "Fira Code", "JetBrains Mono", monospace;
   font-size: 13px;
   line-height: 1.6;
-  color: #e6edf3;
   background: transparent;
   padding: 0;
   border-radius: 0;
+}
+
+/* Shiki dual theme support — switch to dark colors in dark mode */
+@media (prefers-color-scheme: dark) {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
 }
 
 .article code {
@@ -579,13 +589,6 @@ pre code {
 .json-output .json-null { color: light-dark(#656d76, #8b949e); }
 .json-output .json-bracket { color: light-dark(#656d76, #8b949e); }
 
-/* Blog article code — same JSON theme as result panel */
-.article pre code .json-key { color: #d2a8ff; }
-.article pre code .json-string { color: #a5d6ff; }
-.article pre code .json-number { color: #79c0ff; }
-.article pre code .json-boolean { color: #ff7b72; }
-.article pre code .json-null { color: #8b949e; }
-.article pre code .json-bracket { color: #8b949e; }
 
 /* === TypeScript syntax highlighting === */
 .ts-output {

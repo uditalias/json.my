@@ -65,76 +65,70 @@
 <p>Here&#39;s how to use JSON querying to extract exactly what you need from <code>package.json</code> files.</p>
 <h2>Inspecting Dependencies</h2>
 <p>A typical production <code>package.json</code> has dozens of dependencies. To see just your production deps:</p>
-<pre><code class="language-json">{
-  &quot;name&quot;: &quot;my-web-app&quot;,
-  &quot;version&quot;: &quot;2.4.1&quot;,
-  &quot;dependencies&quot;: {
-    &quot;express&quot;: &quot;^4.18.2&quot;,
-    &quot;pg&quot;: &quot;^8.11.3&quot;,
-    &quot;redis&quot;: &quot;^4.6.7&quot;,
-    &quot;zod&quot;: &quot;^3.22.4&quot;,
-    &quot;pino&quot;: &quot;^8.16.2&quot;,
-    &quot;helmet&quot;: &quot;^7.1.0&quot;,
-    &quot;cors&quot;: &quot;^2.8.5&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;typescript&quot;: &quot;^5.3.3&quot;,
-    &quot;vitest&quot;: &quot;^1.2.0&quot;,
-    &quot;eslint&quot;: &quot;^8.56.0&quot;,
-    &quot;@types/express&quot;: &quot;^4.17.21&quot;,
-    &quot;@types/cors&quot;: &quot;^2.8.17&quot;,
-    &quot;prettier&quot;: &quot;^3.2.4&quot;,
-    &quot;tsx&quot;: &quot;^4.7.0&quot;
-  }
-}
-</code></pre>
-<p>Query <code>dependencies</code> to see just the runtime deps. Query <code>devDependencies</code> to see tooling. This is especially useful when reviewing a new project — you can quickly understand the tech stack without scrolling through the entire file.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"my-web-app"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "version"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2.4.1"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "dependencies"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "express"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^4.18.2"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "pg"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^8.11.3"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "redis"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^4.6.7"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "zod"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^3.22.4"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "pino"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^8.16.2"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "helmet"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^7.1.0"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "cors"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^2.8.5"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "devDependencies"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "typescript"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^5.3.3"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "vitest"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^1.2.0"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "eslint"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^8.56.0"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "@types/express"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^4.17.21"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "@types/cors"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^2.8.17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "prettier"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^3.2.4"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "tsx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"^4.7.0"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Query <code>dependencies</code> to see just the runtime deps. Query <code>devDependencies</code> to see tooling. This is especially useful when reviewing a new project — you can quickly understand the tech stack without scrolling through the entire file.</p>
 <h2>Listing All Scripts</h2>
 <p>In mature projects, the <code>scripts</code> section grows large:</p>
-<pre><code class="language-json">{
-  &quot;scripts&quot;: {
-    &quot;dev&quot;: &quot;tsx watch src/server.ts&quot;,
-    &quot;build&quot;: &quot;tsc &amp;&amp; node scripts/build.mjs&quot;,
-    &quot;start&quot;: &quot;node dist/server.js&quot;,
-    &quot;test&quot;: &quot;vitest run&quot;,
-    &quot;test:watch&quot;: &quot;vitest&quot;,
-    &quot;test:coverage&quot;: &quot;vitest run --coverage&quot;,
-    &quot;lint&quot;: &quot;eslint src/&quot;,
-    &quot;lint:fix&quot;: &quot;eslint src/ --fix&quot;,
-    &quot;format&quot;: &quot;prettier --write src/&quot;,
-    &quot;db:migrate&quot;: &quot;node scripts/migrate.mjs&quot;,
-    &quot;db:seed&quot;: &quot;node scripts/seed.mjs&quot;,
-    &quot;db:reset&quot;: &quot;node scripts/migrate.mjs --fresh &amp;&amp; node scripts/seed.mjs&quot;,
-    &quot;docker:up&quot;: &quot;docker compose up -d&quot;,
-    &quot;docker:down&quot;: &quot;docker compose down&quot;,
-    &quot;deploy:staging&quot;: &quot;node scripts/deploy.mjs --env staging&quot;,
-    &quot;deploy:production&quot;: &quot;node scripts/deploy.mjs --env production&quot;
-  }
-}
-</code></pre>
-<p>Query <code>scripts</code> and you get a clean view of every available command. No need to open the file and scroll past dependencies, engine requirements, and other sections.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "scripts"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "dev"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"tsx watch src/server.ts"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "build"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"tsc &#x26;&#x26; node scripts/build.mjs"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "start"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"node dist/server.js"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "test"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"vitest run"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "test:watch"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"vitest"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "test:coverage"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"vitest run --coverage"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lint"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eslint src/"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lint:fix"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eslint src/ --fix"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "format"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"prettier --write src/"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "db:migrate"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"node scripts/migrate.mjs"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "db:seed"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"node scripts/seed.mjs"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "db:reset"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"node scripts/migrate.mjs --fresh &#x26;&#x26; node scripts/seed.mjs"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "docker:up"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"docker compose up -d"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "docker:down"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"docker compose down"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "deploy:staging"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"node scripts/deploy.mjs --env staging"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "deploy:production"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"node scripts/deploy.mjs --env production"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Query <code>scripts</code> and you get a clean view of every available command. No need to open the file and scroll past dependencies, engine requirements, and other sections.</p>
 <h2>Checking Specific Configuration</h2>
 <p>Many tools store their config inside <code>package.json</code> rather than in separate files. ESLint, Prettier, Jest, Babel — they all support <code>package.json</code> configuration:</p>
-<pre><code class="language-json">{
-  &quot;name&quot;: &quot;my-app&quot;,
-  &quot;prettier&quot;: {
-    &quot;semi&quot;: false,
-    &quot;singleQuote&quot;: true,
-    &quot;tabWidth&quot;: 2,
-    &quot;trailingComma&quot;: &quot;es5&quot;,
-    &quot;printWidth&quot;: 100
-  },
-  &quot;eslintConfig&quot;: {
-    &quot;extends&quot;: [&quot;eslint:recommended&quot;, &quot;plugin:@typescript-eslint/recommended&quot;],
-    &quot;rules&quot;: {
-      &quot;no-unused-vars&quot;: &quot;off&quot;,
-      &quot;@typescript-eslint/no-unused-vars&quot;: &quot;error&quot;,
-      &quot;no-console&quot;: &quot;warn&quot;
-    }
-  }
-}
-</code></pre>
-<p>Query <code>prettier</code> or <code>eslintConfig.rules</code> to inspect specific tool configurations without noise from the rest of the file.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"my-app"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "prettier"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "semi"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "singleQuote"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "tabWidth"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "trailingComma"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"es5"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "printWidth"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">100</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "eslintConfig"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "extends"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eslint:recommended"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"plugin:@typescript-eslint/recommended"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "rules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "no-unused-vars"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"off"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "@typescript-eslint/no-unused-vars"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"error"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "no-console"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"warn"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Query <code>prettier</code> or <code>eslintConfig.rules</code> to inspect specific tool configurations without noise from the rest of the file.</p>
 <h2>Comparing Versions Across Projects</h2>
 <p>When you&#39;re maintaining multiple services, you need to check if dependencies are aligned. Copy <code>dependencies</code> from one <code>package.json</code> and <code>dependencies</code> from another, then use the <a href="/compare/">Compare</a> tool to see which packages differ and which versions are out of sync.</p>
 <p>This is especially valuable for:</p>
@@ -148,22 +142,20 @@
 <p>Use recursive descent: <code>..node_modules..lodash</code> finds every resolved instance of lodash in the dependency tree. Or query <code>packages[&quot;node_modules/lodash&quot;].version</code> for the top-level resolved version.</p>
 <h2>Workspace Queries in Monorepos</h2>
 <p>In npm/yarn/pnpm workspaces, the root <code>package.json</code> defines the workspace structure:</p>
-<pre><code class="language-json">{
-  &quot;name&quot;: &quot;monorepo&quot;,
-  &quot;private&quot;: true,
-  &quot;workspaces&quot;: [
-    &quot;packages/core&quot;,
-    &quot;packages/api&quot;,
-    &quot;packages/web&quot;,
-    &quot;packages/shared&quot;
-  ],
-  &quot;scripts&quot;: {
-    &quot;build&quot;: &quot;npm run build --workspaces&quot;,
-    &quot;test&quot;: &quot;npm run test --workspaces&quot;
-  }
-}
-</code></pre>
-<p>Query <code>workspaces</code> to see all packages at a glance. In tools like Turborepo or Nx, the workspace config gets more complex — json.express&#39;s Tree view helps navigate the dependency graph configuration without getting lost.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"monorepo"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "private"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "workspaces"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">    "packages/core"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">    "packages/api"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">    "packages/web"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">    "packages/shared"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "scripts"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "build"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"npm run build --workspaces"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "test"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"npm run test --workspaces"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Query <code>workspaces</code> to see all packages at a glance. In tools like Turborepo or Nx, the workspace config gets more complex — json.express&#39;s Tree view helps navigate the dependency graph configuration without getting lost.</p>
 <h2>Quick Reference</h2>
 <p>Here are the most useful queries for <code>package.json</code> exploration:</p>
 <ul>
@@ -204,37 +196,5 @@
   </footer>
 
 </div>
-<script>
-(function(){
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function highlight(val,indent){
-    indent=indent||0;var sp='  '.repeat(indent);
-    if(val===null)return'<span class="json-null">null</span>';
-    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
-    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
-    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
-    if(Array.isArray(val)){
-      if(!val.length)return'<span class="json-bracket">[]</span>';
-      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
-      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
-    }
-    if(typeof val==='object'){
-      var keys=Object.keys(val);
-      if(!keys.length)return'<span class="json-bracket">{}</span>';
-      var entries=keys.map(function(k){
-        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
-      });
-      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
-    }
-    return esc(String(val));
-  }
-  document.querySelectorAll('pre code.language-json').forEach(function(el){
-    try{
-      var parsed=JSON.parse(el.textContent);
-      el.innerHTML=highlight(parsed);
-    }catch(e){}
-  });
-})();
-</script>
 </body>
 </html>

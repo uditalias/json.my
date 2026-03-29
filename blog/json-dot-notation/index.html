@@ -66,30 +66,26 @@
 <h2>What Is Dot Notation?</h2>
 <p>Dot notation is a shorthand for accessing properties in nested objects. Instead of writing <code>obj[&#39;key&#39;]</code>, you write <code>obj.key</code>. It&#39;s readable, concise, and the standard across most programming languages.</p>
 <p>In JSON context, it&#39;s the natural way to reference paths through hierarchical data:</p>
-<pre><code>user.name
-user.address.city
-user.posts[0].title
-</code></pre>
-<p>Each dot descends one level. Each bracket <code>[]</code> accesses an array element.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>user.name</span></span>
+<span class="line"><span>user.address.city</span></span>
+<span class="line"><span>user.posts[0].title</span></span></code></pre><p>Each dot descends one level. Each bracket <code>[]</code> accesses an array element.</p>
 <h2>Basic Examples</h2>
 <p>Here&#39;s a JSON structure:</p>
-<pre><code class="language-json">{
-  &quot;user&quot;: {
-    &quot;name&quot;: &quot;Alice&quot;,
-    &quot;email&quot;: &quot;alice@example.com&quot;,
-    &quot;address&quot;: {
-      &quot;street&quot;: &quot;123 Main St&quot;,
-      &quot;city&quot;: &quot;New York&quot;,
-      &quot;zip&quot;: &quot;10001&quot;
-    },
-    &quot;posts&quot;: [
-      { &quot;id&quot;: 1, &quot;title&quot;: &quot;First Post&quot; },
-      { &quot;id&quot;: 2, &quot;title&quot;: &quot;Second Post&quot; }
-    ]
-  }
-}
-</code></pre>
-<p>Using dot notation:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "user"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "email"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"alice@example.com"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "address"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "street"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"123 Main St"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "city"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"New York"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "zip"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"10001"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "posts"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"title"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"First Post"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"title"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Second Post"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Using dot notation:</p>
 <table>
 <thead>
 <tr>
@@ -119,116 +115,78 @@ user.posts[0].title
 </tr>
 </tbody></table>
 <p>In JavaScript, these are equivalent:</p>
-<pre><code class="language-javascript">obj.user.name === obj[&#39;user&#39;][&#39;name&#39;]
-obj.user.address.city === obj[&#39;user&#39;][&#39;address&#39;][&#39;city&#39;]
-</code></pre>
-<p>Dot notation is just syntactic sugar for bracket notation—the runtime behavior is identical.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.user.name </span><span style="color:#D73A49;--shiki-dark:#F97583">===</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'user'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">][</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'name'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.user.address.city </span><span style="color:#D73A49;--shiki-dark:#F97583">===</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'user'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">][</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'address'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">][</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'city'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre><p>Dot notation is just syntactic sugar for bracket notation—the runtime behavior is identical.</p>
 <h2>Array Access</h2>
 <p>Arrays use bracket notation with numeric indices:</p>
-<pre><code>users[0]        // First user
-users[5]        // Sixth user
-users[-1]       // Last user (not standard JS, but json.express supports it)
-</code></pre>
-<p>Combine with dot notation for nested access:</p>
-<pre><code>users[0].name                    // First user&#39;s name
-posts[2].author.email            // Third post&#39;s author&#39;s email
-data.results[0].metadata.tags[1] // Nested array access
-</code></pre>
-<h2>How It Maps to JavaScript</h2>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>users[0]        // First user</span></span>
+<span class="line"><span>users[5]        // Sixth user</span></span>
+<span class="line"><span>users[-1]       // Last user (not standard JS, but json.express supports it)</span></span></code></pre><p>Combine with dot notation for nested access:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>users[0].name                    // First user's name</span></span>
+<span class="line"><span>posts[2].author.email            // Third post's author's email</span></span>
+<span class="line"><span>data.results[0].metadata.tags[1] // Nested array access</span></span></code></pre><h2>How It Maps to JavaScript</h2>
 <p>Dot notation is JavaScript native. When you write:</p>
-<pre><code class="language-javascript">user.address.city
-</code></pre>
-<p>The JavaScript engine:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">user.address.city</span></span></code></pre><p>The JavaScript engine:</p>
 <ol>
 <li>Evaluates <code>user</code> → gets the object</li>
 <li>Accesses the <code>address</code> property → gets the nested object</li>
 <li>Accesses the <code>city</code> property → gets the value</li>
 </ol>
 <p>This is equivalent to:</p>
-<pre><code class="language-javascript">user[&#39;address&#39;][&#39;city&#39;]
-</code></pre>
-<p>Both throw an error if a property is missing:</p>
-<pre><code class="language-javascript">user.address.country  // undefined (address exists but no country)
-user.missing.city     // TypeError: Cannot read property &#39;city&#39; of undefined
-</code></pre>
-<p>JavaScript has optional chaining (<code>?.</code>) to handle this safely:</p>
-<pre><code class="language-javascript">user?.address?.city   // Returns undefined if any step is missing
-</code></pre>
-<h2>Edge Cases That Break Things</h2>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">user[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'address'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">][</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'city'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre><p>Both throw an error if a property is missing:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">user.address.country  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// undefined (address exists but no country)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">user.missing.city     </span><span style="color:#6A737D;--shiki-dark:#6A737D">// TypeError: Cannot read property 'city' of undefined</span></span></code></pre><p>JavaScript has optional chaining (<code>?.</code>) to handle this safely:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">user?.address?.city   </span><span style="color:#6A737D;--shiki-dark:#6A737D">// Returns undefined if any step is missing</span></span></code></pre><h2>Edge Cases That Break Things</h2>
 <h3>1. Keys Containing Dots</h3>
 <p>If your JSON key literally contains a dot, dot notation breaks:</p>
-<pre><code class="language-json">{
-  &quot;user.name&quot;: &quot;Alice&quot;,
-  &quot;config&quot;: {
-    &quot;db.host&quot;: &quot;localhost&quot;
-  }
-}
-</code></pre>
-<p>This fails:</p>
-<pre><code class="language-javascript">obj.user.name  // Tries to access obj.user, then .name (wrong!)
-</code></pre>
-<p>Use bracket notation instead:</p>
-<pre><code class="language-javascript">obj[&quot;user.name&quot;]        // ✓ Works: &quot;Alice&quot;
-obj.config[&quot;db.host&quot;]   // ✓ Works: &quot;localhost&quot;
-</code></pre>
-<p>In json.express, you&#39;d write:</p>
-<pre><code>[&quot;user.name&quot;]
-config[&quot;db.host&quot;]
-</code></pre>
-<h3>2. Numeric Object Keys</h3>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "user.name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "config"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "db.host"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"localhost"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>This fails:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.user.name  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// Tries to access obj.user, then .name (wrong!)</span></span></code></pre><p>Use bracket notation instead:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"user.name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]        </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Works: "Alice"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.config[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"db.host"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]   </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Works: "localhost"</span></span></code></pre><p>In json.express, you&#39;d write:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>["user.name"]</span></span>
+<span class="line"><span>config["db.host"]</span></span></code></pre><h3>2. Numeric Object Keys</h3>
 <p>JSON keys can be numbers (as strings). These are tricky:</p>
-<pre><code class="language-json">{
-  &quot;1&quot;: &quot;First&quot;,
-  &quot;2&quot;: &quot;Second&quot;,
-  &quot;users&quot;: {
-    &quot;101&quot;: { &quot;name&quot;: &quot;Alice&quot; },
-    &quot;102&quot;: { &quot;name&quot;: &quot;Bob&quot; }
-  }
-}
-</code></pre>
-<p>With pure dot notation, you can&#39;t access numeric keys reliably:</p>
-<pre><code class="language-javascript">obj.1           // SyntaxError: Unexpected number
-obj[&quot;1&quot;]        // ✓ Works: &quot;First&quot;
-obj.users[&quot;101&quot;].name  // ✓ Works: &quot;Alice&quot;
-</code></pre>
-<p>Use bracket notation for numeric keys.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "1"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"First"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "2"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Second"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "users"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "101"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "102"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Bob"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>With pure dot notation, you can&#39;t access numeric keys reliably:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#6A737D;--shiki-dark:#6A737D">           // SyntaxError: Unexpected number</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"1"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]        </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Works: "First"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.users[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"101"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">].name  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Works: "Alice"</span></span></code></pre><p>Use bracket notation for numeric keys.</p>
 <h3>3. Keys with Spaces, Hyphens, or Special Characters</h3>
 <p>Any key with spaces or special characters requires brackets:</p>
-<pre><code class="language-json">{
-  &quot;first name&quot;: &quot;Alice&quot;,
-  &quot;favorite-color&quot;: &quot;blue&quot;,
-  &quot;config@version&quot;: &quot;2.0&quot;
-}
-</code></pre>
-<pre><code class="language-javascript">obj.first name      // SyntaxError
-obj[&quot;first name&quot;]   // ✓ &quot;Alice&quot;
-obj[&quot;favorite-color&quot;]    // ✓ &quot;blue&quot;
-obj[&quot;config@version&quot;]    // ✓ &quot;2.0&quot;
-</code></pre>
-<h3>4. Empty String Keys</h3>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "first name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "favorite-color"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"blue"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "config@version"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2.0"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.first name      </span><span style="color:#6A737D;--shiki-dark:#6A737D">// SyntaxError</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"first name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]   </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ "Alice"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"favorite-color"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]    </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ "blue"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"config@version"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]    </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ "2.0"</span></span></code></pre><h3>4. Empty String Keys</h3>
 <p>Yes, JSON allows empty string keys:</p>
-<pre><code class="language-json">{
-  &quot;&quot;: &quot;value&quot;,
-  &quot;name&quot;: &quot;Alice&quot;
-}
-</code></pre>
-<pre><code class="language-javascript">obj[&quot;&quot;]     // ✓ &quot;value&quot;
-obj.name    // ✓ &quot;Alice&quot;
-</code></pre>
-<h3>5. Reserved Words as Keys</h3>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  ""</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"value"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">""</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]     </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ "value"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.name    </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ "Alice"</span></span></code></pre><h3>5. Reserved Words as Keys</h3>
 <p>JavaScript reserves words like <code>class</code>, <code>function</code>, <code>return</code>. As keys, they&#39;re fine:</p>
-<pre><code class="language-json">{
-  &quot;class&quot;: &quot;admin&quot;,
-  &quot;function&quot;: &quot;process&quot;,
-  &quot;return&quot;: true
-}
-</code></pre>
-<pre><code class="language-javascript">obj.class      // ✓ &quot;admin&quot; (works in modern JS)
-obj[&quot;class&quot;]   // ✓ Always works
-obj.return     // ✓ Works in most contexts (but not recommended)
-obj[&quot;return&quot;]  // ✓ Always works (safer)
-</code></pre>
-<p>Use bracket notation to be explicit and avoid issues.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "class"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"admin"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "function"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"process"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "return"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.class      </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ "admin" (works in modern JS)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"class"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]   </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Always works</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.return     </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Works in most contexts (but not recommended)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"return"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Always works (safer)</span></span></code></pre><p>Use bracket notation to be explicit and avoid issues.</p>
 <h2>Practical Decision Tree</h2>
 <p><strong>Use dot notation when:</strong></p>
 <ul>
@@ -244,44 +202,38 @@ obj[&quot;return&quot;]  // ✓ Always works (safer)
 <li>Keys are reserved words</li>
 <li>You&#39;re accessing keys dynamically (e.g., from a variable)</li>
 </ul>
-<pre><code class="language-javascript">const key = &quot;user.id&quot;;
-obj[key]  // Accesses obj[&quot;user.id&quot;], not nested access
-</code></pre>
-<h2>How json.express Supports Both</h2>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> key</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "user.id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj[key]  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// Accesses obj["user.id"], not nested access</span></span></code></pre><h2>How json.express Supports Both</h2>
 <p>json.express query bar accepts both styles:</p>
-<pre><code>user.name                    // Dot notation
-user[&quot;address.city&quot;]         // Bracket for keys with dots
-users[0].posts[1].title      // Mixed
-data[&quot;special-key&quot;].value    // Mixed
-[&quot;top-level-key&quot;].nested     // Bracket first, then dot
-</code></pre>
-<p>You can switch freely based on the JSON structure. The query engine understands both and combines them seamlessly.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>user.name                    // Dot notation</span></span>
+<span class="line"><span>user["address.city"]         // Bracket for keys with dots</span></span>
+<span class="line"><span>users[0].posts[1].title      // Mixed</span></span>
+<span class="line"><span>data["special-key"].value    // Mixed</span></span>
+<span class="line"><span>["top-level-key"].nested     // Bracket first, then dot</span></span></code></pre><p>You can switch freely based on the JSON structure. The query engine understands both and combines them seamlessly.</p>
 <h2>Real-World Example: API Response Paths</h2>
 <p>Here&#39;s a complex API response:</p>
-<pre><code class="language-json">{
-  &quot;response&quot;: {
-    &quot;user&quot;: {
-      &quot;id&quot;: 123,
-      &quot;profile&quot;: {
-        &quot;display_name&quot;: &quot;Alice&quot;,
-        &quot;social-media&quot;: {
-          &quot;twitter&quot;: &quot;@alice&quot;
-        }
-      }
-    },
-    &quot;posts&quot;: [
-      {
-        &quot;id&quot;: 1,
-        &quot;content&quot;: &quot;Hello&quot;,
-        &quot;meta&quot;: {
-          &quot;created_at&quot;: &quot;2026-03-10T10:00:00Z&quot;
-        }
-      }
-    ]
-  }
-}
-</code></pre>
-<p>Different paths you might use:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "response"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "user"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">123</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">      "profile"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">        "display_name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">        "social-media"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">          "twitter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"@alice"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    },</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "posts"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">        "id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">        "content"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Hello"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">        "meta"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">          "created_at"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2026-03-10T10:00:00Z"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    ]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Different paths you might use:</p>
 <table>
 <thead>
 <tr>
@@ -313,18 +265,12 @@ data[&quot;special-key&quot;].value    // Mixed
 <p>Notice the mix: <code>display_name</code> works with dots (it&#39;s a valid identifier), but <code>social-media</code> requires brackets because of the hyphen.</p>
 <h2>Common Mistakes</h2>
 <p><strong>Mistake 1: Forgetting brackets for arrays</strong></p>
-<pre><code class="language-javascript">obj.posts.0.title      // ❌ Wrong
-obj.posts[0].title     // ✓ Correct
-</code></pre>
-<p><strong>Mistake 2: Assuming missing properties return an error</strong></p>
-<pre><code class="language-javascript">obj.missing.nested.path  // ❌ TypeError if &#39;missing&#39; doesn&#39;t exist
-obj?.missing?.nested?.path  // ✓ Safe: returns undefined
-</code></pre>
-<p><strong>Mistake 3: Mixing styles without bracket notation for special keys</strong></p>
-<pre><code class="language-javascript">obj.user.favorite-color  // ❌ Interprets as (obj.user.favorite) - color
-obj.user[&quot;favorite-color&quot;]  // ✓ Correct
-</code></pre>
-<h2>Tips for Working with Dynamic JSON</h2>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.posts.0.title      </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ❌ Wrong</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.posts[</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">].title     </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Correct</span></span></code></pre><p><strong>Mistake 2: Assuming missing properties return an error</strong></p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.missing.nested.path  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ❌ TypeError if 'missing' doesn't exist</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj?.missing?.nested?.path  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Safe: returns undefined</span></span></code></pre><p><strong>Mistake 3: Mixing styles without bracket notation for special keys</strong></p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.user.favorite</span><span style="color:#D73A49;--shiki-dark:#F97583">-</span><span style="color:#24292E;--shiki-dark:#E1E4E8">color  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ❌ Interprets as (obj.user.favorite) - color</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">obj.user[</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"favorite-color"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ✓ Correct</span></span></code></pre><h2>Tips for Working with Dynamic JSON</h2>
 <p>When you don&#39;t know the structure beforehand:</p>
 <ol>
 <li><strong>Explore first</strong>: Paste into json.express and browse the Tree view to understand structure</li>
@@ -369,37 +315,5 @@ obj.user[&quot;favorite-color&quot;]  // ✓ Correct
   </footer>
 
 </div>
-<script>
-(function(){
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function highlight(val,indent){
-    indent=indent||0;var sp='  '.repeat(indent);
-    if(val===null)return'<span class="json-null">null</span>';
-    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
-    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
-    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
-    if(Array.isArray(val)){
-      if(!val.length)return'<span class="json-bracket">[]</span>';
-      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
-      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
-    }
-    if(typeof val==='object'){
-      var keys=Object.keys(val);
-      if(!keys.length)return'<span class="json-bracket">{}</span>';
-      var entries=keys.map(function(k){
-        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
-      });
-      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
-    }
-    return esc(String(val));
-  }
-  document.querySelectorAll('pre code.language-json').forEach(function(el){
-    try{
-      var parsed=JSON.parse(el.textContent);
-      el.innerHTML=highlight(parsed);
-    }catch(e){}
-  });
-})();
-</script>
 </body>
 </html>

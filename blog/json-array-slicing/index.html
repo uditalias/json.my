@@ -71,29 +71,23 @@
 </ul>
 <p>It&#39;s called slicing because you&#39;re taking a slice of the array without modifying the original.</p>
 <h3>Basic Syntax</h3>
-<pre><code>[0:3]      // Elements at indices 0, 1, 2 (not 3)
-[2:5]      // Elements at indices 2, 3, 4
-[0:1]      // First element only
-[5:]       // From index 5 to the end
-[:3]       // From start to index 3 (exclusive)
-</code></pre>
-<h2>Practical Examples</h2>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>[0:3]      // Elements at indices 0, 1, 2 (not 3)</span></span>
+<span class="line"><span>[2:5]      // Elements at indices 2, 3, 4</span></span>
+<span class="line"><span>[0:1]      // First element only</span></span>
+<span class="line"><span>[5:]       // From index 5 to the end</span></span>
+<span class="line"><span>[:3]       // From start to index 3 (exclusive)</span></span></code></pre><h2>Practical Examples</h2>
 <p>Let&#39;s use a sample array:</p>
-<pre><code class="language-json">[
-  &quot;apple&quot;,
-  &quot;banana&quot;,
-  &quot;cherry&quot;,
-  &quot;date&quot;,
-  &quot;elderberry&quot;,
-  &quot;fig&quot;,
-  &quot;grape&quot;
-]
-</code></pre>
-<p>With indices:</p>
-<pre><code>Index:  0       1       2        3      4           5    6
-Value: apple  banana  cherry   date  elderberry   fig  grape
-</code></pre>
-<h3>Common Slicing Operations</h3>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "apple"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "banana"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "cherry"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "date"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "elderberry"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "fig"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "grape"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre><p>With indices:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>Index:  0       1       2        3      4           5    6</span></span>
+<span class="line"><span>Value: apple  banana  cherry   date  elderberry   fig  grape</span></span></code></pre><h3>Common Slicing Operations</h3>
 <table>
 <thead>
 <tr>
@@ -179,54 +173,42 @@ Value: apple  banana  cherry   date  elderberry   fig  grape
 <p>Negative indices are incredibly useful. <code>[-10:]</code> means &quot;give me the last 10 items, or all items if there are fewer than 10.&quot;</p>
 <h2>Nested Array Slicing</h2>
 <p>In real JSON, you often have arrays of objects. Slicing works at the top level:</p>
-<pre><code class="language-json">{
-  &quot;users&quot;: [
-    { &quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot; },
-    { &quot;id&quot;: 2, &quot;name&quot;: &quot;Bob&quot; },
-    { &quot;id&quot;: 3, &quot;name&quot;: &quot;Charlie&quot; },
-    { &quot;id&quot;: 4, &quot;name&quot;: &quot;Diana&quot; }
-  ]
-}
-</code></pre>
-<p>Query: <code>users[0:2]</code></p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "users"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Bob"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Charlie"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">4</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Diana"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Query: <code>users[0:2]</code></p>
 <p>Result:</p>
-<pre><code class="language-json">[
-  { &quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot; },
-  { &quot;id&quot;: 2, &quot;name&quot;: &quot;Bob&quot; }
-]
-</code></pre>
-<p>Query: <code>users[-1]</code></p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">[</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Alice"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Bob"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre><p>Query: <code>users[-1]</code></p>
 <p>Result:</p>
-<pre><code class="language-json">{ &quot;id&quot;: 4, &quot;name&quot;: &quot;Diana&quot; }
-</code></pre>
-<p>But here&#39;s a key point: slicing gives you an array, while indexing gives you an element:</p>
-<pre><code>users[0:1]   // [{ &quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot; }]  — array with 1 element
-users[0]     // { &quot;id&quot;: 1, &quot;name&quot;: &quot;Alice&quot; }    — just the object
-</code></pre>
-<p>Use <code>[0:1]</code> when you need to preserve array structure; use <code>[0]</code> when you want the element itself.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{ </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">4</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"Diana"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span></code></pre><p>But here&#39;s a key point: slicing gives you an array, while indexing gives you an element:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>users[0:1]   // [{ "id": 1, "name": "Alice" }]  — array with 1 element</span></span>
+<span class="line"><span>users[0]     // { "id": 1, "name": "Alice" }    — just the object</span></span></code></pre><p>Use <code>[0:1]</code> when you need to preserve array structure; use <code>[0]</code> when you want the element itself.</p>
 <h2>Real-World Use Cases</h2>
 <h3>1. Pagination</h3>
 <p>API returns 100 results, but you want to display 20 per page:</p>
-<pre><code class="language-json">{
-  &quot;results&quot;: [...]  // 100 items
-}
-</code></pre>
-<p>Page 1 (items 0–19): <code>results[0:20]</code>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "results"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#B31D28;--shiki-light-font-style:italic;--shiki-dark:#FDAEB7;--shiki-dark-font-style:italic">...</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// 100 items</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Page 1 (items 0–19): <code>results[0:20]</code>
 Page 2 (items 20–39): <code>results[20:40]</code>
 Page 3 (items 40–59): <code>results[40:60]</code></p>
 <p>Formula: Page N = <code>results[(N-1)*20 : N*20]</code></p>
 <h3>2. Recent Items</h3>
 <p>A feed API returns posts in chronological order. Get the 5 most recent:</p>
-<pre><code class="language-json">{
-  &quot;posts&quot;: [
-    { &quot;id&quot;: 1, &quot;title&quot;: &quot;...&quot;, &quot;date&quot;: &quot;2026-01-01&quot; },
-    { &quot;id&quot;: 2, &quot;title&quot;: &quot;...&quot;, &quot;date&quot;: &quot;2026-02-01&quot; },
-    ...
-    { &quot;id&quot;: 100, &quot;title&quot;: &quot;...&quot;, &quot;date&quot;: &quot;2026-03-10&quot; }
-  ]
-}
-</code></pre>
-<p>Query: <code>posts[-5:]</code></p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "posts"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"title"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"..."</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"date"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2026-01-01"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"title"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"..."</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"date"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2026-02-01"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#B31D28;--shiki-light-font-style:italic;--shiki-dark:#FDAEB7;--shiki-dark-font-style:italic">    ...</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"id"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">100</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"title"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"..."</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"date"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2026-03-10"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Query: <code>posts[-5:]</code></p>
 <p>Result: The last 5 posts (most recent)</p>
 <h3>3. Data Sampling</h3>
 <p>You have 10,000 records and want a sample of every 100th:</p>
@@ -238,41 +220,33 @@ Slicing approach: Can&#39;t do directly, but slicing helps with sampling workflo
 <p>In SQL terms: <code>OFFSET 10 LIMIT 5</code></p>
 <h3>5. Time-Series Data</h3>
 <p>Extract data from a specific time window:</p>
-<pre><code class="language-json">{
-  &quot;measurements&quot;: [
-    { &quot;timestamp&quot;: &quot;2026-03-01T00:00:00Z&quot;, &quot;value&quot;: 100 },
-    { &quot;timestamp&quot;: &quot;2026-03-02T00:00:00Z&quot;, &quot;value&quot;: 110 },
-    ...
-    { &quot;timestamp&quot;: &quot;2026-03-31T00:00:00Z&quot;, &quot;value&quot;: 150 }
-  ]
-}
-</code></pre>
-<p>Get data for days 10–20: <code>measurements[9:20]</code> (adjusting for 0-based indexing and your range)</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "measurements"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"timestamp"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2026-03-01T00:00:00Z"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"value"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">100</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"timestamp"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2026-03-02T00:00:00Z"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"value"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">110</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#B31D28;--shiki-light-font-style:italic;--shiki-dark:#FDAEB7;--shiki-dark-font-style:italic">    ...</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"timestamp"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"2026-03-31T00:00:00Z"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"value"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">150</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Get data for days 10–20: <code>measurements[9:20]</code> (adjusting for 0-based indexing and your range)</p>
 <h2>Slicing in JavaScript</h2>
 <p>JavaScript has a built-in <code>Array.slice()</code> method:</p>
-<pre><code class="language-javascript">const arr = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;, &quot;date&quot;];
-
-arr.slice(0, 2)   // [&quot;apple&quot;, &quot;banana&quot;]
-arr.slice(1, 3)   // [&quot;banana&quot;, &quot;cherry&quot;]
-arr.slice(-2)     // [&quot;cherry&quot;, &quot;date&quot;]
-arr.slice(2)      // [&quot;cherry&quot;, &quot;date&quot;]
-</code></pre>
-<p>Syntax is slightly different: <code>array.slice(start, end)</code> instead of <code>[start:end]</code>. But the concept is identical.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> arr</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"apple"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"banana"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"cherry"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"date"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)   </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ["apple", "banana"]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)   </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ["banana", "cherry"]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">-</span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)     </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ["cherry", "date"]</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)      </span><span style="color:#6A737D;--shiki-dark:#6A737D">// ["cherry", "date"]</span></span></code></pre><p>Syntax is slightly different: <code>array.slice(start, end)</code> instead of <code>[start:end]</code>. But the concept is identical.</p>
 <p>Important: <code>slice()</code> doesn&#39;t modify the original array—it returns a new array. Perfect for working with data without side effects.</p>
-<pre><code class="language-javascript">const original = [1, 2, 3, 4, 5];
-const sliced = original.slice(1, 3);
-
-console.log(original);  // [1, 2, 3, 4, 5] (unchanged)
-console.log(sliced);    // [2, 3]
-</code></pre>
-<h2>How json.express Implements Slicing</h2>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> original</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> [</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">4</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">];</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> sliced</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> original.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">1</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">3</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">console.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">log</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(original);  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// [1, 2, 3, 4, 5] (unchanged)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">console.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">log</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(sliced);    </span><span style="color:#6A737D;--shiki-dark:#6A737D">// [2, 3]</span></span></code></pre><h2>How json.express Implements Slicing</h2>
 <p>json.express supports slicing directly in the query bar. You can combine slicing with dot notation and other path operations:</p>
-<pre><code>users[0:5]                    // First 5 users
-users[0:5].name               // Names of first 5 users
-posts[*].comments[0:3]        // First 3 comments of every post
-data.results[-10:].id         // IDs of last 10 results
-</code></pre>
-<p>The query engine evaluates left to right, so <code>users[0:5].name</code> means:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span>users[0:5]                    // First 5 users</span></span>
+<span class="line"><span>users[0:5].name               // Names of first 5 users</span></span>
+<span class="line"><span>posts[*].comments[0:3]        // First 3 comments of every post</span></span>
+<span class="line"><span>data.results[-10:].id         // IDs of last 10 results</span></span></code></pre><p>The query engine evaluates left to right, so <code>users[0:5].name</code> means:</p>
 <ol>
 <li>Slice users to get indices 0–4</li>
 <li>For each, get the <code>name</code> property</li>
@@ -282,33 +256,25 @@ data.results[-10:].id         // IDs of last 10 results
 <p><strong>Slicing</strong> is for position-based extraction: &quot;I want indices 0–4&quot; or &quot;I want the last 10.&quot;</p>
 <p><strong>Filtering</strong> is for condition-based extraction: &quot;I want all items where price &gt; 100&quot; or &quot;I want posts from this author.&quot;</p>
 <p>They&#39;re complementary:</p>
-<pre><code class="language-javascript">// Slicing: first 10 items
-arr.slice(0, 10)
-
-// Filtering: expensive items
-arr.filter(item =&gt; item.price &gt; 100)
-
-// Both: 10 most recent expensive items
-arr
-  .filter(item =&gt; item.price &gt; 100)
-  .slice(-10)
-</code></pre>
-<p>json.express slicing handles the positional part; for filtering by condition, you&#39;d need to combine with other tools or do it in your application code.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">// Slicing: first 10 items</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">// Filtering: expensive items</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">filter</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">item</span><span style="color:#D73A49;--shiki-dark:#F97583"> =></span><span style="color:#24292E;--shiki-dark:#E1E4E8"> item.price </span><span style="color:#D73A49;--shiki-dark:#F97583">></span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 100</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">// Both: 10 most recent expensive items</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  .</span><span style="color:#6F42C1;--shiki-dark:#B392F0">filter</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">item</span><span style="color:#D73A49;--shiki-dark:#F97583"> =></span><span style="color:#24292E;--shiki-dark:#E1E4E8"> item.price </span><span style="color:#D73A49;--shiki-dark:#F97583">></span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 100</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  .</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">-</span><span style="color:#005CC5;--shiki-dark:#79B8FF">10</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span></code></pre><p>json.express slicing handles the positional part; for filtering by condition, you&#39;d need to combine with other tools or do it in your application code.</p>
 <h2>Edge Cases</h2>
 <h3>Empty Slices</h3>
-<pre><code class="language-javascript">arr.slice(5, 5)    // [] (empty array)
-arr.slice(100, 110) // [] (out of bounds, returns empty)
-</code></pre>
-<p>Safe to use—won&#39;t throw errors, just returns an empty array.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)    </span><span style="color:#6A737D;--shiki-dark:#6A737D">// [] (empty array)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">100</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">110</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) </span><span style="color:#6A737D;--shiki-dark:#6A737D">// [] (out of bounds, returns empty)</span></span></code></pre><p>Safe to use—won&#39;t throw errors, just returns an empty array.</p>
 <h3>Out-of-Bounds Indices</h3>
-<pre><code class="language-javascript">arr.slice(2, 100)  // Returns what exists from index 2 onward
-arr.slice(-100, 2) // Starts from beginning if -100 is before the array
-</code></pre>
-<p>JavaScript handles gracefully. Indices beyond array length are clamped to valid ranges.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">100</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// Returns what exists from index 2 onward</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#D73A49;--shiki-dark:#F97583">-</span><span style="color:#005CC5;--shiki-dark:#79B8FF">100</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) </span><span style="color:#6A737D;--shiki-dark:#6A737D">// Starts from beginning if -100 is before the array</span></span></code></pre><p>JavaScript handles gracefully. Indices beyond array length are clamped to valid ranges.</p>
 <h3>Backwards Slices</h3>
-<pre><code class="language-javascript">arr.slice(5, 2)    // [] (start &gt; end returns empty)
-</code></pre>
-<p>You can&#39;t slice backwards. To reverse, you&#39;d need to reverse the array first or use a different approach.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">arr.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">slice</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">5</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)    </span><span style="color:#6A737D;--shiki-dark:#6A737D">// [] (start > end returns empty)</span></span></code></pre><p>You can&#39;t slice backwards. To reverse, you&#39;d need to reverse the array first or use a different approach.</p>
 <h2>Performance Considerations</h2>
 <p>Slicing is <strong>O(n)</strong> in time complexity—it must copy the sliced portion. But it&#39;s optimized at the JavaScript engine level and extremely fast even for large arrays.</p>
 <p>For most use cases:</p>
@@ -366,37 +332,5 @@ If you&#39;re computing start/end dynamically, ensure start &lt;= end and both a
   </footer>
 
 </div>
-<script>
-(function(){
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function highlight(val,indent){
-    indent=indent||0;var sp='  '.repeat(indent);
-    if(val===null)return'<span class="json-null">null</span>';
-    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
-    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
-    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
-    if(Array.isArray(val)){
-      if(!val.length)return'<span class="json-bracket">[]</span>';
-      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
-      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
-    }
-    if(typeof val==='object'){
-      var keys=Object.keys(val);
-      if(!keys.length)return'<span class="json-bracket">{}</span>';
-      var entries=keys.map(function(k){
-        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
-      });
-      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
-    }
-    return esc(String(val));
-  }
-  document.querySelectorAll('pre code.language-json').forEach(function(el){
-    try{
-      var parsed=JSON.parse(el.textContent);
-      el.innerHTML=highlight(parsed);
-    }catch(e){}
-  });
-})();
-</script>
 </body>
 </html>

@@ -72,51 +72,47 @@
 <p>This tension between the specification and real-world usage has driven creative solutions over the past two decades.</p>
 <h2>The Real-World Problem: Configuration File Comments</h2>
 <p>Consider this scenario: You&#39;re maintaining a large TypeScript project&#39;s <code>tsconfig.json</code>. The configuration is critical, but it&#39;s cryptic without documentation:</p>
-<pre><code class="language-json">{
-  &quot;compilerOptions&quot;: {
-    &quot;target&quot;: &quot;ES2020&quot;,
-    &quot;module&quot;: &quot;ESNext&quot;,
-    &quot;lib&quot;: [&quot;ES2020&quot;],
-    &quot;jsx&quot;: &quot;react-jsx&quot;,
-    &quot;strict&quot;: true,
-    &quot;esModuleInterop&quot;: true,
-    &quot;skipLibCheck&quot;: true,
-    &quot;forceConsistentCasingInFileNames&quot;: true,
-    &quot;moduleResolution&quot;: &quot;bundler&quot;,
-    &quot;resolveJsonModule&quot;: true,
-    &quot;isolatedModules&quot;: true
-  }
-}
-</code></pre>
-<p>What&#39;s not obvious from this configuration:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "compilerOptions"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "target"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2020"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "module"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ESNext"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lib"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2020"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "jsx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"react-jsx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "strict"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "esModuleInterop"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "skipLibCheck"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "forceConsistentCasingInFileNames"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "moduleResolution"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"bundler"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "resolveJsonModule"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "isolatedModules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>What&#39;s not obvious from this configuration:</p>
 <ul>
 <li>Why is <code>skipLibCheck</code> set to true? (Performance trade-off)</li>
 <li>Why <code>bundler</code> for module resolution? (Because we&#39;re using a modern bundler)</li>
 <li>What does <code>esModuleInterop</code> actually do? (Helps with CommonJS interop)</li>
 </ul>
 <p><strong>Ideally, you&#39;d add comments:</strong></p>
-<pre><code class="language-json">{
-  &quot;compilerOptions&quot;: {
-    // ES2020 for modern browser support
-    &quot;target&quot;: &quot;ES2020&quot;,
-    &quot;module&quot;: &quot;ESNext&quot;,
-    &quot;lib&quot;: [&quot;ES2020&quot;],
-    &quot;jsx&quot;: &quot;react-jsx&quot;,
-    // Strict null checking catches common bugs early
-    &quot;strict&quot;: true,
-    // Required for CommonJS library compatibility
-    &quot;esModuleInterop&quot;: true,
-    // Skip type checking declaration files (faster builds)
-    &quot;skipLibCheck&quot;: true,
-    &quot;forceConsistentCasingInFileNames&quot;: true,
-    // Use &quot;bundler&quot; for modern tools like Vite
-    &quot;moduleResolution&quot;: &quot;bundler&quot;,
-    &quot;resolveJsonModule&quot;: true,
-    &quot;isolatedModules&quot;: true
-  }
-}
-</code></pre>
-<p>But strict JSON doesn&#39;t allow this. And while some tools (like TypeScript&#39;s config loader) <strong>do parse comments anyway</strong>, it&#39;s not technically valid JSON.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "compilerOptions"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // ES2020 for modern browser support</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "target"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2020"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "module"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ESNext"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lib"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2020"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "jsx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"react-jsx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Strict null checking catches common bugs early</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "strict"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Required for CommonJS library compatibility</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "esModuleInterop"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Skip type checking declaration files (faster builds)</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "skipLibCheck"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "forceConsistentCasingInFileNames"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Use "bundler" for modern tools like Vite</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "moduleResolution"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"bundler"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "resolveJsonModule"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "isolatedModules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>But strict JSON doesn&#39;t allow this. And while some tools (like TypeScript&#39;s config loader) <strong>do parse comments anyway</strong>, it&#39;s not technically valid JSON.</p>
 <h2>JSONC: JSON with Comments</h2>
 <p>To address this real-world need, <strong>JSONC</strong> emerged as a practical extension. JSONC is identical to JSON with two additions:</p>
 <ol>
@@ -133,127 +129,119 @@
 <li>Many modern build tools (Vite, esbuild, webpack) are lenient with comments</li>
 </ul>
 <p>Here&#39;s the same <code>tsconfig.json</code> as valid JSONC:</p>
-<pre><code class="language-json">{
-  &quot;compilerOptions&quot;: {
-    // Target modern browsers
-    &quot;target&quot;: &quot;ES2020&quot;,
-    &quot;module&quot;: &quot;ESNext&quot;,
-    &quot;lib&quot;: [&quot;ES2020&quot;],
-
-    // React with automatic JSX transform
-    &quot;jsx&quot;: &quot;react-jsx&quot;,
-
-    /* Enable strict type checking:
-       - null/undefined checking
-       - strict property initialization
-       - strict null checks
-    */
-    &quot;strict&quot;: true,
-
-    // For CommonJS interop
-    &quot;esModuleInterop&quot;: true,
-
-    /* Performance optimization:
-       Skip checking .d.ts files in node_modules
-    */
-    &quot;skipLibCheck&quot;: true,
-    &quot;forceConsistentCasingInFileNames&quot;: true,
-
-    // Modern module resolution for bundlers like Vite
-    &quot;moduleResolution&quot;: &quot;bundler&quot;,
-    &quot;resolveJsonModule&quot;: true,
-    &quot;isolatedModules&quot;: true,
-  }
-}
-</code></pre>
-<p>Notice the trailing commas after the last properties—JSONC allows these too, which is helpful when you&#39;re frequently adding and removing lines.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "compilerOptions"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Target modern browsers</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "target"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2020"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "module"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ESNext"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lib"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2020"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // React with automatic JSX transform</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "jsx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"react-jsx"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    /* Enable strict type checking:</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">       - null/undefined checking</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">       - strict property initialization</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">       - strict null checks</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    */</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "strict"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // For CommonJS interop</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "esModuleInterop"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    /* Performance optimization:</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">       Skip checking .d.ts files in node_modules</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    */</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "skipLibCheck"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "forceConsistentCasingInFileNames"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Modern module resolution for bundlers like Vite</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "moduleResolution"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"bundler"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "resolveJsonModule"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "isolatedModules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>Notice the trailing commas after the last properties—JSONC allows these too, which is helpful when you&#39;re frequently adding and removing lines.</p>
 <h2>JSONC in Popular Configuration Files</h2>
 <h3><code>.vscode/settings.json</code></h3>
 <p>Visual Studio Code officially supports JSONC in workspace settings:</p>
-<pre><code class="language-json">{
-  // Editor settings
-  &quot;editor.formatOnSave&quot;: true,
-  &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;,
-
-  // File associations
-  &quot;[json]&quot;: {
-    &quot;editor.defaultFormatter&quot;: &quot;esbenp.prettier-vscode&quot;
-  },
-
-  /* Extensions configuration
-     Customize behavior of installed extensions
-  */
-  &quot;javascript.updateImportsOnFileMove.enabled&quot;: &quot;always&quot;,
-
-  // Exclude node_modules from search
-  &quot;search.exclude&quot;: {
-    &quot;**/node_modules&quot;: true
-  }
-}
-</code></pre>
-<h3><code>tsconfig.json</code></h3>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Editor settings</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "editor.formatOnSave"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"esbenp.prettier-vscode"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // File associations</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "[json]"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "editor.defaultFormatter"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"esbenp.prettier-vscode"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  /* Extensions configuration</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">     Customize behavior of installed extensions</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  */</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "javascript.updateImportsOnFileMove.enabled"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"always"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Exclude node_modules from search</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "search.exclude"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "**/node_modules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><h3><code>tsconfig.json</code></h3>
 <p>TypeScript accepts comments and trailing commas in TypeScript configuration files:</p>
-<pre><code class="language-json">{
-  &quot;compilerOptions&quot;: {
-    &quot;target&quot;: &quot;ES2022&quot;,
-    &quot;lib&quot;: [&quot;ES2022&quot;],
-
-    // Emit source maps for debugging
-    &quot;sourceMap&quot;: true,
-
-    // Module output settings
-    &quot;module&quot;: &quot;ESNext&quot;,
-    &quot;moduleResolution&quot;: &quot;bundler&quot;,
-
-    // Strict mode catches errors early
-    &quot;strict&quot;: true,
-
-    &quot;resolveJsonModule&quot;: true,
-    &quot;declaration&quot;: true,
-    &quot;declarationMap&quot;: true,
-    &quot;outDir&quot;: &quot;./dist&quot;,
-  },
-
-  // Include source files
-  &quot;include&quot;: [&quot;src/**/*&quot;],
-
-  // Exclude build artifacts and node_modules
-  &quot;exclude&quot;: [&quot;node_modules&quot;, &quot;dist&quot;],
-}
-</code></pre>
-<h3><code>.eslintrc.json</code></h3>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "compilerOptions"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "target"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2022"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "lib"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ES2022"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Emit source maps for debugging</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "sourceMap"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Module output settings</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "module"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"ESNext"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "moduleResolution"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"bundler"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Strict mode catches errors early</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "strict"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "resolveJsonModule"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "declaration"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "declarationMap"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "outDir"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"./dist"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Include source files</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "include"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"src/**/*"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Exclude build artifacts and node_modules</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "exclude"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"node_modules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dist"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><h3><code>.eslintrc.json</code></h3>
 <p>ESLint config files often include comments explaining rules:</p>
-<pre><code class="language-json">{
-  &quot;env&quot;: {
-    &quot;browser&quot;: true,
-    &quot;es2021&quot;: true
-  },
-
-  // Extend popular shared configs
-  &quot;extends&quot;: [&quot;eslint:recommended&quot;],
-
-  &quot;parserOptions&quot;: {
-    &quot;ecmaVersion&quot;: &quot;latest&quot;,
-    &quot;sourceType&quot;: &quot;module&quot;
-  },
-
-  &quot;rules&quot;: {
-    // Disallow var, use const/let instead
-    &quot;no-var&quot;: &quot;error&quot;,
-
-    // Warn about unused variables
-    &quot;no-unused-vars&quot;: &quot;warn&quot;,
-
-    /* Require consistent spacing
-       Improves code readability
-    */
-    &quot;indent&quot;: [&quot;error&quot;, 2],
-    &quot;quotes&quot;: [&quot;error&quot;, &quot;single&quot;],
-    &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;],
-  }
-}
-</code></pre>
-<h2>How json.express Handles Comments and Trailing Commas</h2>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "env"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "browser"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "es2021"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Extend popular shared configs</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "extends"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"eslint:recommended"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "parserOptions"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "ecmaVersion"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"latest"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "sourceType"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"module"</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "rules"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Disallow var, use const/let instead</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "no-var"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"error"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Warn about unused variables</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "no-unused-vars"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"warn"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    /* Require consistent spacing</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">       Improves code readability</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    */</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "indent"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"error"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">2</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "quotes"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"error"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"single"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "semi"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"error"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"always"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><h2>How json.express Handles Comments and Trailing Commas</h2>
 <p>This is where json.express shines for developers working with JSONC and lenient JSON parsers.</p>
 <p>json.express includes a <strong>lenient JSON parser</strong> that automatically:</p>
 <ol>
@@ -265,29 +253,27 @@
 <p>The parser is smart enough not to strip comment syntax that appears inside string values. So <code>&quot;url&quot;: &quot;https://example.com&quot;</code> won&#39;t be mangled, and <code>&quot;regex&quot;: &quot;//pattern&quot;</code> stays intact.</p>
 <p><strong>Example:</strong></p>
 <p>Paste this into <a href="/format/">json.express</a>:</p>
-<pre><code class="language-json">{
-  &quot;app&quot;: {
-    // Application name
-    &quot;name&quot;: &quot;MyApp&quot;,
-
-    &quot;version&quot;: &quot;1.0.0&quot;,
-
-    /* Configuration options:
-       - debug: enable debug logging
-       - verbose: detailed output
-    */
-    &quot;debug&quot;: true,
-    &quot;verbose&quot;: false,
-  },
-
-  // Server configuration
-  &quot;server&quot;: {
-    &quot;port&quot;: 3000,
-    &quot;host&quot;: &quot;localhost&quot;,
-  },
-}
-</code></pre>
-<p>json.express parses this correctly and strips the comments, presenting clean, valid JSON. This is invaluable when:</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "app"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    // Application name</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "name"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"MyApp"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "version"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"1.0.0"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    /* Configuration options:</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">       - debug: enable debug logging</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">       - verbose: detailed output</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">    */</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "debug"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "verbose"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">false</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Server configuration</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "server"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "port"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">3000</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    "host"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"localhost"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre><p>json.express parses this correctly and strips the comments, presenting clean, valid JSON. This is invaluable when:</p>
 <ul>
 <li>You&#39;re <strong>copying configuration files</strong> from your project and need to understand them quickly</li>
 <li>You want to <strong>validate JSONC syntax</strong> before committing to your repository</li>
@@ -298,35 +284,31 @@
 <p>If you need to handle JSONC in your own JavaScript code, several approaches exist:</p>
 <h3>Option 1: Use a JSONC Parser Library</h3>
 <p>The <code>jsonc-parser</code> npm package handles this professionally:</p>
-<pre><code class="language-javascript">import { parse } from &#39;jsonc-parser&#39;;
-
-const jsonWithComments = `{
-  // This is a comment
-  &quot;key&quot;: &quot;value&quot;,
-}`;
-
-const data = parse(jsonWithComments);
-console.log(data); // { key: &#39;value&#39; }
-</code></pre>
-<h3>Option 2: Strip Comments Before Parsing</h3>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> { parse } </span><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'jsonc-parser'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> jsonWithComments</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> `{</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  // This is a comment</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">  "key": "value",</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">}`</span><span style="color:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> data</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> parse</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(jsonWithComments);</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">console.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">log</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(data); </span><span style="color:#6A737D;--shiki-dark:#6A737D">// { key: 'value' }</span></span></code></pre><h3>Option 2: Strip Comments Before Parsing</h3>
 <p>A simple regex approach for basic cases:</p>
-<pre><code class="language-javascript">function stripComments(json) {
-  // Remove single-line comments
-  json = json.replace(/\/\/.*$/gm, &#39;&#39;);
-
-  // Remove multi-line comments
-  json = json.replace(/\/\*[\s\S]*?\*\//g, &#39;&#39;);
-
-  // Remove trailing commas
-  json = json.replace(/,(\s*[}\]])/g, &#39;$1&#39;);
-
-  return json;
-}
-
-const clean = stripComments(jsonWithComments);
-const data = JSON.parse(clean);
-</code></pre>
-<p>⚠️ <strong>Warning:</strong> This naive approach has edge cases. Strings containing comment-like syntax can be mangled. For production use, prefer a dedicated library.</p>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">function</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> stripComments</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#E36209;--shiki-dark:#FFAB70">json</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Remove single-line comments</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  json </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> json.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">replace</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/</span><span style="color:#22863A;--shiki-light-font-weight:bold;--shiki-dark:#85E89D;--shiki-dark-font-weight:bold">\/\/</span><span style="color:#005CC5;--shiki-dark:#79B8FF">.</span><span style="color:#D73A49;--shiki-dark:#F97583">*$</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/</span><span style="color:#D73A49;--shiki-dark:#F97583">gm</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">''</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Remove multi-line comments</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  json </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> json.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">replace</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/</span><span style="color:#22863A;--shiki-light-font-weight:bold;--shiki-dark:#85E89D;--shiki-dark-font-weight:bold">\/\*</span><span style="color:#005CC5;--shiki-dark:#79B8FF">[\s\S]</span><span style="color:#D73A49;--shiki-dark:#F97583">*?</span><span style="color:#22863A;--shiki-light-font-weight:bold;--shiki-dark:#85E89D;--shiki-dark-font-weight:bold">\*\/</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/</span><span style="color:#D73A49;--shiki-dark:#F97583">g</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">''</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">  // Remove trailing commas</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  json </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> json.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">replace</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/</span><span style="color:#032F62;--shiki-dark:#DBEDFF">,(</span><span style="color:#005CC5;--shiki-dark:#79B8FF">\s</span><span style="color:#D73A49;--shiki-dark:#F97583">*</span><span style="color:#005CC5;--shiki-dark:#79B8FF">[}</span><span style="color:#22863A;--shiki-light-font-weight:bold;--shiki-dark:#85E89D;--shiki-dark-font-weight:bold">\]</span><span style="color:#005CC5;--shiki-dark:#79B8FF">]</span><span style="color:#032F62;--shiki-dark:#DBEDFF">)</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/</span><span style="color:#D73A49;--shiki-dark:#F97583">g</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">'$1'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> json;</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> clean</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> stripComments</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(jsonWithComments);</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">const</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> data</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> JSON</span><span style="color:#24292E;--shiki-dark:#E1E4E8">.</span><span style="color:#6F42C1;--shiki-dark:#B392F0">parse</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(clean);</span></span></code></pre><p>⚠️ <strong>Warning:</strong> This naive approach has edge cases. Strings containing comment-like syntax can be mangled. For production use, prefer a dedicated library.</p>
 <h3>Option 3: Node.js Built-in (for newer versions)</h3>
 <p>Recent Node.js versions include native support for JSONC parsing via <code>JSON.parse()</code> with additional options, though this varies by version. Check your Node.js documentation for availability.</p>
 <h2>Tools That Accept Comments (And Those That Don&#39;t)</h2>
@@ -357,13 +339,11 @@ const data = JSON.parse(clean);
 <li><p><strong>Keep comments concise</strong>: A single-line comment is usually sufficient. If you need extensive documentation, consider a separate <code>.md</code> file explaining the configuration.</p>
 </li>
 <li><p><strong>Comment the &quot;why,&quot; not the &quot;what&quot;</strong>:</p>
-<pre><code class="language-json">// Good: explains intention
-&quot;skipLibCheck&quot;: true,  // Performance: skip TS lib type checking
-
-// Bad: restates the code
-&quot;skipLibCheck&quot;: true,  // Set skipLibCheck to true
-</code></pre>
-</li>
+<pre class="shiki shiki-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">// Good: explains intention</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">"skipLibCheck"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// Performance: skip TS lib type checking</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D">// Bad: restates the code</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">"skipLibCheck"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,  </span><span style="color:#6A737D;--shiki-dark:#6A737D">// Set skipLibCheck to true</span></span></code></pre></li>
 <li><p><strong>Test your configuration</strong>: Always validate that your tools accept comments in their config files. Don&#39;t assume—verify.</p>
 </li>
 <li><p><strong>Maintain JSONC clarity</strong>: Just because you <em>can</em> add a comment doesn&#39;t mean it&#39;s needed. Over-commenting makes files harder to read.</p>
@@ -408,37 +388,5 @@ const data = JSON.parse(clean);
   </footer>
 
 </div>
-<script>
-(function(){
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  function highlight(val,indent){
-    indent=indent||0;var sp='  '.repeat(indent);
-    if(val===null)return'<span class="json-null">null</span>';
-    if(typeof val==='boolean')return'<span class="json-boolean">'+val+'</span>';
-    if(typeof val==='number')return'<span class="json-number">'+val+'</span>';
-    if(typeof val==='string')return'<span class="json-string">"'+esc(val)+'"</span>';
-    if(Array.isArray(val)){
-      if(!val.length)return'<span class="json-bracket">[]</span>';
-      var items=val.map(function(v){return sp+'  '+highlight(v,indent+1);});
-      return'<span class="json-bracket">[</span>\n'+items.join(',\n')+'\n'+sp+'<span class="json-bracket">]</span>';
-    }
-    if(typeof val==='object'){
-      var keys=Object.keys(val);
-      if(!keys.length)return'<span class="json-bracket">{}</span>';
-      var entries=keys.map(function(k){
-        return sp+'  <span class="json-key">"'+esc(k)+'"</span>: '+highlight(val[k],indent+1);
-      });
-      return'<span class="json-bracket">{</span>\n'+entries.join(',\n')+'\n'+sp+'<span class="json-bracket">}</span>';
-    }
-    return esc(String(val));
-  }
-  document.querySelectorAll('pre code.language-json').forEach(function(el){
-    try{
-      var parsed=JSON.parse(el.textContent);
-      el.innerHTML=highlight(parsed);
-    }catch(e){}
-  });
-})();
-</script>
 </body>
 </html>
