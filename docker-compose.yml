@@ -1,0 +1,7 @@
+services:
+  jsonmy:
+    build: .
+    container_name: jsonmy
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
